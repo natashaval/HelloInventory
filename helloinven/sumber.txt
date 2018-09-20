@@ -1,0 +1,14 @@
+LOGIN:
+https://medium.com/@gustavo.ponce.ch/spring-boot-spring-mvc-spring-security-mysql-a5d8545d837d
+https://www.jackrutorial.com/2018/04/spring-boot-user-registration-login.html
+https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot
+https://hellokoding.com/registration-and-login-example-with-spring-security-spring-boot-spring-data-jpa-hsql-jsp/
+https://memorynotfound.com/spring-boot-spring-security-thymeleaf-form-login-example/
+(ada DAO nya)
+https://dzone.com/articles/spring-boot-jpa-mysql-sample-app-code-example
+https://o7planning.org/en/11705/create-a-login-application-with-spring-boot-spring-security-jpa
+
+ANNOTATION:
+data = https://www.baeldung.com/spring-data-annotations
+web(controller, request) = https://www.baeldung.com/spring-mvc-annotations
+

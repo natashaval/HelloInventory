@@ -11,9 +11,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User extends AuditModel {
     @Id
-    @Column(name = "emp_id")
+    @Column(name = "emp_id", unique = true)
     private long id;
 
 //    KURANG EMPLOYEE PHOTO

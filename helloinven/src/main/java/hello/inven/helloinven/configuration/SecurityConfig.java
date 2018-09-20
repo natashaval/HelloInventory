@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,8 +14,8 @@ import javax.sql.DataSource;
 
 // https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot#4_Configure_Database
 @Configuration
-@EnableAutoConfiguration
 @EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -38,8 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/home")
                     .permitAll()
-                .antMatchers("/admin")
+                .antMatchers("/admin/**")
                     .hasAuthority("ADMIN")
+                    .anyRequest()
+                    .authenticated()
+                .antMatchers("/user")
+                    .hasAnyAuthority("MANAGER","EMPLOYEE")
                     .anyRequest()
                     .authenticated()
                 .and()
@@ -47,6 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                 .logout()
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    //https://memorynotfound.com/spring-boot-spring-security-thymeleaf-form-login-example/
                     .permitAll();
 
         http.exceptionHandling().accessDeniedPage("/403");

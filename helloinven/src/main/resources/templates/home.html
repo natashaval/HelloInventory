@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="~{fragments/layout}">
 <head>
-    <title>Security with Spring Boot</title>
+    <title>Home</title>
 </head>
 <body>
+<div layout:fragment="content" th:remove="tag">
 <h1>Hello, This is Home page!</h1>
 <a style="color: blue" th:href="@{/user}">User Page</a>
 <br />
-<a style="color: blue" th:href="@{/admin}">Admin Page</a>
+<a style="color: blue" th:href="@{/admin/admin}">Admin Page</a>
+</div>
 </body>
 </html>
