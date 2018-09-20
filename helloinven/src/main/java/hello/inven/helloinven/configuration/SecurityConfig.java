@@ -37,16 +37,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/","/home")
-                    .permitAll()
                 .antMatchers("/admin/**")
                     .hasAuthority("ADMIN")
-                    .anyRequest()
-                    .authenticated()
+//                    .anyRequest()
+//                    .authenticated()
+//        https://stackoverflow.com/questions/43052745/how-to-fix-role-in-spring-security
                 .antMatchers("/user")
                     .hasAnyAuthority("MANAGER","EMPLOYEE")
+//        https://stackoverflow.com/questions/43591834/spring-security-hasauthority-is-ignored-when-configured-globally-for-httpsecuri
                     .anyRequest()
                     .authenticated()
+                .antMatchers("/","/home")
+                    .permitAll()
                 .and()
                 .formLogin().loginPage("/login")
                     .permitAll()

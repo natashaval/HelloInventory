@@ -4,6 +4,7 @@ package hello.inven.helloinven.controller;
 import hello.inven.helloinven.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +28,21 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user")
-    public String user() {
-        return "user";
-    }
-//    public ModelAndView user(){
-//        ModelAndView modelAndView = new ModelAndView();
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        User user =
+//    public String user() {
+//        return "user";
 //    }
+    public ModelAndView user(){
+        ModelAndView modelAndView = new ModelAndView();
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        modelAndView.addObject(auth);
+        modelAndView.setViewName("user");
+//        System.out.print(auth.getPrincipal());
+//        System.out.print(auth.getDetails());
+        System.out.print(userDetails);
+        return modelAndView;
+
+    }
 //    https://www.jackrutorial.com/2018/04/spring-boot-user-registration-login.html
 
     @RequestMapping(value = "/admin/admin")
