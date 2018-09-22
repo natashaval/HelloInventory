@@ -37,6 +37,7 @@ public class UserController {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        modelAndView.addObject(auth);
         modelAndView.setViewName("user");
+
 //        System.out.print(auth.getPrincipal());
 //        System.out.print(auth.getDetails());
         System.out.print(userDetails);
