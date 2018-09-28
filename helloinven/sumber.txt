@@ -16,3 +16,16 @@ https://memorynotfound.com/spring-boot-spring-security-thymeleaf-form-login-exam
 http://www.mkyong.com/spring-boot/spring-boot-spring-security-thymeleaf-example/
 (belum baca) https://medium.com/@trevormydata/week-5-thymeleaf-with-spring-mvc-rapid-introduction-to-the-essentials-799f1fba8c07
 
+
+REPOSITORY JPA:
+https://examples.javacodegeeks.com/enterprise-java/spring/data/spring-data-jparepository-example/
+https://spring.io/blog/2011/02/10/getting-started-with-spring-data-jpa/
+https://o7planning.org/en/11897/spring-boot-and-spring-data-jpa-tutorial
+
+CustomUserDetails:
+https://hellokoding.com/registration-and-login-example-with-spring-security-spring-boot-spring-data-jpa-hsql-jsp/ (NOT SUCCESS)
+http://forum.spring.io/forum/spring-projects/security/122998-how-to-use-custom-userdetails-in-spring-security
+https://stackoverflow.com/questions/41770156/spring-add-custom-user-details-to-spring-security-user
+https://stackoverflow.com/questions/7737602/example-of-custom-implementation-of-userdetails
+https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context
+

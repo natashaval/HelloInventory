@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    Name: <span th:text="${userprofile.name}"></span>
+    Email: <span th:text="${userprofile.email}"></span>
+    Birthday: <span th:text="${userprofile.birthday}"></span>
+    Username: <span th:text="${userprofile.username}"></span>
+    Password: <span th:text="${userprofile.password}"></span>
+</div>
+</body>
+</html>

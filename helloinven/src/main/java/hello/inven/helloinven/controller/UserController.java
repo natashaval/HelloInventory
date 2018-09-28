@@ -1,10 +1,10 @@
 package hello.inven.helloinven.controller;
 // https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot#4_Configure_Database
 
-import hello.inven.helloinven.model.User;
-import org.springframework.security.core.Authentication;
+import hello.inven.helloinven.model.MyUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +35,8 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        modelAndView.addObject(auth);
+//        https://www.baeldung.com/get-user-in-spring-security
+        modelAndView.addObject(userDetails);
         modelAndView.setViewName("user");
 
 //        System.out.print(auth.getPrincipal());
@@ -71,5 +72,16 @@ public class UserController {
 //        registry.addViewController("/").setViewName("home");
 //        registry.addViewController("/hello").setViewName("hello");
 //        registry.addViewController("/login").setViewName("login");
+
+    @GetMapping("/user/userprofile")
+    public ModelAndView userProfile(){
+        ModelAndView modelAndView = new ModelAndView();
+        MyUser user = (MyUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.print(user);
+        modelAndView.addObject(user);
+        modelAndView.setViewName("userprofile");
+        return modelAndView;
+    }
+
 
 }

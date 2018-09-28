@@ -1,17 +1,29 @@
 package hello.inven.helloinven.model;
 
 import org.hibernate.annotations.JoinColumnOrFormula;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User extends AuditModel {
+public class MyUser extends User {
+
+    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired,
+                  boolean credentialsNonExpired, boolean accountNonLocked,
+                  Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    }
+
     @Id
     @Column(name = "emp_id", unique = true)
     private long id;
@@ -43,7 +55,7 @@ public class User extends AuditModel {
     @Column(name = "password", nullable = false)
     private String password;
 
-    // LOGIN pakai username & password dari table user_role
+//     LOGIN pakai username & password dari table user_role
 
     @Column(name = "emp_manager_id")
     private int managerId;
@@ -54,6 +66,9 @@ public class User extends AuditModel {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    private Date createdAt;
+    private Date updatedAt;
 
     public long getId() {
         return id;
@@ -103,6 +118,7 @@ public class User extends AuditModel {
         this.birthday = birthday;
     }
 
+//    @Override
     public String getUsername() {
         return username;
     }
@@ -111,6 +127,7 @@ public class User extends AuditModel {
         this.username = username;
     }
 
+//    @Override
     public String getPassword() {
         return password;
     }
@@ -142,4 +159,5 @@ public class User extends AuditModel {
     public void setRole(Role role) {
         this.role = role;
     }
+
 }

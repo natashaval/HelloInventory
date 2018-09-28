@@ -1,7 +1,5 @@
 package hello.inven.helloinven.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,7 +16,7 @@ public class Role {
 
 //    https://www.baeldung.com/hibernate-one-to-many
     @OneToMany(mappedBy = "role")
-    private Set<User> users;
+    private Set<MyUser> users;
 
     public int getId() {
         return id;
@@ -36,11 +34,11 @@ public class Role {
         this.role = role;
     }
 
-    public Set<User> getUsers() {
+    public Set<MyUser> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<MyUser> users) {
         this.users = users;
     }
 }
