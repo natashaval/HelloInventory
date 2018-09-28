@@ -26,45 +26,59 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     MyUserRepository myUserRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        //Try to find user and its roles, for example here we try to get it from database via a DAO object
-        //Do not confuse this foo.bar.User with CurrentUser or spring User, this is a temporary object which holds user info stored in database
+//    @Override
+//    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+//        //Try to find user and its roles, for example here we try to get it from database via a DAO object
+//        //Do not confuse this foo.bar.User with CurrentUser or spring User, this is a temporary object which holds user info stored in database
+//
+//        MyUser user = myUserRepository.findByUsername(username);
+//        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+//
+//        // if you're implementing UserDetails you won't need to call this method
+//        // and instead return the User as it is
+//        // return user;
+//
+//        return buildUserForAuthentication(user, authorities);
+//
+//    }
+//
+//    private User buildUserForAuthentication(MyUser user, List<GrantedAuthority> authorities) {
+//        String username = user.getUsername();
+//        String password = user.getPassword();
+//        boolean enabled = true;
+//        boolean accountNonExpired = true;
+//        boolean credentialsNonExpired = true;
+//        boolean accountNonLocked = true;
+//
+//        MyUser myUser = new MyUser(username, password, enabled, accountNonExpired, credentialsNonExpired,
+//                accountNonLocked, authorities);
+//        myUser.setBirthday(myUser.getBirthday());
+//        myUser.setEmail(myUser.getEmail());
+//        return myUser;
+//    }
+//
+//    private List<GrantedAuthority> buildUserAuthority(Role role) {
+//        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+//
+//        //Build user's authorities
+////        for (Role role : roles) {
+//            setAuths.add(new SimpleGrantedAuthority(role.getRole()));
+////        }
+//
+//        return new ArrayList<GrantedAuthority>(setAuths);
+//    }
 
-        MyUser user = myUserRepository.findByUsername(username);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+//    https://stackoverflow.com/questions/32276482/java-lang-classcastexception-org-springframework-security-core-userdetails-user
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        MyUser myUser = myUserRepository.findByUsername(username);
 
-        // if you're implementing UserDetails you won't need to call this method
-        // and instead return the User as it is
-        // return user;
+        Role roles = myUser.getRole();
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority(roles.getRole()));
 
-        return buildUserForAuthentication(user, authorities);
-
-    }
-
-    private User buildUserForAuthentication(MyUser user, List<GrantedAuthority> authorities) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-
-        MyUser myUser = new MyUser(username, password, enabled, accountNonExpired, credentialsNonExpired,
-                accountNonLocked, authorities);
-        myUser.setBirthday(myUser.getBirthday());
-        myUser.setEmail(myUser.getEmail());
-        return myUser;
-    }
-
-    private List<GrantedAuthority> buildUserAuthority(Role role) {
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-
-        //Build user's authorities
-//        for (Role role : roles) {
-            setAuths.add(new SimpleGrantedAuthority(role.getRole()));
-//        }
-
-        return new ArrayList<GrantedAuthority>(setAuths);
+        CustomUserDetails customUserDetails = new CustomUserDetails();
+        customUserDetails.setUser(myUser);
+        customUserDetails.setAuthorities(authorities);
+        return customUserDetails;
     }
 }

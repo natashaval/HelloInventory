@@ -2,6 +2,7 @@ package hello.inven.helloinven.controller;
 // https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot#4_Configure_Database
 
 import hello.inven.helloinven.model.MyUser;
+import hello.inven.helloinven.service.CustomUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -76,7 +77,10 @@ public class UserController {
     @GetMapping("/user/userprofile")
     public ModelAndView userProfile(){
         ModelAndView modelAndView = new ModelAndView();
-        MyUser user = (MyUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        MyUser user = (MyUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//        https://stackoverflow.com/questions/32276482/java-lang-classcastexception-org-springframework-security-core-userdetails-user
+        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.print(user);
         modelAndView.addObject(user);
         modelAndView.setViewName("userprofile");
