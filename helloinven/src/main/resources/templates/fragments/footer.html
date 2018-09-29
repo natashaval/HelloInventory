@@ -13,7 +13,10 @@
                     <!--Birthday: <span th:text="${userDetails.birthday}"></span> |-->
                     <!--Email <span th:text="${#authentication.getPrincipal().getEmail()}"></span>-->
                     <!--Birthday: <span th:text="${#authentication.getPrincipal().getBirthday()}"></span> |-->
-                    <a th:href="@{/logout}">Sign Out</a>
+                    <form th:action="@{/logout}" method="post">
+                         <input type="submit" value="Sign Out" />
+                    </form>
+
                 </span>
             </p>
         </div>

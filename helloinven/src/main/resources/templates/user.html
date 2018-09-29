@@ -9,6 +9,7 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h1>Hello, the page is for Users! Sudah memakai layout</h1>
+    <a th:href="@{/user/profile}">My Profile</a>
     <a style="color: blue" th:href="@{/}">Home</a>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out" />

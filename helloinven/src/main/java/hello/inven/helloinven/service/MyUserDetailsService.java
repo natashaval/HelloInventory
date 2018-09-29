@@ -24,44 +24,6 @@ public class MyUserDetailsService  implements UserDetailsService {
     private MyUserRepository userRepository;
 
 //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
-//    @Transactional
-//    @Override
-//    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-//        List<MyUser> userList = userRepository.findByUsername(username);
-//        MyUser user = userList.get(0);
-//        if (user == null) {
-//            System.out.print("user is null mboh mboh");
-//            throw new UsernameNotFoundException("User not authorized.");
-//        }
-//        System.out.print("USER NUT NUT" + user);
-//        System.out.print("USER: " + user.getName() + "PASSWORD: " + user.getPassword());
-//
-//        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
-//        System.out.print("USER NUT NUT" + user);
-//        return buildUserForAuthentication(user, authorities);
-//    }
-//
-//    private User buildUserForAuthentication(MyUser user, List<GrantedAuthority> authorities) {
-//        MyUserDetails myUserDetails = new MyUserDetails(user.getUsername(), user.getPassword(), user.isEnabled(),
-//        user.isAccountNonExpired(), user.isCredentialsNonExpired(),
-//        user.isAccountNonLocked(), user.getEmail(), user.getPhone(), user.getBirthday(), user.getManagerId(),
-//                authorities);
-//        System.out.print("BUILDERBUILDER: " + user.getName() + "PASSWORD: " + user.getPassword());
-//        return myUserDetails;
-//    }
-//
-//    private List<GrantedAuthority> buildUserAuthority(Role userRoles){
-//        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-//
-////        for (Role role: userRoles) {
-////            setAuths.add(new SimpleGrantedAuthority(role.getRole()));
-////        }
-//        setAuths.add(new SimpleGrantedAuthority(userRoles.getRole()));
-//
-//        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-//        System.out.print("RESULTapakahsudahsampaisini: " + Result);
-//        return Result;
-//    }
 
 //    http://www.doubleh.ie/index.php/2016/09/09/how-to-save-db-user-entity-in-spring-security-authentication-object/
     @Override

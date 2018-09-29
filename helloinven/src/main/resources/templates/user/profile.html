@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      layout:decorate="~{fragments/layout}">
 <head>
     <title>User Profile</title>
 </head>
 <body>
-    <span th:text="${orangemail}"></span>
-    <span th:text="${orangphone}"></span>
+<div layout:fragment="content" th:remove="tag">
+    <span th:text="${empemail}"></span>
+    <span th:text="${empphone}"></span>
     <!--<span th:text="${orang.phone}"></span>-->
+</div>
 </body>
 </html>

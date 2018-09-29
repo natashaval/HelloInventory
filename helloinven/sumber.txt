@@ -28,6 +28,11 @@ http://forum.spring.io/forum/spring-projects/security/122998-how-to-use-custom-u
 https://stackoverflow.com/questions/41770156/spring-add-custom-user-details-to-spring-security-user
 https://stackoverflow.com/questions/7737602/example-of-custom-implementation-of-userdetails
 https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context
+https://stackoverflow.com/questions/32276482/java-lang-classcastexception-org-springframework-security-core-userdetails-user
+https://www.concretepage.com/spring/spring-security/spring-mvc-security-jdbc-authentication-example-with-custom-userdetailsservice-and-database-tables-using-java-configuration
+http://krams915.blogspot.com/2012/01/spring-security-31-implement_3065.html
 TERAKHIR YANG DEPANNYA MY...
+http://www.doubleh.ie/index.php/2016/09/09/how-to-save-db-user-entity-in-spring-security-authentication-object/ (SUCCESS)
+http://www.mkyong.com/spring-security/spring-security-hibernate-annotation-example/
 
 https://www.dineshonjava.com/spring-security-tutorial-using-spring-boot/

@@ -29,8 +29,8 @@ public class MyUser { //extends User {
     private long id;
 
 //    KURANG EMPLOYEE PHOTO
-//    @Column(name = "emp_photo")
-//    private Blob photo;
+    @Column(name = "emp_photo")
+    private Blob photo;
 
     @Column(name = "emp_name", nullable = false)
     @NotBlank(message = "*Please provide a name")
@@ -68,46 +68,46 @@ public class MyUser { //extends User {
     private Role role;
 
 //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
-    private boolean enabled;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-
-    public MyUser(){}
-    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
-                  long id, String name, String email, String phone, Date birthday, Integer managerId, boolean emp_active) {
-        this.username = username;
-        this.password = password;
-        this.accountNonExpired = accountNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.id = id;
-//        this.photo = photo;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.birthday = birthday;
-        this.managerId = managerId;
-        this.emp_active = emp_active;
-    }
-
-    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
-                  long id, String name, String email, String phone, Date birthday, Integer managerId, boolean emp_active, Role role) {
-        this.username = username;
-        this.password = password;
-        this.accountNonExpired = accountNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.id = id;
-//        this.photo = photo;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.birthday = birthday;
-        this.managerId = managerId;
-        this.emp_active = emp_active;
-        this.role = role;
-    }
+//    private boolean enabled;
+//    private boolean accountNonExpired;
+//    private boolean accountNonLocked;
+//    private boolean credentialsNonExpired;
+//
+//    public MyUser(){}
+//    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
+//                  long id, String name, String email, String phone, Date birthday, Integer managerId, boolean emp_active) {
+//        this.username = username;
+//        this.password = password;
+//        this.accountNonExpired = accountNonExpired;
+//        this.accountNonLocked = accountNonLocked;
+//        this.credentialsNonExpired = credentialsNonExpired;
+//        this.id = id;
+////        this.photo = photo;
+//        this.name = name;
+//        this.email = email;
+//        this.phone = phone;
+//        this.birthday = birthday;
+//        this.managerId = managerId;
+//        this.emp_active = emp_active;
+//    }
+//
+//    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
+//                  long id, String name, String email, String phone, Date birthday, Integer managerId, boolean emp_active, Role role) {
+//        this.username = username;
+//        this.password = password;
+//        this.accountNonExpired = accountNonExpired;
+//        this.accountNonLocked = accountNonLocked;
+//        this.credentialsNonExpired = credentialsNonExpired;
+//        this.id = id;
+////        this.photo = photo;
+//        this.name = name;
+//        this.email = email;
+//        this.phone = phone;
+//        this.birthday = birthday;
+//        this.managerId = managerId;
+//        this.emp_active = emp_active;
+//        this.role = role;
+//    }
 
     public long getId() {
         return id;
@@ -117,13 +117,13 @@ public class MyUser { //extends User {
         this.id = id;
     }
 
-//    public Blob getPhoto() {
-//        return photo;
-//    }
-//
-//    public void setPhoto(Blob photo) {
-//        this.photo = photo;
-//    }
+    public Blob getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Blob photo) {
+        this.photo = photo;
+    }
 
     public String getName() {
         return name;
@@ -198,44 +198,44 @@ public class MyUser { //extends User {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    @Column(name = "enabled", nullable = false)
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-//        this.enabled = enabled;
-        this.enabled = true;
-    }
-
-    @Column(name = "account_non_expired", nullable = false)
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        // this.accountNonExpired = accountNonExpired;
-        this.accountNonExpired = true;
-    }
-
-    @Column(name = "account_non_locked", nullable = false)
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-//        this.accountNonLocked = accountNonLocked;
-        this.accountNonLocked = true;
-    }
-
-    @Column(name = "credentials_non_expired", nullable = false)
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-//        this.credentialsNonExpired = credentialsNonExpired;
-        this.credentialsNonExpired = true;
-    }
+//
+//    @Column(name = "enabled", nullable = false)
+//    public boolean isEnabled() {
+//        return this.enabled;
+//    }
+//
+//    public void setEnabled(boolean enabled) {
+////        this.enabled = enabled;
+//        this.enabled = true;
+//    }
+//
+//    @Column(name = "account_non_expired", nullable = false)
+//    public boolean isAccountNonExpired() {
+//        return accountNonExpired;
+//    }
+//
+//    public void setAccountNonExpired(boolean accountNonExpired) {
+//        // this.accountNonExpired = accountNonExpired;
+//        this.accountNonExpired = true;
+//    }
+//
+//    @Column(name = "account_non_locked", nullable = false)
+//    public boolean isAccountNonLocked() {
+//        return accountNonLocked;
+//    }
+//
+//    public void setAccountNonLocked(boolean accountNonLocked) {
+////        this.accountNonLocked = accountNonLocked;
+//        this.accountNonLocked = true;
+//    }
+//
+//    @Column(name = "credentials_non_expired", nullable = false)
+//    public boolean isCredentialsNonExpired() {
+//        return credentialsNonExpired;
+//    }
+//
+//    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+////        this.credentialsNonExpired = credentialsNonExpired;
+//        this.credentialsNonExpired = true;
+//    }
 }

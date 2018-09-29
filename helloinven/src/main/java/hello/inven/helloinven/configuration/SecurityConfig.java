@@ -1,25 +1,16 @@
 package hello.inven.helloinven.configuration;
 
-import com.sun.org.apache.xerces.internal.parsers.SecurityConfiguration;
-import hello.inven.helloinven.service.CustomUserDetailsService;
 import hello.inven.helloinven.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.naming.AuthenticationNotSupportedException;
 import javax.sql.DataSource;
 
 // https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot#4_Configure_Database
@@ -33,18 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
-
-//    private final UserDetailsService userDetailsService;
-//
-//    @Autowired
-//    public SecurityConfiguration(UserDetailsService userDetailsService) {
-//        super();
-//        this.userDetailsService = userDetailsService;
-//    }
-
-//    @Bean
-//    public UserDetailsService MyUserDetailsService(){}
-//    return new MyUserDetailsService();
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -92,35 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().accessDeniedPage("/403");
 
     }
-
-//    https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context
-//    @Autowired
-//    @Qualifier("userDetailsService")
-//    private UserDetailsService userDetailsService;
-//
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-//        auth.userDetailsService(userDetailsService);
-//    }
-
-//    https://www.concretepage.com/spring/spring-security/spring-mvc-security-jdbc-authentication-example-with-custom-userdetailsservice-and-database-tables-using-java-configuration
-//    @Autowired
-//    CustomUserDetailsService customUserDetailsService;
-//
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        auth.userDetailsService(customUserDetailsService).passwordEncoder(encoder);
-//    }
-
-    //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
-
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws  Exception {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder);
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
