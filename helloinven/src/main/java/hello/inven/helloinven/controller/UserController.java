@@ -3,6 +3,8 @@ package hello.inven.helloinven.controller;
 
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.service.CustomUserDetails;
+import hello.inven.helloinven.service.MyUserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -80,11 +82,25 @@ public class UserController {
 //        MyUser user = (MyUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 //        https://stackoverflow.com/questions/32276482/java-lang-classcastexception-org-springframework-security-core-userdetails-user
-        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//        https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
+        MyUserDetails user = (MyUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.print(user);
         modelAndView.addObject(user);
         modelAndView.setViewName("userprofile");
         return modelAndView;
+    }
+
+    @GetMapping("/user/profilejelek")
+    public String profileJelek(Model model, Authentication authentication){
+        MyUser orang = ((MyUserDetails)authentication.getPrincipal()).getUser();
+        System.out.print(orang);
+        model.addAttribute("orangemail", orang.getEmail());
+        model.addAttribute("orangphone", orang.getPhone());
+//        model.addAttribute(orang);
+        System.out.print("EmAIL: " + orang.getEmail() + "PHONE: " + orang.getPhone());
+        return "user/profile";
     }
 
 

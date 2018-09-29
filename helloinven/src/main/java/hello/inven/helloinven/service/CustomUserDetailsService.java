@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service("useDetailsService")
-public class CustomUserDetailsService implements UserDetailsService {
+//@Service("useDetailsService")
+public class CustomUserDetailsService { //implements UserDetailsService {
 //    https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context
 //    https://stackoverflow.com/questions/41770156/spring-add-custom-user-details-to-spring-security-user
 
@@ -69,16 +69,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 //    }
 
 //    https://stackoverflow.com/questions/32276482/java-lang-classcastexception-org-springframework-security-core-userdetails-user
-    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MyUser myUser = myUserRepository.findByUsername(username);
-
-        Role roles = myUser.getRole();
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(roles.getRole()));
-
-        CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.setUser(myUser);
-        customUserDetails.setAuthorities(authorities);
-        return customUserDetails;
-    }
+//    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        MyUser myUser = myUserRepository.findByUsername(username);
+//
+//        Role roles = myUser.getRole();
+//        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+//        authorities.add(new SimpleGrantedAuthority(roles.getRole()));
+//
+//        CustomUserDetails customUserDetails = new CustomUserDetails();
+//        customUserDetails.setUser(myUser);
+//        customUserDetails.setAuthorities(authorities);
+//        return customUserDetails;
+//    }
 }

@@ -28,4 +28,6 @@ http://forum.spring.io/forum/spring-projects/security/122998-how-to-use-custom-u
 https://stackoverflow.com/questions/41770156/spring-add-custom-user-details-to-spring-security-user
 https://stackoverflow.com/questions/7737602/example-of-custom-implementation-of-userdetails
 https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context
+TERAKHIR YANG DEPANNYA MY...
 
+https://www.dineshonjava.com/spring-security-tutorial-using-spring-boot/

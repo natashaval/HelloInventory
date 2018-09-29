@@ -16,7 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class MyUser {// extends User {
+public class MyUser { //extends User {
 
 //    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired,
 //                  boolean credentialsNonExpired, boolean accountNonLocked,
@@ -29,8 +29,8 @@ public class MyUser {// extends User {
     private long id;
 
 //    KURANG EMPLOYEE PHOTO
-    @Column(name = "emp_photo")
-    private Blob photo;
+//    @Column(name = "emp_photo")
+//    private Blob photo;
 
     @Column(name = "emp_name", nullable = false)
     @NotBlank(message = "*Please provide a name")
@@ -57,8 +57,8 @@ public class MyUser {// extends User {
 
 //     LOGIN pakai username & password dari table user_role
 
-    @Column(name = "emp_manager_id")
-    private int managerId;
+    @Column(name = "emp_manager_id", nullable = true)
+    private Integer managerId;
 
     @Column(name = "emp_active")
     private boolean emp_active = true;
@@ -67,8 +67,47 @@ public class MyUser {// extends User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    private Date createdAt;
-    private Date updatedAt;
+//    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
+    private boolean enabled;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+
+    public MyUser(){}
+    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
+                  long id, String name, String email, String phone, Date birthday, Integer managerId, boolean emp_active) {
+        this.username = username;
+        this.password = password;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.id = id;
+//        this.photo = photo;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.managerId = managerId;
+        this.emp_active = emp_active;
+    }
+
+    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
+                  long id, String name, String email, String phone, Date birthday, Integer managerId, boolean emp_active, Role role) {
+        this.username = username;
+        this.password = password;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.id = id;
+//        this.photo = photo;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.managerId = managerId;
+        this.emp_active = emp_active;
+        this.role = role;
+    }
 
     public long getId() {
         return id;
@@ -78,13 +117,13 @@ public class MyUser {// extends User {
         this.id = id;
     }
 
-    public Blob getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Blob photo) {
-        this.photo = photo;
-    }
+//    public Blob getPhoto() {
+//        return photo;
+//    }
+//
+//    public void setPhoto(Blob photo) {
+//        this.photo = photo;
+//    }
 
     public String getName() {
         return name;
@@ -136,11 +175,11 @@ public class MyUser {// extends User {
         this.password = password;
     }
 
-    public int getManagerId() {
+    public Integer getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(int managerId) {
+    public void setManagerId(Integer managerId) {
         this.managerId = managerId;
     }
 
@@ -160,4 +199,43 @@ public class MyUser {// extends User {
         this.role = role;
     }
 
+    @Column(name = "enabled", nullable = false)
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+//        this.enabled = enabled;
+        this.enabled = true;
+    }
+
+    @Column(name = "account_non_expired", nullable = false)
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        // this.accountNonExpired = accountNonExpired;
+        this.accountNonExpired = true;
+    }
+
+    @Column(name = "account_non_locked", nullable = false)
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+//        this.accountNonLocked = accountNonLocked;
+        this.accountNonLocked = true;
+    }
+
+    @Column(name = "credentials_non_expired", nullable = false)
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+//        this.credentialsNonExpired = credentialsNonExpired;
+        this.credentialsNonExpired = true;
+    }
 }
