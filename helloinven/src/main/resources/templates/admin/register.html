@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Register Employee</title>
+
+</head>
+<body>
+    <div layout:fragment="content">
+        <!--https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/-->
+        <!--https://spring.io/guides/gs/handling-form-submission/-->
+        <div th:if="${param.success}">
+            You;ve successfully registered to our awesome app!
+        </div>
+
+        <h1>Registration Employee</h1>
+        <form th:action="@{/admin/register}" th:object="${newUser}" method="post">
+            ID: <input type="text" th:field="*{id}" /> <br />
+            Name: <input type="text" th:field="*{name}" /> <br />
+            Email: <input type="text" th:field="*{email}" /> <br />
+            Phone: <input type="text" th:field="*{phone}" /> <br />
+            Birthday: <input type="date" th:field="*{birthday}" /><br />
+            Username: <input type="text" th:field="*{username}" /> <br />
+            Password: <input type="password" th:field="*{password}" /> <br />
+            <!--Role:-->
+            <!--<input type="radio" th:field="*{roleId}" value="0" />Admin<br />-->
+            <!--<input type="radio" th:field="*{roleId}" value="1" checked />Admin<br />-->
+            <!--<input type="radio" th:field="*{roleId}" value="2" />Admin<br />-->
+
+            <input type="submit" value="Register" />
+        </form>
+    </div>
+</body>
+</html>

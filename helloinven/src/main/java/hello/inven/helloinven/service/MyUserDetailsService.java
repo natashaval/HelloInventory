@@ -3,6 +3,7 @@ package hello.inven.helloinven.service;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.MyUserRepository;
+import hello.inven.helloinven.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -57,6 +58,33 @@ public class MyUserDetailsService  implements UserDetailsService {
         return Result;
     }
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+//    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
+    public MyUser save(MyUser user){
+        MyUser newUser = new MyUser();
+        System.out.print("Bikin NEW User");
+        newUser.setId(user.getId());
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+        newUser.setPhone(user.getPhone());
+        newUser.setBirthday(user.getBirthday());
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+//        Integer roleID = user.getRole().getId();
+//        Role userRole = roleRepository.findById(roleID).get();
+//        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
+//        newUser.setRole(userRole);
+//        Integer roleID = user.getRole().getRoleId();
+        Role userRole = roleRepository.findById(1).get();
+//        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
+        System.out.print("ROLE: " + userRole);
+        newUser.setRole(userRole);
+        return userRepository.save(newUser);
+    }
 
 }

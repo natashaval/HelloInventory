@@ -1,0 +1,21 @@
+spring-boot-starter-web
+A set of basic dependencies needed to develop web applications with Spring. 
+
+spring-boot-starter-data-jpa
+Part of the umbrella Spring Data project that makes it easy to implement JPA-based repositories using Hibernate.  It can create repository implementations at runtime from a repository interface.
+spring-boot-starter-security
+Provides CSRF form protection as well as basic authentication on all HTTP endpoints 
+spring-boot-starter-thymeleaf
+Provides the Thymeleaf templating engine
+thymeleaf-extras-springsecurity4
+Allows us to use Spring Security dialect in Thymeleaf templates
+nekohtml
+Allows us to relax the strict HTML syntax checking rules for Thymeleaf templates
+spring-boot-starter-mail
+Provides JavaMailSender which we'll use to send plain-text e-mail
+spring-boot-devtools
+Provides automatic app restarts whenever files on the classpath change
+mysql-connector-java
+Provides MySQL database drivers
+
+https://www.codebyamir.com/blog/user-account-registration-with-spring-boot

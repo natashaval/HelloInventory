@@ -9,4 +9,6 @@ import java.util.List;
 public interface AdminService {
 
     List<MyUser> findAll();
+    MyUser findByUsername(String username);
+    void save(MyUser user);
 }
