@@ -28,6 +28,11 @@
             <!--<input type="radio" th:field="*{roleId}" value="1" checked />Admin<br />-->
             <!--<input type="radio" th:field="*{roleId}" value="2" />Admin<br />-->
 
+            <!--https://o7planning.org/en/11659/thymeleaf-form-select-option-example-->
+            <select th:field="*{role.roleId}">
+                <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
+
+            </select>
             <input type="submit" value="Register" />
         </form>
     </div>

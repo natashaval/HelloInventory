@@ -1,6 +1,7 @@
 package hello.inven.helloinven.model;
 
 import org.hibernate.annotations.JoinColumnOrFormula;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,6 +47,7 @@ public class MyUser { //extends User {
 
     @Column(name = "emp_birthday")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     @Column(name = "username", nullable = false)
@@ -60,8 +62,8 @@ public class MyUser { //extends User {
     @Column(name = "emp_manager_id", nullable = true)
     private Integer managerId;
 
-    @Column(name = "emp_active")
-    private boolean emp_active = true;
+//    @Column(name = "emp_active")
+//    private boolean emp_active = true;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
@@ -183,13 +185,13 @@ public class MyUser { //extends User {
         this.managerId = managerId;
     }
 
-    public boolean isEmp_active() {
-        return emp_active;
-    }
-
-    public void setEmp_active(boolean emp_active) {
-        this.emp_active = emp_active;
-    }
+//    public boolean isEmp_active() {
+//        return emp_active;
+//    }
+//
+//    public void setEmp_active(boolean emp_active) {
+//        this.emp_active = emp_active;
+//    }
 
     public Role getRole() {
         return role;

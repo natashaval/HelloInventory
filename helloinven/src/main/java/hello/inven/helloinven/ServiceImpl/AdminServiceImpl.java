@@ -1,16 +1,17 @@
-package hello.inven.helloinven.service;
+package hello.inven.helloinven.ServiceImpl;
 
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.MyUserRepository;
 import hello.inven.helloinven.repository.RoleRepository;
+import hello.inven.helloinven.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
 
     @Autowired
     MyUserRepository myUserRepository;

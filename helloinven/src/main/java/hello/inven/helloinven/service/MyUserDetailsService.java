@@ -79,8 +79,8 @@ public class MyUserDetailsService  implements UserDetailsService {
 //        Role userRole = roleRepository.findById(roleID).get();
 //        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
 //        newUser.setRole(userRole);
-//        Integer roleID = user.getRole().getRoleId();
-        Role userRole = roleRepository.findById(1).get();
+        Integer roleID = user.getRole().getRoleId();
+        Role userRole = roleRepository.findById(roleID).get();
 //        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
         System.out.print("ROLE: " + userRole);
         newUser.setRole(userRole);

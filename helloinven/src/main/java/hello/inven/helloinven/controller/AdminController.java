@@ -1,11 +1,11 @@
 package hello.inven.helloinven.controller;
 
-
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.RoleRepository;
 import hello.inven.helloinven.service.AdminService;
 import hello.inven.helloinven.service.MyUserDetailsService;
+import hello.inven.helloinven.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,32 +43,40 @@ public class AdminController {
         return "admin/employeelist";
     }
 
+    @Autowired
+    RoleService roleService;
+
     @GetMapping(value = "/admin/register")
     public String registerEmployeeForm(Model model){
         model.addAttribute("newUser", new MyUser());
+//        https://o7planning.org/en/11659/thymeleaf-form-select-option-example
+        List<Role> roleList = roleService.findAll();
+        model.addAttribute("roles",roleList);
         return "admin/register";
     }
 
-    @Autowired
-    RoleRepository roleRepository;
-
-//    https://medium.com/@grokwich/spring-boot-thymeleaf-html-form-handling-762ef0d51327
-    @ModelAttribute("roleList")
-    public String[] getRoleList() {
-        List<Role> roleAll = roleRepository.findAll();
-        String[] roleName = new String[5];
-        int i = 0;
-        for (Role role: roleAll) {
-            String roleTemp = role.getRole();
-            roleName[i++] = roleTemp;
-        }
-        return roleName;
-
-    }
+//    @Autowired
+//    RoleRepository roleRepository;
+//
+////    https://medium.com/@grokwich/spring-boot-thymeleaf-html-form-handling-762ef0d51327
+//    @ModelAttribute("roleList")
+//    public String[] getRoleList() {
+//        List<Role> roleAll = roleRepository.findAll();
+//        String[] roleName = new String[5];
+//        int i = 0;
+//        for (Role role: roleAll) {
+//            String roleTemp = role.getRole();
+//            roleName[i++] = roleTemp;
+//        }
+//        return roleName;
+//
+//    }
 //    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
     @PostMapping(value = "/admin/register")
     public String registerEmployee(@ModelAttribute("newUser") @Valid MyUser newUser,
                                    BindingResult bindingResult, Model model) {
+        List<Role> roleList = roleService.findAll();
+        model.addAttribute("roles",roleList);
         MyUser existingUser = adminService.findByUsername(newUser.getUsername());
         System.out.print("Sudah nemu existingUser: " + existingUser);
         System.out.print("newUser: " + newUser.getName() + "username: " + newUser.getUsername());
