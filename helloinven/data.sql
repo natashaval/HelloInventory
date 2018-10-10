@@ -7,8 +7,8 @@ INSERT INTO role VALUES (3,'CLERK');
 INSERT INTO USER(emp_id, emp_birthday, emp_email, emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
 VALUES (1001, '1975-10-06', 'awiegand@lockman.com', 'Awie', '$2a$10$sq0QegpU6YzPsDE45CdN/u.3CNGiqMewrsufHgiXOXjKn1ie.af56', '+8082131129672', 'https://lorempixel.com/640/480/?23679', 'awiegand75', 0);
 
-INSERT INTO USER(emp_id, emp_birthday, emp_email, , emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
-VALUES (1002, '1984-05-12', 'axel.littel@purdy.info',  'Axel', '$2a$10$e5jNeECzTDYBczntWW4dM.KMMG.4ZzDe.BXm2tngrd/HQtEhktV5m', '+8875995329604', 'https://lorempixel.com/640/480/?87106', 'axellittel84', 0);
+INSERT INTO USER(emp_id, emp_birthday, emp_email, emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
+VALUES (1002, '1984-05-12', 'axel.littel@purdy.info', 'Axel', '$2a$10$e5jNeECzTDYBczntWW4dM.KMMG.4ZzDe.BXm2tngrd/HQtEhktV5m', '+8875995329604', 'https://lorempixel.com/640/480/?87106', 'axellittel84', 0);
 
 # Manager
 INSERT INTO USER(emp_id, emp_birthday, emp_email,  emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)

@@ -31,7 +31,7 @@ public class MyUser { //extends User {
 
 //    KURANG EMPLOYEE PHOTO
     @Column(name = "emp_photo")
-    private Blob photo;
+    private String photo;
 
     @Column(name = "emp_name", nullable = false)
     @NotBlank(message = "*Please provide a name")
@@ -119,11 +119,11 @@ public class MyUser { //extends User {
         this.id = id;
     }
 
-    public Blob getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Blob photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 

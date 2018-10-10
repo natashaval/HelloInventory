@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -71,25 +72,28 @@ public class UserController {
 //        registry.addViewController("/login").setViewName("login");
 
     @GetMapping("/user/userprofile")
-    public ModelAndView userProfile(){
-        ModelAndView modelAndView = new ModelAndView();
-        MyUserDetails user = (MyUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public String userProfile(ModelMap modelMap){
+//        https://stackoverflow.com/questions/18975077/how-to-add-object-in-using-model-addattributes-in-spring-mvc
+        MyUserDetails myUserDetails = (MyUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser user = myUserDetails.getUser();
         System.out.print(user);
-        modelAndView.addObject(user);
-        modelAndView.setViewName("userprofile");
-        return modelAndView;
+        modelMap.put("user", user);
+        return "userprofile";
     }
 
+    // LEBIH RAPI YANG /user/userprofile
+    /*
     @GetMapping("/user/profile")
     public String profileJelek(Model model, Authentication authentication){
         MyUser employee = ((MyUserDetails)authentication.getPrincipal()).getUser();
         System.out.print(employee);
         model.addAttribute("empemail", employee.getEmail());
         model.addAttribute("empphone", employee.getPhone());
+        model.addAttribute("empimage", employee.getPhoto());
 //        model.addAttribute(orang);
         System.out.print("EmAIL: " + employee.getEmail() + "PHONE: " + employee.getPhone());
         return "user/profile";
     }
-
+    */
 
 }

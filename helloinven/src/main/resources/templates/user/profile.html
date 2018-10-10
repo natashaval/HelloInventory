@@ -10,6 +10,7 @@
 <div layout:fragment="content" th:remove="tag">
     <span th:text="${empemail}"></span>
     <span th:text="${empphone}"></span>
+    Image: <img th:src="@{/img/employee/{id}(id=${empimage}})}" />
     <!--<span th:text="${orang.phone}"></span>-->
 </div>
 </body>

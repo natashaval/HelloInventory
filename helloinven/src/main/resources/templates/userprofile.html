@@ -7,11 +7,16 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    Name: <span th:text="${userprofile.name}"></span>
-    Email: <span th:text="${userprofile.email}"></span>
-    Birthday: <span th:text="${userprofile.birthday}"></span>
-    Username: <span th:text="${userprofile.username}"></span>
-    Password: <span th:text="${userprofile.password}"></span>
+    Name: <span th:text="${user.name}"></span>
+    Email: <span th:text="${user.email}"></span>
+    Birthday: <span th:text="${user.birthday}"></span>
+    Username: <span th:text="${user.username}"></span>
+    Password: <span th:text="${user.password}"></span>
+    <!--https://github.com/thymeleaf/thymeleaf/issues/89-->
+    Image: <img th:src="@{/img/employee/{id}.jpg(id=${user.id})}" alt="profile picture"/>
+
+    <!--Image: <img src="@{'/img/employee/' + ${user.id} + '.png'}" />-->
+
 </div>
 </body>
 </html>
