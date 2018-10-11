@@ -13,9 +13,12 @@
         <div th:if="${param.success}">
             You;ve successfully registered to our awesome app!
         </div>
+        <div th:if="${param.failure}">
+            <h1>Cannot save User</h1>
+        </div>
 
         <h1>Registration Employee</h1>
-        <form th:action="@{/admin/register}" th:object="${newUser}" method="post">
+        <form th:action="@{/admin/register}" th:object="${newUser}" method="post" enctype="multipart/form-data">
             ID: <input type="text" th:field="*{id}" /> <br />
             Name: <input type="text" th:field="*{name}" /> <br />
             Email: <input type="text" th:field="*{email}" /> <br />
@@ -33,6 +36,10 @@
                 <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
 
             </select>
+
+            <!--http://zetcode.com/springboot/uploadfile/-->
+            <input type="file" name="file" />
+
             <input type="submit" value="Register" />
         </form>
     </div>
