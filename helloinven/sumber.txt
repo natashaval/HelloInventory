@@ -36,3 +36,7 @@ http://www.doubleh.ie/index.php/2016/09/09/how-to-save-db-user-entity-in-spring-
 http://www.mkyong.com/spring-security/spring-security-hibernate-annotation-example/
 
 https://www.dineshonjava.com/spring-security-tutorial-using-spring-boot/
+
+setelah admin daftar employee, untuk employee buka profile picturenya harus masuk ke userprofile html
+kemudian di Ctrl + F9
+tetapi jika run 'mvn spring-boot:run', kemudian terminate maka akan keluar error pada maven-plugin

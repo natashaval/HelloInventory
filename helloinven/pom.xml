@@ -70,6 +70,15 @@
 			<!--<version>4.1.1.RELEASE</version>-->
 		<!--</dependency>-->
 
+		<!--reload change on Spring Boot without restart HOTSWAPPING (?)-->
+        <!--https://www.logicbig.com/tutorials/spring-framework/spring-boot/boot-live-reload.html-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+            <scope>runtime</scope>
+		</dependency>
+
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>

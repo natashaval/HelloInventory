@@ -31,8 +31,8 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @Autowired
-    MyUserDetailsService myUserDetailsService;
+//    @Autowired
+//    MyUserDetailsService myUserDetailsService;
 
     @GetMapping(value = "/admin/admin")
     public String admin() {
@@ -104,6 +104,8 @@ public class AdminController {
 //            System.out.print("Everything is OKAY to Register");
 //        }
 
+        /*
+//        http://aralmighty.com/uploading-files-spring-boot
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             InputStream is = file.getInputStream();
@@ -116,8 +118,10 @@ public class AdminController {
             System.out.println("\ngetFileAbsolutePath: " + Paths.get(fileName).toAbsolutePath().normalize());
             System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
         }
+        */
 
-        myUserDetailsService.save(newUser);
+//        myUserDetailsService.save(newUser);
+        adminService.save(newUser, file);
         return "redirect:/admin/register?success";
 
     }

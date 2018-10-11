@@ -65,6 +65,7 @@ public class MyUserDetailsService  implements UserDetailsService {
     private RoleRepository roleRepository;
 
 //    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
+    /*
     public MyUser save(MyUser user){
         MyUser newUser = new MyUser();
         System.out.print("Bikin NEW User");
@@ -86,5 +87,5 @@ public class MyUserDetailsService  implements UserDetailsService {
         newUser.setRole(userRole);
         return userRepository.save(newUser);
     }
-
+*/
 }

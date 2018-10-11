@@ -15,6 +15,7 @@ spring-boot-starter-mail
 Provides JavaMailSender which we'll use to send plain-text e-mail
 spring-boot-devtools
 Provides automatic app restarts whenever files on the classpath change
+--- HARUS pada class tersebut (misal thymeleaf) di Ctrl + F9
 mysql-connector-java
 Provides MySQL database drivers
 
