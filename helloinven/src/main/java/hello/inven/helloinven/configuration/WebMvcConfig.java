@@ -32,4 +32,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
     */
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //    https://stackoverflow.com/questions/45651119/spring-boot-images-uploading-and-serving
+        //    store and serve image in application directory
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:uploads/");
+    }
+
 }

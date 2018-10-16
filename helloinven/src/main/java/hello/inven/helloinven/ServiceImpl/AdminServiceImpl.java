@@ -67,8 +67,17 @@ public class AdminServiceImpl implements AdminService {
             InputStream is = file.getInputStream();
 //            String uploadDirectory = Paths.get(fileName).toAbsolutePath().normalize().toString(); // akan mengeluarkan absolute path dari helloinven
 //            String uploadDirectory = "src/main/uploads/employee/";
-            String uploadDirectory = "src/main/resources/static/img/employee/";
-            Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
+//            String uploadDirectory = "src/main/resources/static/img/employee/";
+
+//            https://www.youtube.com/watch?v=Hef5pJkNCvA
+            String uploadDirectory = System.getProperty("user.dir") + "/uploads/employee/";
+
+            try {
+                Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
             newUser.setPhoto(fileName);
             System.out.println("namafileName: " + uploadDirectory + fileName);
             System.out.println("\ngetNamaFile " + file.getName() + ";apaFile " + file.getContentType());

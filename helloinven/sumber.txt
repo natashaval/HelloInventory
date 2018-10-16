@@ -40,3 +40,15 @@ https://www.dineshonjava.com/spring-security-tutorial-using-spring-boot/
 setelah admin daftar employee, untuk employee buka profile picturenya harus masuk ke userprofile html
 kemudian di Ctrl + F9
 tetapi jika run 'mvn spring-boot:run', kemudian terminate maka akan keluar error pada maven-plugin
+
+
+Enable IntelliJ hotswap of html and javascript files
+https://stackoverflow.com/questions/18492457/enable-intellij-hotswap-of-html-and-javascript-files/18492881#18492881
+1. Go to Help->Find Action
+2. Type "Registry".
+3. Find and mark : “compiler.automake.allow.when.app.running”.
+4. Close the Dialog.
+5. Go to "Settings->Build, Execution, Deployment->Compiler".
+6. Mark "Build project automatically".
+7. Apply changes.
+8. Go to Spring Boot Configuration and if everything goes well it will display a warning about "background compilation", Run your Spring Boot Application and you should be able to see your statisc's files changes when refresh your browser.
