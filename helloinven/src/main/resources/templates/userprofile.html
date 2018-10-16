@@ -16,6 +16,7 @@
     Image: <img th:src="@{/img/employee/{id}.jpg(id=${user.id})}" alt="profile picture"/>
     ImageTrue: <img th:src="@{/img/employee/{photo}(photo=${user.photo})}" alt="profile picture"/>
     ImageFolder: <img th:src="@{src/main/uploads/employee/{photo}(photo=${user.photo})}" alt="picture relative path"/>
+    ImageURL: <img th:src="${user.photo}" alt="user profile picture" />
 
     <!--https://stackoverflow.com/questions/40025807/using-variable-inside-src-image-with-thymleaf-template-->
     <!--Image: <img src="@{'/img/employee/' + ${user.id} + '.png'}" />-->

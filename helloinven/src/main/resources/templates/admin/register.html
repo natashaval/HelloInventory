@@ -18,7 +18,7 @@
         </div>
 
         <h1>Registration Employee</h1>
-        <form th:action="@{/admin/register}" th:object="${newUser}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/admin/register}" th:object="${newUser}" method="post" enctype="multipart/form-data" id="registerEmployeeForm">
             ID: <input type="text" th:field="*{id}" /> <br />
             Name: <input type="text" th:field="*{name}" /> <br />
             Email: <input type="text" th:field="*{email}" /> <br />
@@ -40,8 +40,18 @@
             <!--http://zetcode.com/springboot/uploadfile/-->
             <input type="file" name="file" />
 
-            <input type="submit" value="Register" />
+            <input type="submit" value="Register" id="registerSubmit"/>
         </form>
+
+        <div>
+            <h1>Ajax Post Result</h1>
+            <span id="result"></span>
+        </div>
     </div>
+
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <!--BELUM JALAN JQUERY BUAT AJAX FILE IMAGE NYA-->
+    <!--<script type="text/javascript" src="js/register-main.js"></script>-->
+
 </body>
 </html>
