@@ -1,13 +1,15 @@
 package hello.inven.helloinven.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "item")
 public class Item extends AuditModel {
 
     @Id
-    @Column(name = "UPC", nullable = false)
+    @Column(name = "item_id", nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -20,21 +22,23 @@ public class Item extends AuditModel {
     private Integer quantity;
 
     @Column
-    private Float price;
+    private Double price;
 
     @Column
-    private Float weight;
+    private Double weight;
     @Column
-    private Float height;
+    private Double height;
     @Column
-    private Float width;
+    private Double width;
     @Column
-    private Float depth;
+    private Double depth;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "category_id", nullable = false)
-//    private Category category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.item")
+    private Set<Asset> assets = new HashSet<Asset>(0);
 
     public Long getId() {
         return id;
@@ -68,51 +72,59 @@ public class Item extends AuditModel {
         this.quantity = quantity;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Float getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public Float getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(Float height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public Float getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public void setWidth(Float width) {
+    public void setWidth(Double width) {
         this.width = width;
     }
 
-    public Float getDepth() {
+    public Double getDepth() {
         return depth;
     }
 
-    public void setDepth(Float depth) {
+    public void setDepth(Double depth) {
         this.depth = depth;
     }
 
-//    public Category getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(Category category) {
-//        this.category = category;
-//    }
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Set<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Set<Asset> assets) {
+        this.assets = assets;
+    }
 }

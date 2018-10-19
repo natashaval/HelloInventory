@@ -1,8 +1,7 @@
 package hello.inven.helloinven.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -11,33 +10,24 @@ public class Category extends AuditModel {
     @Id
     @GeneratedValue
     @Column(name = "category_id", nullable = false)
-    private Integer categoryId;
+    private Integer id;
 
     @Column(name = "category_name", nullable = false)
     private String name;
 
-    @Column(name = "category_description", columnDefinition = "text")
+    @Column(name = "category_description")
     private String description;
 
-//    @OneToMany(mappedBy = "item")
-//    private List<Item> items = new ArrayList<Item>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Item> items;
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public int getId() {
+        return id;
     }
 
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setId(int id) {
+        this.id = id;
     }
-
-//    public List<Item> getItems() {
-//        return items;
-//    }
-//
-//    public void setItems(List<Item> items) {
-//        this.items = items;
-//    }
 
     public String getName() {
         return name;
@@ -53,5 +43,13 @@ public class Category extends AuditModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 }
