@@ -37,8 +37,8 @@ public class Item extends AuditModel {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.item")
-    private Set<Asset> assets = new HashSet<Asset>(0);
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "primaryKey.item", cascade = CascadeType.ALL)
+    private Set<Asset> assets = new HashSet<Asset>();
 
     public Long getId() {
         return id;
@@ -120,6 +120,7 @@ public class Item extends AuditModel {
         this.category = category;
     }
 
+//    @OneToMany(mappedBy = "primaryKey.item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Asset> getAssets() {
         return assets;
     }

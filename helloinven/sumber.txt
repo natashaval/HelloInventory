@@ -52,3 +52,16 @@ https://stackoverflow.com/questions/18492457/enable-intellij-hotswap-of-html-and
 6. Mark "Build project automatically".
 7. Apply changes.
 8. Go to Spring Boot Configuration and if everything goes well it will display a warning about "background compilation", Run your Spring Boot Application and you should be able to see your statisc's files changes when refresh your browser.
+
+Many-To-Many Relationship with Composite ID key:
+https://www.codejava.net/frameworks/hibernate/hibernate-many-to-many-association-with-extra-columns-in-join-table-example
+https://www.mkyong.com/hibernate/hibernate-many-to-many-example-join-table-extra-column-annotation/
+https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
+
+Error:
+1. mappedBy reference an unknown target entity property
+-- harus disamakan namanya dengan private AssetId primaryKey, saat AssociationOverride dalam name = "..."
+2. Could not determine type for: ... at table: ..., for columns: ...
+https://stackoverflow.com/questions/3774198/org-hibernate-mappingexception-could-not-determine-type-for-java-util-list-at
+"By default, the placement of the @Id annotation gives the default access strategy. When placed on a field, Hibernate will assume field-based access. Placed on the identifier getter, Hibernate will use property-based access."
+-- jadi harus memilih ditaruh di attribute atau method (salah satu saja, tidak jalan jika keduanya)

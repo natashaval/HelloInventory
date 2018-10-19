@@ -11,9 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Blob;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -27,7 +25,7 @@ public class MyUser { //extends User {
 
     @Id
     @Column(name = "emp_id", unique = true)
-    private long id;
+    private Long id;
 
 //    KURANG EMPLOYEE PHOTO
     @Column(name = "emp_photo")
@@ -68,6 +66,9 @@ public class MyUser { //extends User {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Asset> assets = new HashSet<Asset>();
 
 //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
 //    private boolean enabled;
@@ -111,11 +112,11 @@ public class MyUser { //extends User {
 //        this.role = role;
 //    }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -240,4 +241,13 @@ public class MyUser { //extends User {
 ////        this.credentialsNonExpired = credentialsNonExpired;
 //        this.credentialsNonExpired = true;
 //    }
+
+//    @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Set<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Set<Asset> assets) {
+        this.assets = assets;
+    }
 }
