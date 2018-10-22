@@ -34,9 +34,9 @@ public class AdminController {
 //    @Autowired
 //    MyUserDetailsService myUserDetailsService;
 
-    @GetMapping(value = "/admin/admin")
+    @GetMapping(value = "/admin/dashboard")
     public String admin() {
-        return "/admin/admin";
+        return "/admin/dashboard";
     }
 
     @GetMapping(value = "/admin/employeelist")

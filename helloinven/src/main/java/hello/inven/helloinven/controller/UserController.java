@@ -29,7 +29,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/user")
+    @RequestMapping(value = "/user/dashboard")
 //    public String user() {
 //        return "user";
 //    }
@@ -39,7 +39,7 @@ public class UserController {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        https://www.baeldung.com/get-user-in-spring-security
         modelAndView.addObject(userDetails);
-        modelAndView.setViewName("user");
+        modelAndView.setViewName("user/dashboard");
 
 //        System.out.print(auth.getPrincipal());
 //        System.out.print(auth.getDetails());
@@ -71,14 +71,14 @@ public class UserController {
 //        registry.addViewController("/hello").setViewName("hello");
 //        registry.addViewController("/login").setViewName("login");
 
-    @GetMapping("/user/userprofile")
+    @GetMapping("/profile")
     public String userProfile(ModelMap modelMap){
 //        https://stackoverflow.com/questions/18975077/how-to-add-object-in-using-model-addattributes-in-spring-mvc
         MyUserDetails myUserDetails = (MyUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser user = myUserDetails.getUser();
         System.out.print(user);
         modelMap.put("user", user);
-        return "userprofile";
+        return "profile";
     }
 
     // LEBIH RAPI YANG /user/userprofile
@@ -96,4 +96,13 @@ public class UserController {
     }
     */
 
+    @GetMapping("/clerk/dashboard")
+    public String clerkDashboard(){
+        return "clerk/dashboard";
+    }
+
+    @GetMapping("/manager/dashboard")
+    public String managerDashboard(){
+        return"manager/dashboard";
+    }
 }
