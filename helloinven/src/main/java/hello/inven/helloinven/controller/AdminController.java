@@ -60,6 +60,9 @@ public class AdminController {
 //        https://o7planning.org/en/11659/thymeleaf-form-select-option-example
         List<Role> roleList = roleService.findAll();
         model.addAttribute("roles", roleList);
+        for (Role role: roleList){
+            System.out.println(role.getRole());
+        }
         return "admin/register";
     }
 
@@ -89,13 +92,14 @@ public class AdminController {
                                    BindingResult bindingResult, Model model) throws IOException {
         List<Role> roleList = roleService.findAll();
         model.addAttribute("roles", roleList);
+
         MyUser existingUser = adminService.findByUsername(newUser.getUsername());
         System.out.print("Sudah nemu existingUser: " + existingUser);
         System.out.print("newUser: " + newUser.getName() + "username: " + newUser.getUsername());
 //        model["roleList"] = getRoleList();
         if (existingUser != null) {
             bindingResult.rejectValue("username", null, "Username is already exists");
-            return "redirect:/admin/register2?failure";
+            return "redirect:/admin/register?failure";
         }
 //        if (bindingResult.hasErrors()){
 //            return "admin/register";

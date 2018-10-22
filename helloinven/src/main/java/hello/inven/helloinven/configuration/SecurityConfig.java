@@ -41,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    UserDetailsService userDetailsService;
     private MyUserDetailsService myUserDetailsService;
 
+    @Autowired
+    private CustomAuthenticationHandler successHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.userDetailsService(myUserDetailsService);
@@ -59,7 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/home")
                     .permitAll()
                 .and()
-                .formLogin().loginPage("/login")
+                .formLogin()
+                .loginPage("/login")
+                .successHandler(successHandler)
                     .permitAll()
                 .and()
                 .logout()

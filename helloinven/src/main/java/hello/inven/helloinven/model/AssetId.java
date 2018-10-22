@@ -38,4 +38,17 @@ public class AssetId implements Serializable {
         this.myUser = myUser;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AssetId assetId = (AssetId) o;
+        return Objects.equals(item, assetId.item) &&
+                Objects.equals(myUser, assetId.myUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(item, myUser);
+    }
 }

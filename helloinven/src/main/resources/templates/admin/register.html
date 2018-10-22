@@ -7,7 +7,7 @@
 
 </head>
 <body>
-    <div layout:fragment="content">
+    <div layout:fragment="content" th:remove="tag">
         <!--https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/-->
         <!--https://spring.io/guides/gs/handling-form-submission/-->
         <div th:if="${param.success}">
@@ -32,10 +32,19 @@
             <!--<input type="radio" th:field="*{roleId}" value="2" />Admin<br />-->
 
             <!--https://o7planning.org/en/11659/thymeleaf-form-select-option-example-->
-            <select th:field="*{role.roleId}">
+            <select th:field="*{role}">
+            <!--<select th:field="*{role.roleId}">-->
                 <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
 
             </select>
+
+            <!--<table>-->
+                <!--<tr th:each="role: ${roles}">-->
+                    <!--<td th:text="${role.roleId}" />-->
+                    <!--<td th:text="${role.role}" />-->
+
+                <!--</tr>-->
+            <!--</table>-->
 
             <!--http://zetcode.com/springboot/uploadfile/-->
             <input type="file" name="file" />
@@ -43,13 +52,13 @@
             <input type="submit" value="Register" id="registerSubmit"/>
         </form>
 
-        <div>
-            <h1>Ajax Post Result</h1>
-            <span id="result"></span>
-        </div>
+        <!--<div>-->
+            <!--<h1>Ajax Post Result</h1>-->
+            <!--<span id="result"></span>-->
+        <!--</div>-->
     </div>
 
-    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <!--<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>-->
     <!--BELUM JALAN JQUERY BUAT AJAX FILE IMAGE NYA-->
     <!--<script type="text/javascript" src="js/register-main.js"></script>-->
 

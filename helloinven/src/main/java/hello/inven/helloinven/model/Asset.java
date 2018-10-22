@@ -2,6 +2,7 @@ package hello.inven.helloinven.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "asset") // user many-to-many item
@@ -53,5 +54,19 @@ public class Asset implements Serializable {
 
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asset asset = (Asset) o;
+        return Objects.equals(primaryKey, asset.primaryKey) &&
+                Objects.equals(serialNumber, asset.serialNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(primaryKey, serialNumber);
     }
 }
