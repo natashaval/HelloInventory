@@ -65,3 +65,11 @@ Error:
 https://stackoverflow.com/questions/3774198/org-hibernate-mappingexception-could-not-determine-type-for-java-util-list-at
 "By default, the placement of the @Id annotation gives the default access strategy. When placed on a field, Hibernate will assume field-based access. Placed on the identifier getter, Hibernate will use property-based access."
 -- jadi harus memilih ditaruh di attribute atau method (salah satu saja, tidak jalan jika keduanya)
+
+Form Validation (@NotBlank, nullable false in model):
+http://michaelcgood.com/validation-thymeleaf-spring/
+https://spring.io/guides/gs/validating-form-input/
+https://www.javacodegeeks.com/2017/10/validation-thymeleaf-spring.html
+
+Cascade Type:
+https://vladmihalcea.com/a-beginners-guide-to-jpa-and-hibernate-cascade-types/

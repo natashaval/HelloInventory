@@ -3,13 +3,47 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
     <title>Category</title>
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
         <h1>INI DIAKSES OLEH CLERK</h1>
-        untuk category
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryAdd">
+            Add Category
+        </button>
+
+        <!--Modal Add Category-->
+        <div class="modal fade" id="categoryAdd" role="dialog" aria-labelledby="exampleCategoryAdd" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleCategoryAdd">Add Category</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form th:action="@{/clerk/category}" th:object="${newCategory}" method="post">
+                        <div class="modal-body">
+                            <table>
+                                <tr>
+                                    <td> Category Name: <input type="text" id="name" th:field="*{name}"/> </td>
+                                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                                </tr>
+                                <tr>
+                                    <td>Category Description: <textarea rows="5" cols="30" wrap="soft" th:field="*{description}"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="SaveCategory"></input>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
 </body>
 </html>
