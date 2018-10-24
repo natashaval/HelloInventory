@@ -51,15 +51,15 @@ public class AdminServiceImpl implements AdminService {
         newUser.setBirthday(user.getBirthday());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-//        Integer roleID = user.getRole().getId();
-//        Role userRole = roleRepository.findById(roleID).get();
-//        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
-//        newUser.setRole(userRole);
+
+        /*
         Integer roleID = user.getRole().getRoleId();
         Role userRole = roleRepository.findById(roleID).get();
 //        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
         System.out.print("ROLE: " + userRole);
         newUser.setRole(userRole);
+        */
+        newUser.setRole(user.getRole());
 
         //        http://aralmighty.com/uploading-files-spring-boot
         if (!file.isEmpty()) {

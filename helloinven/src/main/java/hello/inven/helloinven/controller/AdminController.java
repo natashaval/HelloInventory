@@ -8,13 +8,12 @@ import hello.inven.helloinven.service.MyUserDetailsService;
 import hello.inven.helloinven.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -86,10 +85,16 @@ public class AdminController {
 //    @Value("${upload.employee.directory}")
 //    private String uploadDirectory;
 
+
+//    https://www.javacodegeeks.com/2017/10/validation-thymeleaf-spring.html
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
     //    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
     @PostMapping(value = "/admin/register")
-    public String registerEmployee(@ModelAttribute("newUser") @Valid MyUser newUser, @RequestParam MultipartFile file,
-                                   BindingResult bindingResult, Model model) throws IOException {
+    public String registerEmployee(@Valid @ModelAttribute("newUser") MyUser newUser,BindingResult bindingResult,
+                                   @RequestParam MultipartFile file, Model model) throws IOException {
         List<Role> roleList = roleService.findAll();
         model.addAttribute("roles", roleList);
 
@@ -101,10 +106,12 @@ public class AdminController {
             bindingResult.rejectValue("username", null, "Username is already exists");
             return "redirect:/admin/register?failure";
         }
-//        if (bindingResult.hasErrors()){
-//            return "admin/register";
-//        }
-//        else {
+        System.out.println("BINDING RESULT =" + bindingResult.hasErrors());
+        if (bindingResult.hasErrors()){
+            System.out.println("BINDING RESULT ERROR");
+            return "admin/register";
+        }
+        else {
 //            System.out.print("Everything is OKAY to Register");
 //        }
 
@@ -125,8 +132,8 @@ public class AdminController {
         */
 
 //        myUserDetailsService.save(newUser);
-        adminService.save(newUser, file);
-        return "redirect:/admin/register?success";
-
+            adminService.save(newUser, file);
+            return "redirect:/admin/register?success";
+        }
     }
 }

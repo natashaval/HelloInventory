@@ -32,6 +32,7 @@ public class MyUser { //extends User {
     private String photo;
 
     @Column(name = "emp_name", nullable = false)
+//    @NotBlank
     @NotBlank(message = "*Please provide a name")
     private String name;
 
@@ -48,11 +49,13 @@ public class MyUser { //extends User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
+    @NotBlank
     private String username;
 //     Login pakai Email saja (?)
 
     @Column(name = "password", nullable = false)
+    @NotBlank
     private String password;
 
 //     LOGIN pakai username & password dari table user_role
