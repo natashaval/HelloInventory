@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Register Employee</title>
+
+</head>
+<body>
+    <div layout:fragment="content" th:remove="tag">
+        <!--https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/-->
+        <!--https://spring.io/guides/gs/handling-form-submission/-->
+        <div th:if="${param.success}">
+            You;ve successfully registered to our awesome app!
+        </div>
+        <div th:if="${param.failure}">
+            <h1>Cannot save User</h1>
+        </div>
+
+        <h1>Registration Employee</h1>
+        <form th:action="@{/admin/register}" th:object="${newUser}" method="post" enctype="multipart/form-data" id="registerEmployeeForm">
+            <table>
+                <tr>
+                    <td>ID: <input type="text" th:field="*{id}" /> <br /></td>
+            <!--https://spring.io/guides/gs/validating-form-input/-->
+                </tr>
+                <tr>
+                    <td>Name: <input type="text" th:field="*{name}" /> <br /></td>
+                    <!--<p th:if="${fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>-->
+                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                </tr>
+                <tr>
+                    <td>Email: <input type="text" th:field="*{email}" /> <br /></td>
+                    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
+                </tr>
+            <!--<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>-->
+            <tr><td>Phone: <input type="text" th:field="*{phone}" /> <br /></td></tr>
+            <tr><td>Birthday: <input type="date" th:field="*{birthday}" /><br /></td></tr>
+                <tr>
+                    <td>Username: <input type="text" th:field="*{username}" /> <br /></td>
+                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
+                </tr>
+                <tr>
+                    <td>Password: <input type="password" th:field="*{password}" /> <br /></td>
+                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+                </tr>
+
+            <!--https://o7planning.org/en/11659/thymeleaf-form-select-option-example-->
+                <tr>
+                    <td>
+            <select th:field="*{role}">
+            <!--<select th:field="*{role.roleId}">-->
+                <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
+
+            </select>
+                    </td>
+                </tr>
+
+            <!--http://zetcode.com/springboot/uploadfile/-->
+                <tr><td><input type="file" name="file" /></td></tr>
+
+                <tr><td><input type="submit" value="Register" id="registerSubmit"/></td></tr>
+            </table>
+        </form>
+
+        <!--<div>-->
+            <!--<h1>Ajax Post Result</h1>-->
+            <!--<span id="result"></span>-->
+        <!--</div>-->
+    </div>
+
+    <!--<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>-->
+    <!--BELUM JALAN JQUERY BUAT AJAX FILE IMAGE NYA-->
+    <!--<script type="text/javascript" src="js/register-main.js"></script>-->
+
+</body>
+</html>

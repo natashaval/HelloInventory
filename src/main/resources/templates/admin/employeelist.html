@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Employee List</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <table border="2">
+        <tr th:each="emp: ${employees}">
+            <td th:text="${emp.id}" />
+            <td th:text="${emp.name}" />
+            <td th:text="${emp.email}" />
+            <td th:text="${emp.phone}" />
+            <td th:text="${emp.birthday}" />
+            <td th:text="${emp.role.role}" />
+            <td><img th:src="@{${emp.photo}}" /></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
