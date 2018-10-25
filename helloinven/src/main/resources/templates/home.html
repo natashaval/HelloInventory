@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+<h1>Hello, This is Home page!</h1>
+<a style="color: blue" th:href="@{/user}">User Page</a>
+<br />
+<a style="color: blue" th:href="@{/admin/admin}">Admin Page</a>
+    <!--<img th:src="@{/img/black.png}" alt="black logo" />-->
+</div>
+
+</body>
+</html>
