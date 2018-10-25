@@ -8,6 +8,14 @@
 <body>
     <div layout:fragment="content" th:remove="tag">
         <h1>INI DIAKSES OLEH CLERK</h1>
+        <!--alert message-->
+        <div class="alert alert-dismissible fade show" role="alert" th:if="${message!=null}">
+            <h3 th:text="${message}"></h3>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryAdd">
             Add Category
         </button>
@@ -43,6 +51,30 @@
                 </div>
             </div>
 
+        </div>
+
+        <!--Table list of category-->
+        <div id="categoryList">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Category Id</th>
+                    <th>Category Name</th>
+                    <th>Category Description</th>
+                    <th>Category Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category: ${categoryList}">
+                    <td th:text="${category.id}"></td>
+                    <td th:text="${category.name}"></td>
+                    <td th:text="${category.description}"></td>
+                    <td><a th:href="@{/clerk/category/{id}/edit(id=${category.id})}">Edit</a>
+                        <a th:href="@{/clerk/category/{id}/delete(id=${category.id})}">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

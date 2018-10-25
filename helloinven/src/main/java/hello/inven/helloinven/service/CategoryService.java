@@ -5,6 +5,10 @@ import hello.inven.helloinven.model.Category;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> findAll();
-    Category save(Category category);
+    Category createCategory(Category category);
+    Category editCategory(Category category);
+    void deleteCategory(Integer id);
+
+    List<Category> getAllCategories();
+
 }

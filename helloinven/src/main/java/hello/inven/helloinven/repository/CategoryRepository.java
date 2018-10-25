@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository("categoryRepository")
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    List<Category> findAll();
+
 }
