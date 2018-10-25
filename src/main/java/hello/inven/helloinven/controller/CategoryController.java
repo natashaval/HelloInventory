@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CategoryController {
@@ -47,5 +48,24 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         model.addAttribute("message", "Category has been deleted");
         return "redirect:/clerk/category";
+    }
+
+    @GetMapping(value = "/clerk/category/{id}/edit")
+    public String categoryUpdateShow(@PathVariable Integer id, Model model){
+        Optional<Category> category = categoryService.getOneCategory(id);
+        model.addAttribute("editCategory", category);
+        return "clerk/categoryedit";
+    }
+
+    @PostMapping(value = "/clerk/category/{id}/edit")
+    public String categoryUpdate(@Valid @ModelAttribute("editCategory") Category editCategory, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            System.out.println("BINDING CATEGORY ERROR");
+            return "clerk/category";
+        } else {
+            categoryService.createCategory(editCategory);
+            model.addAttribute("message", "Category has been edited");
+            return "redirect:/clerk/category";
+        }
     }
 }

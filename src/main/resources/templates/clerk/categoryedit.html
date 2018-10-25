@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Category Edit</title>
+</head>
+<body>
+    <div layout:fragment="content" th:remove="tag">
+        <form th:action="@{/clerk/category/{id}/edit(id=${id})}" th:object="${editCategory}" method="post">
+            Category Name: <input type="text" id="name" th:field="${editCategory.name}"/>
+
+            Category Description: <textarea rows="5" cols="30" wrap="soft" th:field="${editCategory.description}"></textarea>
+            <input type="submit" class="btn btn-primary" value="Edit Category">
+        </form>
+    </div>
+</body>
+</html>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 //https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
 
@@ -18,6 +19,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllCategories(){ return categoryRepository.findAll(); }
 
+    @Override
+    public Optional<Category> getOneCategory(Integer id){
+        return categoryRepository.findById(id);
+    }
     @Override
     public Category createCategory(Category category){
 //        Category newCategory = new Category();
