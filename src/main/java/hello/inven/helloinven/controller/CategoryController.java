@@ -35,17 +35,19 @@ public class CategoryController {
                               Model model) {
         if (bindingResult.hasErrors()) {
             System.out.println("BINDING CATEGORY ERROR");
-            return "clerk/category";
+            return "redirect:/clerk/category?failedadd";
         } else {
             categoryService.createCategory(newCategory);
-            model.addAttribute("message", "Category has been created");
-            return "redirect:/clerk/category";
+//            model.addAttribute("message", "Category has been created");
+            return "redirect:/clerk/category?successadd";
         }
     }
 
     @GetMapping(value = "/clerk/category/{id}/delete")
     public String categoryDelete(@PathVariable Integer id, Model model){
         categoryService.deleteCategory(id);
+        // tidak bisa langsung model addAttribute karena REDIRECT sehingga ke flush message nya
+        // jadi harus menggunakan addFlashAttribute
         model.addAttribute("message", "Category has been deleted");
         return "redirect:/clerk/category";
     }
@@ -68,4 +70,15 @@ public class CategoryController {
             return "redirect:/clerk/category";
         }
     }
+
+    @GetMapping("/clerk/category2")
+    public String category2(){ return "clerk/category2";}
+
+    @GetMapping("/clerk/category2/all")
+    public String category2all(Model model){
+        List<Category> categoryList = categoryService.getAllCategories();
+        model.addAttribute("categoryList", categoryList);
+        return "clerk/category2all";
+    }
+
 }

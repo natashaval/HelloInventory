@@ -9,13 +9,28 @@
     <div layout:fragment="content" th:remove="tag">
         <h1>INI DIAKSES OLEH CLERK</h1>
         <!--alert message-->
-        <div class="alert alert-dismissible fade show" role="alert" th:if="${message!=null}">
-            <h3 th:text="${message}"></h3>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.successadd}">
+            Success Add New Category!
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
+        <div class="alert alert-failed alert-dismissible fade show" role="alert" th:if="${param.failedadd}">
+            Failed in Adding New Category!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="alert alert-warning" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+                <span aria-hidden="true">&times;</span>
+            <!--</button>-->
+        </div>
+
+        <span th:text="${message}"></span> = ini message harusnya
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryAdd">
             Add Category
         </button>

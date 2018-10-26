@@ -1,4 +1,4 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceImpl;
 
 import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.repository.CategoryRepository;

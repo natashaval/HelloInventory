@@ -1,4 +1,4 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceImpl;
 
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.Role;
