@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div id="categoryList">
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover" id="category-id">
         <thead class="thead-dark">
         <tr>
             <th>Category Id</th>
@@ -22,4 +22,11 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#category-id').DataTable();
+    })
+</script>
 </html>

@@ -73,3 +73,4 @@ https://www.javacodegeeks.com/2017/10/validation-thymeleaf-spring.html
 
 Cascade Type:
 https://vladmihalcea.com/a-beginners-guide-to-jpa-and-hibernate-cascade-types/
+
