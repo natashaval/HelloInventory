@@ -1,5 +1,5 @@
 $(function (){
-alert("hello");
+// alert("hello");
 fetchCategory();
 fetchCategoryRest();
 });
@@ -10,7 +10,7 @@ function fetchCategory(){
         type : "GET",
         url: "/clerk/category2/all",
         success : function(data){
-            console.log(data);
+            // console.log(data);
             // $('#category-id').DataTable();
             $(".category-table").html(data);
 
@@ -52,10 +52,16 @@ function fetchCategoryRest(){
     });
 
 }
-// function fetchCategory(type){
-// $.ajax({
-//     type: "GET",
-//     url:
 //
+// $('#categoryModal').on('show.bs.modal', function(event){
+//    var button = $(event.relatedTarget);
+//    var recipient = button.data('whatever');
+//    $.ajax({
+//        type: "GET",
+//        url: "/api/category/3",
+//        success: function(result){
+//            modal.find('.modal-title').text(result.data.name);
+//            modal.find('.modal-body input').val(result.data.name);
+//        }
+//    });
 // });
-// }
