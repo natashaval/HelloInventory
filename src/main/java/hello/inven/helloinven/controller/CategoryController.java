@@ -1,8 +1,10 @@
 package hello.inven.helloinven.controller;
 
 import hello.inven.helloinven.model.Category;
+import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,6 +73,8 @@ public class CategoryController {
         }
     }
 
+//    clerk category2
+
     @GetMapping("/clerk/category2")
     public String category2(){ return "clerk/category2";}
 
@@ -80,5 +84,12 @@ public class CategoryController {
         model.addAttribute("categoryList", categoryList);
         return "clerk/category2all";
     }
+
+    @GetMapping(value = "/clerk/category2/{id}/delete")
+    public @ResponseBody ResponseAjax category2Delete(@PathVariable Integer id){
+        return categoryService.deleteCategory(id);
+    }
+
+
 
 }

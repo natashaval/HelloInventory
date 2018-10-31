@@ -4,6 +4,8 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <title>Category 2</title>
 </head>
 <body>
@@ -12,36 +14,37 @@
         <div>
             <!--<a href="javascript:void(0)"><span class="glyphicon glyphicon-plus-sign"></span>New Category</a>-->
             <!--https://getbootstrap.com/docs/4.0/components/modal/#varying-modal-content-->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal" data-whatever="newCategory">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-category-add">
                 <span class="glyphicon glyphicon-plus-sign"></span>New Category</button>
 
-            <div class="modal fade" id="categoryModal" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
+            <div class="modal fade" id="modal-category-add" role="dialog" aria-labelledby="modal-category-add" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="categoryTitle">Category</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <form method="post" action="/clerk/category2/add" id="category-add-form">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="categoryTitle">Create New Category</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="category-name" class="col-form-label">Category Name: </label>
-                                    <input type="text" class="form-control" id="category-name" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="category-description" class="col-form-label">Category Description: </label>
-                                    <textarea class="form-control" id="category-description"></textarea>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="modal-body">
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save</button>
-                        </div>
+                                    <div class="form-group">
+                                        <label for="category-name" class="col-form-label">Category Name: </label>
+                                        <input type="text" class="form-control" id="category-name" required="true"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category-description" class="col-form-label">Category Description: </label>
+                                        <textarea class="form-control" id="category-description"></textarea>
+                                    </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="reset" class="btn btn-warning">Reset</button>
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -49,6 +52,7 @@
 
         </div>
 
+        <br />
         <div class="category-table">
         </div>
 

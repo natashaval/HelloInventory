@@ -1,6 +1,7 @@
-package hello.inven.helloinven.serviceImpl;
+package hello.inven.helloinven.ServiceImpl;
 
 import hello.inven.helloinven.model.Category;
+import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.repository.CategoryRepository;
 import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(Integer id){
-        categoryRepository.deleteById(id);
+    public ResponseAjax deleteCategory(Integer id){
+        ResponseAjax responseAjax = new ResponseAjax(null, null);
+        Optional<Category> category = categoryRepository.findById(id);
+        if (category != null) {
+            categoryRepository.deleteById(id);
+            responseAjax.setStatus("Deleted");
+            responseAjax.setData("Category has been successfully deleted");
+        }
+        else {
+            responseAjax.setStatus("Failed");
+            responseAjax.setData("Category failed to be deleted!");
+        }
+        return responseAjax;
     }
+
 }

@@ -7,9 +7,7 @@
             <th>Category Id</th>
             <th>Category Name</th>
             <th>Category Description</th>
-            <th>Details</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -19,9 +17,13 @@
             <td th:text="${category.description}"></td>
             <!--<td><span class="glyphicon glyphicon-lamp"></span><a th:href="@{/api/category/{id}(id=${category.id})}">Details</a> </td>-->
             <!--<td><span class="glyphicon glyphicon-lamp"></span><a href="javascript:void(0)" id="category-details" data-id="${category.id}" data-target="#modal-category-details">Details</a> </td>-->
-            <td><button type="button" class="btn btn-primary category-details" th:attr="data-category-id=${category.id}"><span class="glyphicon glyphicon-th-list"> Details</span></button></td>
-            <td><span class="glyphicon glyphicon-edit"></span><a th:href="@{/clerk/category/{id}/edit(id=${category.id})}">Edit</a></td>
-            <td><span class="glyphicon glyphicon-trash"></span> <a th:href="@{/clerk/category/{id}/delete(id=${category.id})}">Delete</a></td>
+            <td>
+                <button type="button" class="btn btn-warning category-details" th:attr="data-category-id=${category.id}"><span class="glyphicon glyphicon-th-list"> Details</span></button>
+            <!--<td><span class="glyphicon glyphicon-edit"></span><a th:href="@{/clerk/category/{id}/edit(id=${category.id})}">Edit</a></td>-->
+                <button type="button" class="btn btn-primary category-edit" th:attr="data-category-id=${category.id}"><span class="glyphicon glyphicon-edit"> Edit</span></button>
+            <!--<span class="glyphicon glyphicon-trash"></span> <a th:href="@{/clerk/category/{id}/delete(id=${category.id})}" th:onclick="'javascript:deleteCategory(' + ${category.id} + ')'">Delete</a>-->
+                <button type="button" class="btn btn-danger category-delete" th:attr="data-category-id=${category.id}" ><span class="glyphicon glyphicon-trash"> Delete</span></button>
+            </td>
 
         </tr>
         </tbody>
@@ -34,7 +36,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modal-category-details-title">Category</h4>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <button type="button" class="close pull-right" data-dismiss="modal"><span>&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -53,34 +55,53 @@
     </div>
 </div>
 
+<!--Modal Category Edit-->
+<div id="modal-category-edit" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-category-edit-title">Category</h4>
+                <button type="button" class="close pull-right" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="category-edit-name">Category Name: </label>
+                    <input type="text" class="form-control" id="category-edit-name" />
+                </div>
+                <div class="form-group">
+                    <label for="category-edit-description">Category Description: </label>
+                    <textarea class="form-control" id="category-edit-description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal Category Delete-->
+<div id="modal-category-delete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-category-delete-title">Category</h4>
+                <button type="button" class="close pull-right" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger modal-category-delete-button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#category-id').DataTable();
-    });
-
-    $('.category-details').click(function(){
-        // alert('Details ke klik');
-
-        $('#modal-category-details').modal('show');
-        var categoryId = $(this).attr('data-category-id');
-        // alert('Details ke klik' + categoryId);
-        console.log('category details ke klik, id = ' + categoryId);
-        $.ajax({
-            type: "GET",
-            url: "/api/category/" + categoryId + "/edit",
-            success: function(result){
-                console.log(result);
-                $('#modal-category-details-title').text("Category " + categoryId);
-                $('#category-details-name').val(result.data.name);
-                $('#category-details-description').val(result.data.description);
-            },
-            error : function(e){
-                $('#modal-category-details modal-header').append("<strong>Data Error</strong>");
-            }
-        });
-
-    });
-</script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/clerk-category-all.js}"></script>
 </html>

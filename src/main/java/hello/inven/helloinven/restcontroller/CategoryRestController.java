@@ -4,10 +4,7 @@ import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +30,11 @@ public class CategoryRestController {
             responseAjax = new ResponseAjax("Done", categoryOptional);
             return responseAjax;
         }
-        return null;
+        return new ResponseAjax("Failed", id);
+    }
+
+    @DeleteMapping(value = "{id}/delete")
+    public @ResponseBody ResponseAjax deleteResource(@PathVariable Integer id){
+        return categoryService.deleteCategory(id);
     }
 }

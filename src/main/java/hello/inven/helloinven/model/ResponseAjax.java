@@ -24,4 +24,12 @@ public class ResponseAjax {
     public void setData(Object data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "ResponseAjax{" +
+                "status='" + status + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
