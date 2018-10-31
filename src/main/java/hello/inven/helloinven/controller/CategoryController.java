@@ -85,6 +85,11 @@ public class CategoryController {
         return "clerk/category2all";
     }
 
+    @PostMapping("/clerk/category2/add")
+    public @ResponseBody ResponseAjax category2Add(@RequestBody Category category){
+        return categoryService.createCategory(category);
+    }
+
     @GetMapping(value = "/clerk/category2/{id}/delete")
     public @ResponseBody ResponseAjax category2Delete(@PathVariable Integer id){
         return categoryService.deleteCategory(id);

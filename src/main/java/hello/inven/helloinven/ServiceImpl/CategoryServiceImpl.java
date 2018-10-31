@@ -25,12 +25,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findById(id);
     }
     @Override
-    public Category createCategory(Category category){
-//        Category newCategory = new Category();
-//        newCategory.setName(category.getName());
-//        newCategory.setDescription(category.getDescription());
-//        return categoryRepository.save(newCategory);
-        return categoryRepository.save(category);
+    public ResponseAjax createCategory(Category category){
+        Category newCategory = new Category();
+        newCategory.setName(category.getName());
+        newCategory.setDescription(category.getDescription());
+        return new ResponseAjax("Created", categoryRepository.save(newCategory));
     }
 
     @Override

@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.userDetailsService(myUserDetailsService);
+        http.csrf().disable();
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**")

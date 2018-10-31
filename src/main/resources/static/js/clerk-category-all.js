@@ -87,7 +87,7 @@ $('.category-delete').click(function(e) {
                             bootbox.alert('Error in Delete!');
                             // location.reload();
                         }
-                    })
+                    });
 
                 }
             }
