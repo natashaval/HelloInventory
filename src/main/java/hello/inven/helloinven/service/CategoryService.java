@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CategoryService {
     ResponseAjax createCategory(Category category);
-    Category editCategory(Category category);
+    ResponseAjax editCategory(Category category, Integer id);
     ResponseAjax deleteCategory(Integer id);
 
     List<Category> getAllCategories();

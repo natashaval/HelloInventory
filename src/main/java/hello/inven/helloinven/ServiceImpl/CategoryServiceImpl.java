@@ -24,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Optional<Category> getOneCategory(Integer id){
         return categoryRepository.findById(id);
     }
+
     @Override
     public ResponseAjax createCategory(Category category){
         Category newCategory = new Category();
@@ -33,8 +34,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category editCategory(Category category){
-        return categoryRepository.save(category);
+    public ResponseAjax editCategory(Category categoryRequest, Integer id){
+        // https://stackoverflow.com/questions/49316751/spring-data-jpa-findone-change-to-optional-how-to-use-this
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category != null){
+            category.setName(categoryRequest.getName());
+            category.setDescription(categoryRequest.getDescription());
+            categoryRepository.save(category);
+            return new ResponseAjax("Edited",category);
+        }
+        return new ResponseAjax("Failed", "Category is failed to edit");
     }
 
     @Override

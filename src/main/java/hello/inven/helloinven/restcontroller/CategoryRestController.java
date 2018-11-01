@@ -22,16 +22,16 @@ public class CategoryRestController {
         return responseAjax;
     }
 
-    @GetMapping(value = "/{id}/edit")
-    public ResponseAjax getResourceById(@PathVariable Integer id){
-        Optional<Category> categoryOptional = categoryService.getOneCategory(id);
-        ResponseAjax responseAjax;
-        if (categoryOptional != null) {
-            responseAjax = new ResponseAjax("Done", categoryOptional);
-            return responseAjax;
-        }
-        return new ResponseAjax("Failed", id);
-    }
+//    @GetMapping(value = "/{id}/edit")
+//    public ResponseAjax getResourceById(@PathVariable Integer id){
+//        Optional<Category> categoryOptional = categoryService.getOneCategory(id);
+//        ResponseAjax responseAjax;
+//        if (categoryOptional != null) {
+//            responseAjax = new ResponseAjax("Done", categoryOptional);
+//            return responseAjax;
+//        }
+//        return new ResponseAjax("Failed", id);
+//    }
 
     @DeleteMapping(value = "{id}/delete")
     public @ResponseBody ResponseAjax deleteResource(@PathVariable Integer id){

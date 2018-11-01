@@ -54,12 +54,12 @@ public class CategoryController {
         return "redirect:/clerk/category";
     }
 
-    @GetMapping(value = "/clerk/category/{id}/edit")
-    public String categoryUpdateShow(@PathVariable Integer id, Model model){
-        Optional<Category> category = categoryService.getOneCategory(id);
-        model.addAttribute("editCategory", category);
-        return "clerk/categoryedit";
-    }
+//    @GetMapping(value = "/clerk/category/{id}/edit")
+//    public String categoryUpdateShow(@PathVariable Integer id, Model model){
+//        Optional<Category> category = categoryService.getOneCategory(id);
+//        model.addAttribute("editCategory", category);
+//        return "clerk/categoryedit";
+//    }
 
     @PostMapping(value = "/clerk/category/{id}/edit")
     public String categoryUpdate(@Valid @ModelAttribute("editCategory") Category editCategory, BindingResult bindingResult, Model model){
@@ -93,6 +93,16 @@ public class CategoryController {
     @GetMapping(value = "/clerk/category2/{id}/delete")
     public @ResponseBody ResponseAjax category2Delete(@PathVariable Integer id){
         return categoryService.deleteCategory(id);
+    }
+
+    @GetMapping(value="/clerk/category2/{id}")
+    public @ResponseBody ResponseAjax category2Details(@PathVariable Integer id){
+        return new ResponseAjax("Done", categoryService.getOneCategory(id));
+    }
+
+    @PostMapping(value = "/clerk/category2/{id}/edit")
+    public @ResponseBody ResponseAjax category2Edit(@RequestBody Category category, @PathVariable Integer id){
+        return categoryService.editCategory(category, id);
     }
 
 
