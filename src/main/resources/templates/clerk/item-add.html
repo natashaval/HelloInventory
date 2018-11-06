@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h3>Create Item</h3>
+    <form method="POST" action="/clerk/item/add" id="item-add-form">
+        Identification Number (UPC): <input type="number" id="item-add-id"><br />
+        Name: <input type="text" id="item-add-name"><br />
+        Image: <br />
+        Description: <br />
+        Category:
+        <select id="item-add-category">
+            <option th:each="category: ${categoryList}" th:value="${category.getId()}" th:text="${category.getName()}" />
+        </select>
+
+        Quantity: <input type="number" id="item-add-quantity"> <br />
+        Price: <input type="number" id="item-add-price" step="0.01"> <br />
+
+        Weight: <input type="number" id="item-add-weight" step="0.01"> <br />
+        Height: <input type="number" id="item-add-height" step="0.01"> <br />
+        Width: <input type="number" id="item-add-width" step="0.01"> <br />
+        Depth: <input type="number" id="item-add-depth" step="0.01"> <br />
+
+        <button type="submit" class="btn btn-primary">Create Item</button>
+        <a class="btn btn-secondary" href="/clerk/item">Cancel</a>
+    </form>
+
+    <script type="text/javascript">
+
+    </script>
+</div>
+</body>
+</html>
