@@ -8,5 +8,5 @@ import java.util.List;
 public interface ItemService {
     ResponseAjax createItem(Item item);
 
-    List<Item> getAllItems();
+    ResponseAjax getAllItems();
 }

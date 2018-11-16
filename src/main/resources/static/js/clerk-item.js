@@ -50,3 +50,45 @@ $('#btn-coba').click(function(){
         console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr("name") + ' Value: ' + input.val());
     });
 });
+
+
+
+// var item_table_data;
+// $(document).ready(function(){
+//     $('#item-table').DataTable();
+//     item_table_data = $('#item-table-1').DataTable();
+// });
+
+// https://api.jquery.com/jquery.getjson/
+
+$.getJSON("/clerk/item/show", function(data){
+    console.log(data.data);
+
+    $.each(data.data, function(i, value){
+        var items = [];
+        console.log('Data: ' + value.name);
+        items.push("<td>"+ value.id + "</td>");
+        items.push("<td>"+ value.name + "</td>");
+        items.push("<td>"+ value.quantity + "</td>");
+        items.push("<td>Actions</td>");
+
+        $("<tr/>", {
+            "class": "item-list",
+            html: items.join("")
+        }).appendTo("#item-table > tbody");
+    });
+
+    /* // Data Tables
+    $.each(data.data, function(i, value){
+       var itema = [];
+       itema.push(value.id);
+       itema.push(value.name);
+       itema.push(value.quantity);
+       itema.push("Actions");
+       return itema;
+    });
+
+    item_table_data.rows.add(itema);
+    item_table_data.draw();
+    */
+});

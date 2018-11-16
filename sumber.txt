@@ -78,3 +78,11 @@ Custom ID for entity in table (example: EMP001, EMP002, EMP003):
 http://blog.anorakgirl.co.uk/2009/01/custom-hibernate-sequence-generator-for-id-field/
 https://stackoverflow.com/questions/15731407/how-to-generate-an-alphanumeric-id-in-java]
 https://stackoverflow.com/questions/11631800/hibernate-how-specify-custom-sequence-generator-class-name-using-annotations
+
+JSON infinite recursive:
+-- fetch Type harus diganti jadi EAGER!
+https://softwareengineering.stackexchange.com/questions/300115/best-way-to-deal-with-hibernate-1-many-relationship-over-rest-json-service
+https://grokonez.com/json/resolve-json-infinite-recursion-problems-working-jackson
+https://stackoverflow.com/questions/31465440/recursive-json-view-of-an-entity-with-one-to-many-relationship-in-rest-controll
+https://www.concretepage.com/jackson-api/jackson-jsonignore-jsonignoreproperties-and-jsonignoretype
+https://softwareengineering.stackexchange.com/questions/300115/best-way-to-deal-with-hibernate-1-many-relationship-over-rest-json-service

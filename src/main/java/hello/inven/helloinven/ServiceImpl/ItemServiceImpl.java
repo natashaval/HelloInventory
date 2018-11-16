@@ -1,5 +1,6 @@
 package hello.inven.helloinven.ServiceImpl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ResponseAjax;
@@ -47,5 +48,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> getAllItems() {return itemRepository.findAll();}
+    public ResponseAjax getAllItems() {
+        List<Item> itemList = itemRepository.findAll();
+        return new ResponseAjax("Read", itemList);
+    }
 }

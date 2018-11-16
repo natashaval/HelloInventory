@@ -40,4 +40,9 @@ public class ItemController {
 
         return itemService.createItem(item);
     }
+
+    @GetMapping(value = "/clerk/item/show")
+    public @ResponseBody ResponseAjax itemShow(){
+        return itemService.getAllItems();
+    }
 }
