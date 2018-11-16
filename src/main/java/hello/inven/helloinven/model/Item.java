@@ -9,7 +9,7 @@ import java.util.Set;
 public class Item extends AuditModel {
 
     @Id
-    @Column(name = "item_id", nullable = false)
+    @Column(name = "item_id", nullable = false, unique = true)
     private Long id;
 
     @Column(nullable = false)

@@ -11,30 +11,29 @@
 <div layout:fragment="content" th:remove="tag">
     <h3>Create Item</h3>
     <form method="POST" action="/clerk/item/add" id="item-add-form">
-        Identification Number (UPC): <input type="number" id="item-add-id"><br />
-        Name: <input type="text" id="item-add-name"><br />
+        Identification Number (UPC): <input type="number" name="id"><br />
+        Name: <input type="text" name="name"><br />
         Image: <br />
         Description: <br />
         Category:
-        <select id="item-add-category">
-            <option th:each="category: ${categoryList}" th:value="${category.getId()}" th:text="${category.getName()}" />
+        <select name="category.id">
+            <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}" />
         </select>
 
-        Quantity: <input type="number" id="item-add-quantity"> <br />
-        Price: <input type="number" id="item-add-price" step="0.01"> <br />
+        Quantity: <input type="number" name="quantity"> <br />
+        Price: <input type="number" name="price" step="0.01"> <br />
 
-        Weight: <input type="number" id="item-add-weight" step="0.01"> <br />
-        Height: <input type="number" id="item-add-height" step="0.01"> <br />
-        Width: <input type="number" id="item-add-width" step="0.01"> <br />
-        Depth: <input type="number" id="item-add-depth" step="0.01"> <br />
+        Weight: <input type="number" name="weight" step="0.01"> <br />
+        Height: <input type="number" name="height" step="0.01"> <br />
+        Width: <input type="number" name="width" step="0.01"> <br />
+        Depth: <input type="number" name="depth" step="0.01"> <br />
 
         <button type="submit" class="btn btn-primary">Create Item</button>
+        <a class="btn btn-danger" id="btn-coba">Coba coba</a>
         <a class="btn btn-secondary" href="/clerk/item">Cancel</a>
     </form>
 
-    <script type="text/javascript">
-
-    </script>
+    <script type="text/javascript" th:src="@{/js/clerk-item.js}"></script>
 </div>
 </body>
 </html>

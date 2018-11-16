@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("roleRepository")
+@Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
     List<Role> findAll();
 }
