@@ -1,6 +1,8 @@
 package hello.inven.helloinven.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import hello.inven.helloinven.model.MyUser;
+import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.RoleRepository;
 import hello.inven.helloinven.service.AdminService;
@@ -9,6 +11,9 @@ import hello.inven.helloinven.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -135,5 +140,11 @@ public class AdminController {
             adminService.save(newUser, file);
             return "redirect:/admin/register?success";
         }
+    }
+
+    @GetMapping(value = "/admin/list/manager", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseAjax getManagerList(){
+        List<MyUser> managerList = adminService.findManagers(1);
+        return new ResponseAjax("Managers", managerList);
     }
 }

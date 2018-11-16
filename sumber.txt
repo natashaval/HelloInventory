@@ -86,3 +86,9 @@ https://grokonez.com/json/resolve-json-infinite-recursion-problems-working-jacks
 https://stackoverflow.com/questions/31465440/recursive-json-view-of-an-entity-with-one-to-many-relationship-in-rest-controll
 https://www.concretepage.com/jackson-api/jackson-jsonignore-jsonignoreproperties-and-jsonignoretype
 https://softwareengineering.stackexchange.com/questions/300115/best-way-to-deal-with-hibernate-1-many-relationship-over-rest-json-service
+
+Custom Query in Repository:
+https://stackoverflow.com/questions/14446048/hibernate-table-not-mapped-error
+https://stackoverflow.com/questions/19977130/joining-two-table-entities-in-spring-data-jpa
+https://stackoverflow.com/questions/13154818/how-to-define-a-jpa-repository-query-with-a-join
+https://www.programcreek.com/java-api-examples/?api=org.springframework.data.jpa.repository.Query

@@ -11,6 +11,7 @@ import java.util.List;
 public interface AdminService {
 
     List<MyUser> findAll();
+    List<MyUser> findManagers(Integer roleId);
     MyUser findByUsername(String username);
     MyUser save(MyUser user, MultipartFile file) throws IOException;
 }

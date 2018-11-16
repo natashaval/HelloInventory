@@ -1,5 +1,6 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.JoinColumnOrFormula;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -68,6 +69,7 @@ public class MyUser { //extends User {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    @JsonIgnoreProperties(value = "users", allowSetters = true)
     private Role role;
 
     @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

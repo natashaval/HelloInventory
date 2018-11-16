@@ -1,5 +1,7 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ public class Role {
 
 //    https://www.baeldung.com/hibernate-one-to-many
     @OneToMany(mappedBy = "role")
+    @JsonIgnoreProperties(value = "role", allowSetters = true)
     private Set<MyUser> users;
 
     public int getRoleId() {

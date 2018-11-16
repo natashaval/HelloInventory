@@ -88,4 +88,9 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public List<MyUser> findManagers(Integer roleId){
+        return myUserRepository.findByRole(roleId);
+    }
+
 }
