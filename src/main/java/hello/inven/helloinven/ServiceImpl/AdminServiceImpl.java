@@ -51,6 +51,7 @@ public class AdminServiceImpl implements AdminService {
         newUser.setBirthday(user.getBirthday());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getManagerId() != null) newUser.setManagerId(user.getManagerId());
 
         /*
         Integer roleID = user.getRole().getRoleId();

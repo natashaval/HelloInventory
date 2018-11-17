@@ -16,6 +16,6 @@ public interface MyUserRepository extends JpaRepository<MyUser, Long> {
     List<MyUser> findAll();
 
 //    https://stackoverflow.com/questions/14446048/hibernate-table-not-mapped-error
-    @Query("SELECT u, r FROM MyUser AS u JOIN u.role AS r WHERE r.id = :roleId ")
+    @Query("SELECT u FROM MyUser AS u JOIN u.role AS r WHERE r.id = :roleId ")
     List<MyUser> findByRole(@Param("roleId") Integer roleId);
 }

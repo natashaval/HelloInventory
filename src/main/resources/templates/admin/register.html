@@ -53,7 +53,7 @@
                          <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
                         </select>
 
-                        <input type="text" id="manager_name" placeholder="manager name" />
+                        <input id="manager_name" />
                         <input type="number" id="manager_id" th:field="*{managerId}" />
 
                     </td>
@@ -75,49 +75,12 @@
 
 
         <script type="text/javascript" th:src="@{/plugin/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js}"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                getManager();
-            });
-
-            function getManager(){
-                // https://forum.jquery.com/topic/show-hide-div-elements-depening-on-select-value
-                // https://stackoverflow.com/questions/11918397/jquery-hide-and-show-an-input-element
-                $('#employee_role').change(function () {
-                    var roleId = $(this).val();
-                    if (roleId == 2) {
-                        $('#manager_name').show();
-                        $('#manager_id').show();
-                        autoCompleteManager();
-                    }
-                    else {
-                        $('#manager_name').hide();
-                        $('#manager_id').hide();
-                    }
-                });
-
-                $('#manager_name').hide();
-                $('#manager_id').hide();
-            }
-
-            var options;
-            function autoCompleteManager(){
-                options = {
-                    url: "/admin/list/manager",
-                    listLocation: "data",
-                    getValue: "name"
-                };
-
-                console.log(options);
-
-                $('#manager_name').easyAutocomplete(options);
-            }
-        </script>
+        <script type="text/javascript" th:src="@{/js/admin-register.js}"></script>
     </div>
 
     <!--<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>-->
     <!--BELUM JALAN JQUERY BUAT AJAX FILE IMAGE NYA-->
-    <!--<script type="text/javascript" src="js/register-main.js"></script>-->
+
 
 </body>
 </html>
