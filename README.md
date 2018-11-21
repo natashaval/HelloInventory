@@ -1,12 +1,23 @@
 # HelloInventory
-DONE
-1. Login with Admin Auth
-2. Login with Manager, Employee Auth
+## DONE
+1. Login with Admin, Manager, Employee, Clerk
+2. User can view Profile
+3. Admin can register new Employee (if Employee > add managerId) and add Photo
+4. Clerk CRUD Category
+5. Clerk CR Items
 
-TO-DO
-1. Login with Clerk can access Manager Employee (harus dibuat satu-satu) has Authority (mungkin?)
-2. Template User Profile in left side (thymeleaf/fragments)
-3. Admin add new Employee
-4.
+## TO-DO
+1. Clerk UD Items
+2. Clerk add Assets serial number in Items
 
 Moving to different account github
+
+# Tutorial
+1. `Git status` make sure work tree clean
+2. `Git checkout master` move to branch master
+3. `Git pull` to get the latest version
+4. Start XAMPP -> MySQL
+5. Create database named `helloinven2`
+6. Dump `data.sql` to the database
+7. Run `mvn spring-boot:run`
+8. Login as Admin, Clerk, Manager, and Employee
