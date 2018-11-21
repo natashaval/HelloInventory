@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,5 +41,10 @@ public class ItemController {
     @GetMapping(value = "/clerk/item/show")
     public @ResponseBody ResponseAjax itemShow(){
         return itemService.getAllItems();
+    }
+
+    @GetMapping(value = "/clerk/item/{id}/delete")
+    public @ResponseBody ResponseAjax itemDelete(@PathVariable Long id){
+        return itemService.deleteItem(id);
     }
 }

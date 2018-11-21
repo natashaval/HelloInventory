@@ -52,4 +52,18 @@ public class ItemServiceImpl implements ItemService {
         List<Item> itemList = itemRepository.findAll();
         return new ResponseAjax("Read", itemList);
     }
+
+    @Override
+    public ResponseAjax deleteItem(Long id){
+        Item item = itemRepository.findById(id).orElse(null);
+        System.out.println(item);
+        if (item != null) {
+            itemRepository.delete(item);
+            return new ResponseAjax("Deleted", "Item has been deleted!");
+        }
+        else {
+            return new ResponseAjax("Failed", "Item is failed to be deleted!");
+        }
+
+    }
 }

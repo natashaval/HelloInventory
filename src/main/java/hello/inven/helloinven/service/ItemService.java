@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ItemService {
     ResponseAjax createItem(Item item);
+    ResponseAjax deleteItem(Long id);
 
     ResponseAjax getAllItems();
 }
