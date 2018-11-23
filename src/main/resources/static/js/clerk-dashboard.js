@@ -1,8 +1,7 @@
 $(function(){
    // alert("clerk dashboard");
-    $("#categoryList").click(function(){
-    });
-        fetchCategory();
+
+        // fetchCategory();
 });
 
 function fetchCategory(){

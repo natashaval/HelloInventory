@@ -24,7 +24,9 @@ public class Category extends AuditModel {
     @Column(name = "category_description")
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    // cascade type remove (?)
+
 //    https://stackoverflow.com/questions/31465440/recursive-json-view-of-an-entity-with-one-to-many-relationship-in-rest-controll
 //    agar tidak keluar rekursif, ketika item panggil category, category panggil item, dst
 //    @JsonIgnoreProperties
@@ -32,7 +34,7 @@ public class Category extends AuditModel {
 //    @JsonProperty("categoryItems")
 //    @JsonIgnore
 //    https://softwareengineering.stackexchange.com/questions/300115/best-way-to-deal-with-hibernate-1-many-relationship-over-rest-json-service
-    @JsonIgnoreProperties(value = "category", allowSetters = true)
+//    @JsonIgnoreProperties(value = "category", allowSetters = true)
     private List<Item> items;
 
     public Integer getId() {

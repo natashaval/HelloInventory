@@ -37,7 +37,9 @@ public class Item extends AuditModel {
     private Double depth;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
+    // nullable = true, karena jika category nya dihapus item masih ada
+
 //    https://grokonez.com/json/resolve-json-infinite-recursion-problems-working-jackson
 //    @JsonIgnore
     @JsonIgnoreProperties(value = "items", allowSetters = true)

@@ -92,3 +92,14 @@ https://stackoverflow.com/questions/14446048/hibernate-table-not-mapped-error
 https://stackoverflow.com/questions/19977130/joining-two-table-entities-in-spring-data-jpa
 https://stackoverflow.com/questions/13154818/how-to-define-a-jpa-repository-query-with-a-join
 https://www.programcreek.com/java-api-examples/?api=org.springframework.data.jpa.repository.Query
+
+Difference Between FetchType.EAGER and FetchType.LAZY:
+-- by default all-to-one = EAGER, all-to-many = LAZY
+-- EAGER = get related entities with initial query (ex: OrderItems get Parent Order with Join)
+-- LAZY = get related entities when called (ex: Order get OrderItems when called only in business code)
+https://thoughts-on-java.org/entity-mappings-introduction-jpa-fetchtypes/
+https://stackoverflow.com/questions/26601032/default-fetch-type-for-one-to-one-many-to-one-and-one-to-many-in-hibernate
+
+Cascade Type:
+https://howtodoinjava.com/hibernate/hibernate-jpa-cascade-types/
+https://www.dineshonjava.com/hibernate/cascadetypes-and-other-things/

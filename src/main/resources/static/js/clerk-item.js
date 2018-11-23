@@ -1,3 +1,7 @@
+$(function(){
+   getItems();
+});
+
 $('#item-add-form').submit(function (e) {
     e.preventDefault();
 
@@ -60,41 +64,42 @@ $('#btn-coba').click(function(){
 // });
 
 // https://api.jquery.com/jquery.getjson/
+function getItems() {
+    $.getJSON("/clerk/item/show", function (data) {
+        console.log(data.data);
 
-$.getJSON("/clerk/item/show", function(data){
-    console.log(data.data);
+        $.each(data.data, function (i, value) {
+            var items = [];
+            console.log('Data: ' + value.name);
+            items.push("<td>" + value.id + "</td>");
+            items.push("<td>" + value.name + "</td>");
+            items.push("<td>" + value.quantity + "</td>");
+            items.push("<td>" +
+                "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><span class='glyphicon glyphicon-trash'> Delete</span></button> " +
+                // <button type="button" class="btn btn-danger category-delete" th:attr="data-category-id=${category.id}" ><span class="glyphicon glyphicon-trash"> Delete</span></button>
+                "</td>");
 
-    $.each(data.data, function(i, value){
-        var items = [];
-        console.log('Data: ' + value.name);
-        items.push("<td>"+ value.id + "</td>");
-        items.push("<td>"+ value.name + "</td>");
-        items.push("<td>"+ value.quantity + "</td>");
-        items.push("<td>" +
-            "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><span class='glyphicon glyphicon-trash'> Delete</span></button> " +
-            // <button type="button" class="btn btn-danger category-delete" th:attr="data-category-id=${category.id}" ><span class="glyphicon glyphicon-trash"> Delete</span></button>
-            "</td>");
+            $("<tr/>", {
+                "class": "item-list",
+                html: items.join("")
+            }).appendTo("#item-table > tbody");
+        });
 
-        $("<tr/>", {
-            "class": "item-list",
-            html: items.join("")
-        }).appendTo("#item-table > tbody");
+        /* // Data Tables
+        $.each(data.data, function(i, value){
+           var itema = [];
+           itema.push(value.id);
+           itema.push(value.name);
+           itema.push(value.quantity);
+           itema.push("Actions");
+           return itema;
+        });
+
+        item_table_data.rows.add(itema);
+        item_table_data.draw();
+        */
     });
-
-    /* // Data Tables
-    $.each(data.data, function(i, value){
-       var itema = [];
-       itema.push(value.id);
-       itema.push(value.name);
-       itema.push(value.quantity);
-       itema.push("Actions");
-       return itema;
-    });
-
-    item_table_data.rows.add(itema);
-    item_table_data.draw();
-    */
-});
+}
 
 $('.item-primary').click(function(e) {
     e.preventDefault();
@@ -173,7 +178,8 @@ function itemDelete(itemId){
                         contentType: 'application/json; charset=utf-8',
                         success: function(result){
                             console.log(result);
-                            fetchCategory();
+                            // fetchCategory();
+                            getItems();
                         },
                         error: function(e){
                             bootbox.alert('Error in Delete!');
