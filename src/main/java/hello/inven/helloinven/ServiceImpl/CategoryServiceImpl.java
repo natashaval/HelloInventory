@@ -52,12 +52,13 @@ public class CategoryServiceImpl implements CategoryService {
         ResponseAjax responseAjax = new ResponseAjax(null, null);
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null) {
-            categoryRepository.deleteById(id);
-
             List<Item> itemList = category.getItems();
             for (Item item : itemList){
                 item.setCategory(null);
             }
+
+            categoryRepository.deleteById(id);
+
             responseAjax.setStatus("Deleted");
             responseAjax.setData("Category has been successfully deleted");
         }

@@ -179,7 +179,8 @@ function itemDelete(itemId){
                         success: function(result){
                             console.log(result);
                             // fetchCategory();
-                            getItems();
+                            // getItems();
+                            window.location.reload();
                         },
                         error: function(e){
                             bootbox.alert('Error in Delete!');
