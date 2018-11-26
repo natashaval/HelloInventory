@@ -13,5 +13,6 @@ public interface AdminService {
     List<MyUser> findAll();
     List<MyUser> findManagers(Integer roleId);
     MyUser findByUsername(String username);
+    MyUser findByEmployeeId(Long employeeId);
     MyUser save(MyUser user, MultipartFile file) throws IOException;
 }

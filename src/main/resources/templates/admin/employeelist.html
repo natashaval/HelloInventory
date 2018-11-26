@@ -7,16 +7,37 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <a href="/admin/register" class="btn btn-primary">Register Employee</a>
+
     <table border="2">
-        <tr th:each="emp: ${employees}">
-            <td th:text="${emp.id}" />
-            <td th:text="${emp.name}" />
-            <td th:text="${emp.email}" />
-            <td th:text="${emp.phone}" />
-            <td th:text="${emp.birthday}" />
-            <td th:text="${emp.role.role}" />
-            <td><img th:src="@{${emp.photo}}" /></td>
-        </tr>
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Manager Id</th>
+            <th>Username</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <tr th:each="emp: ${employees}">
+                <td th:text="${emp.id}" />
+                <td th:text="${emp.name}" />
+                <td th:text="${emp.email}" />
+                <td th:text="${emp.role.role}" />
+                <td th:text="${emp.managerId}" />
+                <td th:text="${emp.username}" />
+
+
+                <!--<td><img th:src="@{/uploads/employee/{photo}(photo=${emp.getPhoto()})}" alt="picture relative path"/></td>-->
+                <!--<td>ImageHandler: <img th:src="@{'/uploads/employee/' + ${emp.getPhoto()}}" /></td>-->
+                <td>
+                    <a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}">Details</a>
+                    <a class="btn btn-danger" th:href="@{/admin/employee/{id}/delete(id=${emp.id})}">Delete</a>
+                </td>
+                <!--<td><img th:src="@{${emp.photo}}" /></td>-->
+            </tr>
+        </tbody>
     </table>
 </div>
 </body>

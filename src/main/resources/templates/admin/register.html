@@ -11,7 +11,7 @@
         <!--https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/-->
         <!--https://spring.io/guides/gs/handling-form-submission/-->
         <div th:if="${param.success}">
-            You;ve successfully registered to our awesome app!
+            You've successfully registered to our awesome app!
         </div>
         <div th:if="${param.failure}">
             <h1>Cannot save User</h1>
@@ -47,14 +47,14 @@
 
             <!--https://o7planning.org/en/11659/thymeleaf-form-select-option-example-->
                 <tr>
-                    <td>
+                    <td> Role:
                         <select th:field="*{role}" id="employee_role">
             <!--<select th:field="*{role.roleId}">-->
                          <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
                         </select>
 
-                        <input id="manager_name" />
-                        <input type="number" id="manager_id" th:field="*{managerId}" />
+                        <input id="manager_name" placeholder="Manager name" />
+                        <input type="number" id="manager_id" th:field="*{managerId}" placeholder="Manager ID" />
 
                     </td>
                 </tr>
@@ -62,12 +62,13 @@
 
 
             <!--http://zetcode.com/springboot/uploadfile/-->
-                <tr><td><input type="file" name="file" /></td></tr>
+                <tr><td>Upload Profile Picture: <input type="file" name="file" /></td></tr>
 
-                <tr><td><input type="submit" value="Register" id="registerSubmit"/></td></tr>
+                <tr><td><input type="submit" value="Register" id="registerSubmit" class="btn btn-success"/></td></tr>
             </table>
         </form>
 
+        <a href="/admin/employeelist" class="btn btn-primary">Employee List</a>
         <!--<div>-->
             <!--<h1>Ajax Post Result</h1>-->
             <!--<span id="result"></span>-->

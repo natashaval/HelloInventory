@@ -147,4 +147,12 @@ public class AdminController {
         List<MyUser> managerList = adminService.findManagers(1);
         return new ResponseAjax("Managers", managerList);
     }
+
+    @GetMapping(value = "/admin/employee/{id}")
+    public String employeeList(@PathVariable Long id, Model model) {
+        MyUser myUser = adminService.findByEmployeeId(id);
+        model.addAttribute("employee", myUser);
+        return "admin/employeedetails";
+//        return "profile";
+    }
 }

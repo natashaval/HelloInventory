@@ -7,9 +7,12 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
+    Id: <span th:text="${user.id}"></span>
     Name: <span th:text="${user.name}"></span>
     Email: <span th:text="${user.email}"></span>
     Birthday: <span th:text="${user.birthday}"></span>
+    Role: <span th:text="${user.role.role}"></span>
+    ManagerId: <span th:if="${user.role.role == 'EMPLOYEE'}" th:text="${user.managerId}"></span>
     Username: <span th:text="${user.username}"></span>
 
     <!--https://github.com/thymeleaf/thymeleaf/issues/89-->

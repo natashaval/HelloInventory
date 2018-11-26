@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Employee Details</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <a th:href="@{/admin/employeelist}" class="btn btn-primary">Employee List</a> <br />
+    Id: <span th:text="${employee.id}"></span> <br />
+    Name: <span th:text="${employee.name}"></span> <br />
+    Email: <span th:text="${employee.email}"></span> <br />
+    Phone: <span th:text="${employee.phone}"></span> <br />
+    Birthday: <span th:text="${employee.birthday}"></span> <br />
+    Role: <span th:text="${employee.role.role}"></span> <br />
+    <span th:if="${employee.role.role == 'EMPLOYEE'}" th:text=" 'ManagerId: ' + ${employee.managerId}"></span> <br />
+    Username: <span th:text="${employee.username}"></span> <br />
+
+    <!--ImageHandler: <img th:src="@{'/uploads/employee/' + ${employee.photo}}" alt="profile picture"/>-->
+    Profile Picture: <img th:attr="src=@{|/uploads/employee/${employee.photo}|}, title=${employee.photo}, alt=${employee.photo}" th:width="400" th:height="400" />
+</div>
+
+</body>
+</html>

@@ -71,7 +71,8 @@ public class AdminServiceImpl implements AdminService {
 //            String uploadDirectory = "src/main/resources/static/img/employee/";
 
 //            https://www.youtube.com/watch?v=Hef5pJkNCvA
-            String uploadDirectory = System.getProperty("user.dir") + "/uploads/employee/";
+//            String uploadDirectory = System.getProperty("user.dir") + "/uploads/employee/";
+            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/employee/";
 
             try {
                 Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
@@ -92,6 +93,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<MyUser> findManagers(Integer roleId){
         return myUserRepository.findByRole(roleId);
+    }
+
+    @Override
+    public MyUser findByEmployeeId(Long employeeId){
+        MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
+        return myUser;
     }
 
 }

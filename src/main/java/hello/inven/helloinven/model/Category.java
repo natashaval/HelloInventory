@@ -24,7 +24,7 @@ public class Category extends AuditModel {
     @Column(name = "category_description")
     private String description;
 
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // cascade type remove (?)
 
 //    https://stackoverflow.com/questions/31465440/recursive-json-view-of-an-entity-with-one-to-many-relationship-in-rest-controll
