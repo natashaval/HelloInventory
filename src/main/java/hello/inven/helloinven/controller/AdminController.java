@@ -155,4 +155,9 @@ public class AdminController {
         return "admin/employeedetails";
 //        return "profile";
     }
+
+    @GetMapping(value = "/admin/employee/{id}/delete")
+    public @ResponseBody ResponseAjax employeeDelete(@PathVariable Long id){
+        return adminService.deleteEmployee(id);
+    }
 }

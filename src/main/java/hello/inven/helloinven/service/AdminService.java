@@ -1,6 +1,7 @@
 package hello.inven.helloinven.service;
 
 import hello.inven.helloinven.model.MyUser;
+import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,4 +16,6 @@ public interface AdminService {
     MyUser findByUsername(String username);
     MyUser findByEmployeeId(Long employeeId);
     MyUser save(MyUser user, MultipartFile file) throws IOException;
+
+    ResponseAjax deleteEmployee(Long employeeId);
 }

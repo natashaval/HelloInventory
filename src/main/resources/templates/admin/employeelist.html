@@ -33,12 +33,59 @@
                 <!--<td>ImageHandler: <img th:src="@{'/uploads/employee/' + ${emp.getPhoto()}}" /></td>-->
                 <td>
                     <a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}">Details</a>
-                    <a class="btn btn-danger" th:href="@{/admin/employee/{id}/delete(id=${emp.id})}">Delete</a>
+                    <button class="btn btn-danger employee-delete" th:attr="data-employee-id=${emp.id}">Delete</button>
                 </td>
                 <!--<td><img th:src="@{${emp.photo}}" /></td>-->
             </tr>
         </tbody>
     </table>
+
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript">
+        $('.employee-delete').click(function(e) {
+            e.preventDefault();
+
+            var employeeId = $(this).attr('data-employee-id');
+            console.log('category DELETE klik, id = ' + employeeId);
+
+            bootbox.dialog({
+                message: "Are you sure you want to Delete? ",
+                title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+                buttons: {
+                    success: {
+                        label: "Cancel",
+                        className: "btn-secondary",
+                        callback: function(){
+                            $('.bootbox').modal('hide');
+                        }
+                    },
+                    danger: {
+                        label: "Delete",
+                        className: "btn-danger",
+                        callback: function () {
+                            console.log("delete has been clicked" + employeeId);
+
+                            $.ajax({
+                                type: "GET",
+                                url: "/admin/employee/" + employeeId + "/delete",
+                                contentType: 'application/json; charset=utf-8',
+                                success: function(result){
+                                    console.log(result);
+                                    window.location.reload();
+
+                                    // fetchCategory();
+                                },
+                                error: function(e){
+                                    bootbox.alert('Error in Delete!');
+                                }
+                            });
+
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

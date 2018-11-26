@@ -1,6 +1,7 @@
 package hello.inven.helloinven.ServiceImpl;
 
 import hello.inven.helloinven.model.MyUser;
+import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.MyUserRepository;
 import hello.inven.helloinven.repository.RoleRepository;
@@ -99,6 +100,17 @@ public class AdminServiceImpl implements AdminService {
     public MyUser findByEmployeeId(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
         return myUser;
+    }
+
+    @Override
+    public ResponseAjax deleteEmployee(Long employeeId){
+        MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
+        if (myUser != null) {
+            myUserRepository.deleteById(employeeId);
+            return new ResponseAjax("Deleted", "Employee has been deleted!");
+        }
+        else
+            return new ResponseAjax("Error", "Error in deleting employee!");
     }
 
 }
