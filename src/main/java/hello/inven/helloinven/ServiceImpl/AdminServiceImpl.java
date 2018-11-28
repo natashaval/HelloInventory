@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -106,6 +107,21 @@ public class AdminServiceImpl implements AdminService {
     public ResponseAjax deleteEmployee(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
         if (myUser != null) {
+            if (!myUser.getPhoto().isEmpty()){
+                String photoDirectory = System.getProperty("user.dir") + "/uploads/employee/";
+                try {
+                    File file = new File(photoDirectory + myUser.getPhoto());
+
+                    if (file.delete()) {
+                        System.out.println(file.getName() + "is deleted");
+                    } else {
+                        System.out.println("Delete file error");
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
             myUserRepository.deleteById(employeeId);
             return new ResponseAjax("Deleted", "Employee has been deleted!");
         }

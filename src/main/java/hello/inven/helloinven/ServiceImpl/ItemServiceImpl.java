@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -85,6 +86,21 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id).orElse(null);
         System.out.println(item);
         if (item != null) {
+            if (!item.getPhoto().isEmpty()){
+                String photoDirectory = System.getProperty("user.dir") + "/uploads/item/";
+                try {
+                    File file = new File(photoDirectory + item.getImagePath());
+
+                    if (file.delete()) {
+                        System.out.println(file.getName() + "is deleted");
+                    } else {
+                        System.out.println("Delete file error");
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
             itemRepository.delete(item);
             return new ResponseAjax("Deleted", "Item has been deleted!");
         }
