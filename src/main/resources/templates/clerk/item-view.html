@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="content" th:remove="tag">
+        <!--<a th:href="@{/admin/employeelist}" class="btn btn-primary">Back to Employee List</a> <br />-->
+        Id: <span th:text="${item.id}"></span> <br />
+        Name: <span th:text="${item.name}"></span> <br />
+        Image: <img th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" />
+        Category: <span th:text="${item.category.name}"></span> <br />
+        Quantity: <span th:text="${item.quantity}"></span> <br />
+        Price: <span th:text="${item.price}"></span> <br />
+        Weight: <span th:text="${item.weight}"></span> <br />
+        Weight: <span th:text="${item.height}"></span> <br />
+        Weight: <span th:text="${item.width}"></span> <br />
+        Weight: <span th:text="${item.depth}"></span> <br />
+    </div>
+</body>
+</html>

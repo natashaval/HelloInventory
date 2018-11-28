@@ -28,6 +28,9 @@ public class ItemController {
     @GetMapping(value = "/clerk/item")
     public String itemList(){return "clerk/item"; }
 
+//    @GetMapping(value = "/clerk/item/{id}/details")
+//    public String itemDetails() {return "clerk/item-view"; }
+
     @GetMapping(value = "/clerk/item/add")
     public String itemAdd(Model model){
         List<Category> categoryList = categoryService.getAllCategories();
@@ -50,5 +53,17 @@ public class ItemController {
     @GetMapping(value = "/clerk/item/{id}/delete")
     public @ResponseBody ResponseAjax itemDelete(@PathVariable Long id){
         return itemService.deleteItem(id);
+    }
+
+//    @GetMapping(value = "/clerk/item/{id}")
+//    public @ResponseBody ResponseAjax itemDetails(@PathVariable Long id){
+//        return itemService.detailItem(id);
+//    }
+
+    @GetMapping("/clerk/item/{id}")
+    public String itemDetails(@PathVariable Long id, Model model){
+        Item item = itemService.detailItem(id);
+        model.addAttribute("item", item);
+        return "/clerk/item-view";
     }
 }

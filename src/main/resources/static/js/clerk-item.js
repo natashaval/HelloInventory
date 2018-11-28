@@ -148,6 +148,7 @@ function getItems() {
             items.push("<td>" + value.category.name + "</td>");
             items.push("<td>" + value.quantity + "</td>");
             items.push("<td>" +
+                "<a class='btn btn-info item-details' href='/clerk/item/"+ value.id + "'><span class='glyphicon glyphicon-th-list'>Details</span></a>" +
                 "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><span class='glyphicon glyphicon-trash'> Delete</span></button> " +
                 // <button type="button" class="btn btn-danger category-delete" th:attr="data-category-id=${category.id}" ><span class="glyphicon glyphicon-trash"> Delete</span></button>
                 "</td>");
@@ -266,3 +267,20 @@ function itemDelete(itemId){
         }
     });
 }
+
+/*
+function itemView(itemId){
+    $.ajax({
+        type: "GET",
+        url: "/clerk/item/" + itemId,
+        success: function(data){
+            console.log(data);
+            $('#item-show').hide();
+            $('#item-details').html(data);
+        },
+        error: function(e){
+            $('#item-details').html("Failed to view Item Details");
+        }
+    });
+}
+*/

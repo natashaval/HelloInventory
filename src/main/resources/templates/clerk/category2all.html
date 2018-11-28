@@ -18,7 +18,7 @@
             <!--<td><span class="glyphicon glyphicon-lamp"></span><a th:href="@{/api/category/{id}(id=${category.id})}">Details</a> </td>-->
             <!--<td><span class="glyphicon glyphicon-lamp"></span><a href="javascript:void(0)" id="category-details" data-id="${category.id}" data-target="#modal-category-details">Details</a> </td>-->
             <td>
-                <button type="button" class="btn btn-warning category-details" th:attr="data-category-id=${category.id}"><span class="glyphicon glyphicon-th-list"> Details</span></button>
+                <button type="button" class="btn btn-info category-details" th:attr="data-category-id=${category.id}"><span class="glyphicon glyphicon-th-list"> Details</span></button>
             <!--<td><span class="glyphicon glyphicon-edit"></span><a th:href="@{/clerk/category/{id}/edit(id=${category.id})}">Edit</a></td>-->
                 <button type="button" class="btn btn-primary category-edit" th:attr="data-category-id=${category.id}"><span class="glyphicon glyphicon-edit"> Edit</span></button>
             <!--<span class="glyphicon glyphicon-trash"></span> <a th:href="@{/clerk/category/{id}/delete(id=${category.id})}" th:onclick="'javascript:deleteCategory(' + ${category.id} + ')'">Delete</a>-->
