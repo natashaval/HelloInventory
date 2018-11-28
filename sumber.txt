@@ -103,3 +103,7 @@ https://stackoverflow.com/questions/26601032/default-fetch-type-for-one-to-one-m
 Cascade Type:
 https://howtodoinjava.com/hibernate/hibernate-jpa-cascade-types/
 https://www.dineshonjava.com/hibernate/cascadetypes-and-other-things/
+
+Spring Upload File AJAX:
+https://www.mkyong.com/spring-boot/spring-boot-file-upload-example-ajax-and-rest/
+https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects

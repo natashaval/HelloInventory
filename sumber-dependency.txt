@@ -20,3 +20,9 @@ mysql-connector-java
 Provides MySQL database drivers
 
 https://www.codebyamir.com/blog/user-account-registration-with-spring-boot
+
+
+Transient Annotation
+https://www.quora.com/What-is-Transient-in-Hibernate-What-is-use-of-this
+https://www.objectdb.com/java/jpa/entity/fields
+https://stackoverflow.com/questions/2154622/why-does-jpa-have-a-transient-annotation

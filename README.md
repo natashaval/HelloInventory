@@ -4,7 +4,7 @@
 2. User can view Profile
 3. Admin can register new Employee (if Employee > add managerId) and add Photo
 4. Clerk CRUD Category
-5. Clerk CR Items
+5. Clerk CR Items and upload Item Image
 
 ## TO-DO
 1. Clerk UD Items

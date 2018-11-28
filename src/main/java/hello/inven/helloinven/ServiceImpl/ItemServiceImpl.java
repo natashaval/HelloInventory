@@ -9,7 +9,13 @@ import hello.inven.helloinven.repository.ItemRepository;
 import hello.inven.helloinven.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Service
@@ -22,7 +28,8 @@ public class ItemServiceImpl implements ItemService {
     CategoryRepository categoryRepository;
 
     @Override
-    public ResponseAjax createItem(Item item){
+    public ResponseAjax createItem(Item item) throws IOException {
+//    public ResponseAjax createItem(Item item, MultipartFile file) throws IOException {
         Item newItem = new Item();
         System.out.println("item ID: " + item.getId() + "item Name: " + item.getName());
         newItem.setId(item.getId());
@@ -42,6 +49,25 @@ public class ItemServiceImpl implements ItemService {
 
 //        newItem.setCategory(category);
         newItem.setCategory(item.getCategory());
+
+
+        MultipartFile file = item.getImage();
+
+        if(!file.isEmpty()){
+            String fileName = file.getOriginalFilename();
+            InputStream is = file.getInputStream();
+            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/item/";
+
+            try {
+                Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+
+            newItem.setImagePath(fileName);
+            System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
+        }
 
          itemRepository.save(newItem);
         return new ResponseAjax("Created", newItem);

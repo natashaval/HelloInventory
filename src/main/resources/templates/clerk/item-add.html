@@ -10,10 +10,12 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Create Item</h3>
-    <form method="POST" action="/clerk/item/add" id="item-add-form">
+    <h4>Ajax Post Result</h4><span id="itemResult" style="color: springgreen"></span>
+
+    <form method="POST" th:action="@{/clerk/item/add}" id="item-add-form" enctype="multipart/form-data">
         Identification Number (UPC): <input type="number" name="id"><br />
         Name: <input type="text" name="name"><br />
-        Image: <br />
+        Image: <input type="file" name="image"/><br />
         Description: <br />
         Category:
         <select name="category.id">
@@ -28,7 +30,7 @@
         Width: <input type="number" name="width" step="0.01"> <br />
         Depth: <input type="number" name="depth" step="0.01"> <br />
 
-        <button type="submit" class="btn btn-primary">Create Item</button>
+        <button type="submit" class="btn btn-primary" id="itemSubmit">Create Item</button>
         <a class="btn btn-danger" id="btn-coba">Coba coba</a>
         <a class="btn btn-secondary" href="/clerk/item">Cancel</a>
     </form>

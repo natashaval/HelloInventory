@@ -2,6 +2,7 @@ $(function(){
    getItems();
 });
 
+/*
 $('#item-add-form').submit(function (e) {
     e.preventDefault();
 
@@ -25,13 +26,26 @@ $('#item-add-form').submit(function (e) {
     console.log(data);
 
 
+
     $.ajax({
-        contentType: "application/json; charset=utf-8",
+        // contentType: "application/json; charset=utf-8",
         type: "POST",
+        enctype: 'multipart/form-data',
         url: "/clerk/item/add",
-        dataType: 'json',
-        data: JSON.stringify(data),
+        data: data,
+        processData: false,
+        // contentType: false,
+        cache: false,
+        timeout: 600000,
+
+        // dataType: 'json',
+        // data: JSON.stringify(data),
+
+
         success: function(data) {
+            $('#itemResult').text("Success in Adding Item");
+            console.log("SUCCESS: ", data);
+
             $('#item-add-form').each(function () {
                 // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
                this.reset();
@@ -40,12 +54,70 @@ $('#item-add-form').submit(function (e) {
             //     $(this).val("");
             // });
             // fetchCategory();
+        },
+
+        error: function(e){
+            $('#itemResult').text(e.ResponseText);
+            console.log("ERROR: ", e);
         }
     });
 
 
 
 });
+*/
+
+/*
+$('#itemSubmit').click(function(e){
+   e.preventDefault();
+   AjaxItemSubmit();
+});
+
+
+function AjaxItemSubmit(){
+    var form = $('#item-add-form')[0];
+    var itemData = new FormData(form);
+
+    itemData.append("CustomField", "This is some extra testing");
+    $('#itemSubmit').prop("disabled", true);
+
+    console.log(itemData);
+}
+*/
+
+// https://stackoverflow.com/questions/30162655/spring-mvc-ajax-file-upload-leading-to-415-unsupported-media-type
+$('#item-add-form').submit(function(e){
+    e.preventDefault();
+    var $form = $('#item-add-form');
+    var fd = new FormData($(this)[0]);
+    console.info(fd);
+
+
+    $.ajax({
+        type: "POST",
+        enctype: "multipart/form-data",
+        url: "/clerk/item/add",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(response){
+            console.info(response);
+            $('#itemResult').text("Success in Adding Item");
+            $('#item-add-form').each(function () {
+                // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
+                this.reset();
+            });
+
+        },
+        error: function(e){
+            $('#itemResult').text(e.ResponseText);
+        }
+    });
+
+
+});
+
 
 $('#btn-coba').click(function(){
     alert("COBA");
@@ -66,13 +138,14 @@ $('#btn-coba').click(function(){
 // https://api.jquery.com/jquery.getjson/
 function getItems() {
     $.getJSON("/clerk/item/show", function (data) {
-        console.log(data.data);
+        // console.log(data.data);
 
         $.each(data.data, function (i, value) {
             var items = [];
-            console.log('Data: ' + value.name);
+            console.log('Data Category: ' + value.category.name);
             items.push("<td>" + value.id + "</td>");
             items.push("<td>" + value.name + "</td>");
+            items.push("<td>" + value.category.name + "</td>");
             items.push("<td>" + value.quantity + "</td>");
             items.push("<td>" +
                 "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><span class='glyphicon glyphicon-trash'> Delete</span></button> " +

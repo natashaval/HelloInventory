@@ -2,8 +2,10 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,8 +20,12 @@ public class Item extends AuditModel {
     @Column(nullable = false)
     private String name;
 
+    @Transient
+//    https://www.quora.com/What-is-Transient-in-Hibernate-What-is-use-of-this
+    private MultipartFile image;
+
     @Column
-    private String image;
+    private String imagePath;
 
     @Column
     private Integer quantity;
@@ -64,12 +70,20 @@ public class Item extends AuditModel {
         this.name = name;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Integer getQuantity() {
