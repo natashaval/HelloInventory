@@ -72,8 +72,8 @@ public class AdminServiceImpl implements AdminService {
 //            String uploadDirectory = "src/main/resources/static/img/employee/";
 
 //            https://www.youtube.com/watch?v=Hef5pJkNCvA
-//            String uploadDirectory = System.getProperty("user.dir") + "/uploads/employee/";
-            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/employee/";
+            String uploadDirectory = System.getProperty("user.dir") + "/uploads/employee/";
+//            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/employee/";
 
             try {
                 Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);

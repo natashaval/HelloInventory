@@ -56,7 +56,8 @@ public class ItemServiceImpl implements ItemService {
         if(!file.isEmpty()){
             String fileName = file.getOriginalFilename();
             InputStream is = file.getInputStream();
-            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/item/";
+//            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/item/";
+            String uploadDirectory = System.getProperty("user.dir") + "/uploads/item/";
 
             try {
                 Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);

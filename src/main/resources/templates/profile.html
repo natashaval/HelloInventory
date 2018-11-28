@@ -23,8 +23,8 @@
 
     <!--JALAN-->
     <!--ImageTrue: <img th:src="@{/uploads/employee/{photo}(photo=${user.photo})}" alt="profile picture"/>-->
-    ImageHandler: <img th:src="@{'/uploads/employee/' + ${user.photo}}" alt="profile picture"/>
-
+    <!--ImageHandler: <img th:src="@{'/uploads/employee/' + ${user.photo}}" alt="profile picture"/>-->
+    Profile Picture: <img th:attr="src=@{|/uploads/employee/${user.photo}|}, title=${user.photo}, alt=${user.photo}" th:width="400" th:height="400" />
 
     <!--https://stackoverflow.com/questions/40025807/using-variable-inside-src-image-with-thymleaf-template-->
     <!--Image: <img src="@{'/img/employee/' + ${user.id} + '.png'}" />-->
