@@ -21,3 +21,5 @@ Moving to different account github
 6. Dump `data.sql` to the database
 7. Run `mvn spring-boot:run`
 8. Login as Admin, Clerk, Manager, and Employee
+9. Create folder named 'uploads' in the same location as 'src'
+   - Create subfolder in 'uploads' named 'employee' and 'item' to store upload file image
