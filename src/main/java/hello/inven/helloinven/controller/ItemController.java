@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -60,7 +62,7 @@ public class ItemController {
 //        return itemService.detailItem(id);
 //    }
 
-    @GetMapping("/clerk/item/{id}")
+    @GetMapping(value = "/clerk/item/{id}")
     public String itemDetails(@PathVariable Long id, Model model){
         Item item = itemService.detailItem(id);
         model.addAttribute("item", item);

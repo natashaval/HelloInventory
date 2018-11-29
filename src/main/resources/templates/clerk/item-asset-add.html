@@ -8,7 +8,72 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
+    <h3>Add Item Id <span th:text="${itemId}" style="color: darkblue" id="asset-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
+    <div class="assetResult"></div>
+    <button type="button" class="btn btn-success" id="asset-input-add"><span class="glyphicon glyphicon-plus-sign"></span>Add Serial</button>
 
+
+        <form method="post" id="asset-add-form">
+            <div class="assets-add">
+                <div><input type="text" name="assets[]"/></div>
+            </div>
+            <input type="submit" />
+        </form>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        // https://www.sanwebe.com/snippet/add-and-remove-fields-dynamic-and-simple-with-jquery
+        // https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/
+        // https://www.sanwebe.com/2013/03/addremove-input-fields-dynamically-with-jquery
+        $(document).ready(function(){
+            var assetDiv = $('.assets-add');
+            var max_fields = 10;
+            var now_fields = 1;
+
+            $('#asset-input-add').click(function (e) {
+                e.preventDefault();
+                if(now_fields < max_fields){ // max input box allowed
+                    now_fields++;
+                    $(assetDiv).append("<div><input type='text' name='assets[]'/> <a href='#' class='remove_field'>Remove</a></div>");
+                    // add input box
+                }
+            });
+
+            $(assetDiv).on("click", ".remove_field", function(e){
+                e.preventDefault();
+                $(this).parent('div').remove();
+                now_fields--;
+
+            });
+
+            // https://stackoverflow.com/questions/26555928/ajax-send-value-of-dynamically-created-input-boxes
+
+            $('#asset-add-form').submit(function (e) {
+                e.preventDefault();
+                var assetFormData = $(this).serializeArray();
+                var assetItemId = $('#asset-itemId').attr('item-id');
+                console.log(assetFormData);
+                console.log("Item Id: " + assetItemId);
+
+
+                $.ajax({
+                    method: "POST",
+                    url: "/clerk/item/" + assetItemId + "/assets",
+                    data: assetFormData,
+                    success: function(response){
+                        $('.assetResult').append("<p style='color: green;'>Success</p>");
+                    },
+                    error: function (e){
+                        $('.assetResult').append("<p style='color: red;'>Error</p>");
+                    }
+                });
+
+
+
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

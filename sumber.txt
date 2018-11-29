@@ -111,3 +111,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
 
 Delete File:
 https://www.mkyong.com/java/how-to-delete-file-in-java/
+
+Enum in Model Entity:
+https://www.codejava.net/frameworks/hibernate/hibernate-enum-type-mapping-example
+https://www.mkyong.com/hibernate/hibernate-many-to-many-example-join-table-extra-column-annotation/
+https://vladmihalcea.com/the-best-way-to-map-an-enum-type-with-jpa-and-hibernate/
