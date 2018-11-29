@@ -35,6 +35,7 @@ public class ItemServiceImpl implements ItemService {
         System.out.println("item ID: " + item.getId() + "item Name: " + item.getName());
         newItem.setId(item.getId());
         newItem.setName(item.getName());
+        newItem.setItemType(Item.ItemType.ITEM);
         newItem.setQuantity(item.getQuantity());
         newItem.setPrice(item.getPrice());
         newItem.setWeight(item.getWeight());
@@ -86,7 +87,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id).orElse(null);
         System.out.println(item);
         if (item != null) {
-            if (!item.getPhoto().isEmpty()){
+            if (!item.getImagePath().isEmpty()){
                 String photoDirectory = System.getProperty("user.dir") + "/uploads/item/";
                 try {
                     File file = new File(photoDirectory + item.getImagePath());

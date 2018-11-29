@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 //https://www.mkyong.com/hibernate/hibernate-many-to-many-example-join-table-extra-column-annotation/
-//        https://huongdanjava.com/many-many-relationship-extra-columns-jpa.html
-//        https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
+//https://huongdanjava.com/many-many-relationship-extra-columns-jpa.html
+//https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
 //https://www.codejava.net/frameworks/hibernate/hibernate-many-to-many-association-with-extra-columns-in-join-table-example
 
 @Embeddable // so this class can be embedded in other entities, to hold composite entity identifier

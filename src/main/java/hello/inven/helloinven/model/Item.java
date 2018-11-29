@@ -13,6 +13,11 @@ import java.util.Set;
 @Table(name = "item")
 public class Item extends AuditModel {
 
+//    https://www.codejava.net/frameworks/hibernate/hibernate-enum-type-mapping-example
+    public enum ItemType {
+        ITEM, ASSET
+    }
+
     @Id
     @Column(name = "item_id", nullable = false, unique = true)
     private Long id;
@@ -26,6 +31,9 @@ public class Item extends AuditModel {
 
     @Column
     private String imagePath;
+
+    @Enumerated(EnumType.ORDINAL)
+    private ItemType itemType;
 
     @Column
     private Integer quantity;
@@ -84,6 +92,14 @@ public class Item extends AuditModel {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
     }
 
     public Integer getQuantity() {

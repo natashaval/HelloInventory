@@ -11,7 +11,8 @@
         <!--<a th:href="@{/admin/employeelist}" class="btn btn-primary">Back to Employee List</a> <br />-->
         Id: <span th:text="${item.id}"></span> <br />
         Name: <span th:text="${item.name}"></span> <br />
-        Image: <img th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" />
+        Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
+        Type: <span th:text="${item.itemType}"></span><br />
         Category: <span th:text="${item.category.name}"></span> <br />
         Quantity: <span th:text="${item.quantity}"></span> <br />
         Price: <span th:text="${item.price}"></span> <br />
