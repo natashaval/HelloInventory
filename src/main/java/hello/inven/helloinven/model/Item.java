@@ -60,6 +60,7 @@ public class Item extends AuditModel {
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "primaryKey.item", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Asset> assets = new HashSet<Asset>();
 
     public Long getId() {

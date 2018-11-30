@@ -10,6 +10,7 @@ import hello.inven.helloinven.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class AssetServiceImpl implements AssetService {
     public ResponseAjax createAssets(MyUser clerk, Long itemId, List<String> assetValues){
         Item item = itemRepository.findById(itemId).orElse(null);
 
+        List<Asset> assetList = new ArrayList<>();
+
         for (String asset: assetValues) {
             System.out.println(asset);
             Asset newAsset = new Asset();
@@ -32,9 +35,18 @@ public class AssetServiceImpl implements AssetService {
             newAsset.setItem(item);
             newAsset.setSerialNumber(asset);
 
-            assetRepository.save(newAsset);
+            assetList.add(newAsset);
 
+//            assetRepository.save(newAsset);
         }
+
+        assetRepository.saveAll(assetList);
+        /*
+        for (int i = 0; i < assetList.size(); i++){
+            assetRepository.save(assetList.get(i));
+        }
+        */
+
         return new ResponseAjax("Done", "Asset(s) are saved!");
     }
 
