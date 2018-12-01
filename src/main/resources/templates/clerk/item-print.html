@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Item Print</title>
+</head>
+<body>
+    Id: <span th:text="${item.id}"></span> <br />
+    Name: <span th:text="${item.name}"></span> <br />
+    Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
+    Type: <span th:text="${item.itemType}"></span><br />
+    Category: <span th:text="${item.category.name}"></span> <br />
+    Quantity: <span th:text="${item.quantity}"></span> <br />
+    Price: <span th:text="${item.price}"></span> <br />
+    Weight: <span th:text="${item.weight}"></span> <br />
+    Height: <span th:text="${item.height}"></span> <br />
+    Width: <span th:text="${item.width}"></span> <br />
+    Depth: <span th:text="${item.depth}"></span> <br />
+
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+           window.print();
+           window.close();
+        });
+    </script>
+</body>
+</html>

@@ -3,13 +3,14 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Title</title>
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
-        <!--<a th:href="@{/admin/employeelist}" class="btn btn-primary">Back to Employee List</a> <br />-->
-        Id: <span th:text="${item.id}"></span> <br />
+        <a th:href="@{/clerk/item}" class="btn btn-primary">Back to Item List</a> <br />
+        <button class="btn btn-info" id="item-details-print" th:attr="item-id=${item.id}">Print</button> <br />
+        Item Id: <span th:text="${item.id}"></span> <br />
         Name: <span th:text="${item.name}"></span> <br />
         Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
         Type: <span th:text="${item.itemType}"></span><br />
@@ -20,6 +21,29 @@
         Weight: <span th:text="${item.height}"></span> <br />
         Weight: <span th:text="${item.width}"></span> <br />
         Weight: <span th:text="${item.depth}"></span> <br />
+
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    // https://jsfiddle.net/dimshik/9DbEP/4/
+        $(document).ready(function(){
+           $('#item-details-print').click(function(){
+                var itemId = $(this).attr('item-id');
+                console.log(itemId);
+
+                printData(itemId);
+           });
+        });
+
+        function printData(itemId){
+            var printURL = "http://localhost:8080/clerk/item/" + itemId + "/print";
+            // newWin = window.open(printURL);
+            newWin = window.open(printURL);
+            // newWin.print();
+            // newWin.close();
+
+        }
+
+    </script>
     </div>
 </body>
 </html>

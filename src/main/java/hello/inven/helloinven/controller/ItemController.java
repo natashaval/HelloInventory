@@ -68,4 +68,11 @@ public class ItemController {
         model.addAttribute("item", item);
         return "/clerk/item-view";
     }
+
+    @GetMapping(value = "/clerk/item/{id}/print")
+    public String itemPrint(@PathVariable Long id, Model model){
+        Item item = itemService.detailItem(id);
+        model.addAttribute("item", item);
+        return "/clerk/item-print";
+    }
 }
