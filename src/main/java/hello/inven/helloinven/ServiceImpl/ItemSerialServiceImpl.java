@@ -23,6 +23,16 @@ public class ItemSerialServiceImpl implements ItemSerialService {
     ItemRepository itemRepository;
 
     @Override
+    public ResponseAjax changeToItemSerial(Long itemId){
+        Item item = itemRepository.findById(itemId).orElse(null);
+        if (item != null) {
+            item.setItemType(Item.ItemType.ASSET);
+            itemRepository.save(item);
+        }
+        return new ResponseAjax("Done", "Item has been changed to Assets");
+    }
+
+    @Override
     public ResponseAjax getItemSerialByItemId(Long itemId){
         List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialByItemId(itemId);
         return new ResponseAjax("Done", itemSerials);
@@ -31,6 +41,9 @@ public class ItemSerialServiceImpl implements ItemSerialService {
     @Override
     public ResponseAjax createItemSerial(MyUser clerk, Long itemId, List<Long> itemSerialValues){
         Item item = itemRepository.findById(itemId).orElse(null);
+        item.setItemType(Item.ItemType.ASSET);
+        itemRepository.save(item);
+
 
         /*
         List<Asset> assetList = new ArrayList<>();

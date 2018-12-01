@@ -112,8 +112,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-//    public ResponseAjax detailItem(Long id){
-            public Item detailItem(Long id){
+    public ResponseAjax detailItem(Long id){
+//            public Item detailItem(Long id){
         Item item = itemRepository.findById(id).orElse(null);
         /*
         if (item != null){
@@ -123,6 +123,6 @@ public class ItemServiceImpl implements ItemService {
             return new ResponseAjax("Failed", "Item not found!");
         }
         */
-        return item;
+        return new ResponseAjax("Done", item);
     }
 }

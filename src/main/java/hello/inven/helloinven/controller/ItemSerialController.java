@@ -24,6 +24,11 @@ public class ItemSerialController {
         return itemSerialService.getItemSerialByItemId(id);
     }
 
+    @GetMapping(value = "/clerk/item/{id}/serial/enabled")
+    public @ResponseBody ResponseAjax changeToItemSerial(@PathVariable Long id){
+        return itemSerialService.changeToItemSerial(id);
+    }
+
     @GetMapping(value = "/clerk/item/{id}/serial")
     public String serialAdd(@PathVariable Long id, Model model){
         model.addAttribute("itemId", id);

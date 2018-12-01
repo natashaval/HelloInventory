@@ -7,6 +7,7 @@ import hello.inven.helloinven.model.ResponseAjax;
 import java.util.List;
 
 public interface ItemSerialService {
+    ResponseAjax changeToItemSerial(Long itemId);
     ResponseAjax getItemSerialByItemId(Long itemId);
     ResponseAjax createItemSerial(MyUser clerk, Long itemId, List<Long> itemSerialValues);
 }

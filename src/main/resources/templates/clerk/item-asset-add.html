@@ -8,9 +8,13 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    <h3>Add Item Id <span th:text="${itemId}" style="color: darkblue" id="asset-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
+    <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="asset-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
     <div class="assetResult"></div>
-    <button type="button" class="btn btn-success" id="asset-input-add"><span class="glyphicon glyphicon-plus-sign"></span>Add Serial</button>
+    <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
+    <div id="item-serial-list">
+        <h6>List of Item Serial Number: </h6>
+    </div>
+    <button type="button" class="btn btn-success" id="asset-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Serial Field</button>
 
 
         <form method="post" id="asset-add-form">
@@ -22,15 +26,21 @@
         </form>
 
 
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
         // https://www.sanwebe.com/snippet/add-and-remove-fields-dynamic-and-simple-with-jquery
         // https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/
         // https://www.sanwebe.com/2013/03/addremove-input-fields-dynamically-with-jquery
         $(document).ready(function(){
+
             var assetDiv = $('.assets-add');
+            var itemId = $('#asset-itemId').attr('item-id');
             var max_fields = 10;
             var now_fields = 1;
+
+            getItemSerial(itemId);
 
             $('#asset-input-add').click(function (e) {
                 e.preventDefault();
@@ -53,7 +63,6 @@
             $('#asset-add-form').submit(function (e) {
                 e.preventDefault();
                 var assetFormData = $(this).serializeArray();
-                var itemId = $('#asset-itemId').attr('item-id');
                 console.log(assetFormData);
                 console.log("Item Id: " + itemId);
 
@@ -63,6 +72,7 @@
                     url: "/clerk/item/" + itemId + "/serial",
                     data: assetFormData,
                     success: function(response){
+                        window.location.reload();
                         $('.assetResult').append("<p style='color: green;'>Success</p>");
                     },
                     error: function (e){
@@ -74,6 +84,15 @@
 
             });
         });
+
+        function getItemSerial(itemId){
+            var serialURL = "/clerk/item/" + itemId + "/serialJSON";
+            $.getJSON(serialURL, function(data){
+                $.each(data.data, function(i, value){
+                    $('#item-serial-list').append("<p>" + value.serialId + "</p>");
+                });
+            });
+        }
     </script>
 </div>
 </body>

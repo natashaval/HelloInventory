@@ -153,6 +153,10 @@ function getItems() {
                 "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><span class='glyphicon glyphicon-trash'> Delete</span></button> " +
                 // <button type="button" class="btn btn-danger category-delete" th:attr="data-category-id=${category.id}" ><span class="glyphicon glyphicon-trash"> Delete</span></button>
                 "</td>");
+            // items.push("<td>" +
+            //     "<a class='btn btn-outline-warning item-serial-enable' th:if='value.itemType == ITEM' th:attr='data-item-id = "+ value.id + "'>Enabled</a>" +
+            //     "<a class='btn btn-warning' th:if='value.itemType == ASSET' disabled='true'>Enabled</a>" +
+            //     "<a class='btn btn-warning' href='/clerk/item/"+ value.id + "/assets'><span class='glyphicon glyphicon-plus-sign'>Assets</span></a> ");
 
             $("<tr/>", {
                 "class": "item-list",
@@ -176,50 +180,29 @@ function getItems() {
     });
 }
 
-$('.item-primary').click(function(e) {
+$('.item-serial-enable').click(function(e) {
     e.preventDefault();
     alert("clicked");
     var itemId = $(this).attr('data-item-id');
     console.log(itemId);
+
     /*
-    e.preventDefault();
-
-    var itemId = $(this).attr('data-category-id');
-    console.log('category DELETE klik, id = ' + categoryId);
-
-    bootbox.dialog({
-        message: "Are you sure you want to Delete? ",
-        title: "<span class='glyphicon glyphicon-trash'></span> Delete",
-        buttons: {
-            success: {
-                label: "Cancel",
-                className: "btn-secondary",
-                callback: function(){
-                    $('.bootbox').modal('hide');
-                }
-            },
-            danger: {
-                label: "Delete",
-                className: "btn-danger",
-                callback: function () {
-                    console.log("delete has been clicked" + categoryId);
-                    $.ajax({
-                        type: "GET",
-                        url: "/clerk/category2/" + categoryId + "/delete",
-                        contentType: 'application/json; charset=utf-8',
-                        success: function(result){
-                            console.log(result);
-                            fetchCategory();
-                        },
-                        error: function(e){
-                            bootbox.alert('Error in Delete!');
-                        }
-                    });
-
-                }
-            }
+    $.ajax({
+        type: "GET",
+        url: "clerk/item/" + itemId + "/serial/enabled",
+        success: function(data){
+            window.location.reload();
+            $('.item-result').appendChild("<div class='alert alert-warning alert-dismissible fade show' role='alert'>\n" +
+                "  <strong>Holy guacamole!</strong> You should check in on some of those fields below.\n" +
+                "  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>\n" +
+                "    <span aria-hidden='true'>&times;</span>\n" +
+                "  </button>\n" +
+                "</div>");
+        },
+        error: function(e){
+            $('.item-result').append("<p>Failed to change Item to Assets</p>");
         }
-    })
+    });
     */
 });
 

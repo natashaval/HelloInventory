@@ -64,15 +64,15 @@ public class ItemController {
 
     @GetMapping(value = "/clerk/item/{id}")
     public String itemDetails(@PathVariable Long id, Model model){
-        Item item = itemService.detailItem(id);
-        model.addAttribute("item", item);
+        ResponseAjax responseAjax = itemService.detailItem(id);
+        model.addAttribute("item", responseAjax.getData());
         return "/clerk/item-view";
     }
 
     @GetMapping(value = "/clerk/item/{id}/print")
     public String itemPrint(@PathVariable Long id, Model model){
-        Item item = itemService.detailItem(id);
-        model.addAttribute("item", item);
+        ResponseAjax responseAjax = itemService.detailItem(id);
+        model.addAttribute("item", responseAjax.getData());
         return "/clerk/item-print";
     }
 }

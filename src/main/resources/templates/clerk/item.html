@@ -8,6 +8,8 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
+    <div class="item-result"></div>
+
     <a class="btn btn-primary item-add-button" href="/clerk/item/add" role="button">Add Item</a>
     <div id="item-show">
         <table id="item-table" border="1">
@@ -18,6 +20,7 @@
                 <th>Category</th>
                 <th>Quantity</th>
                 <th>Actions</th>
+                <!--<th>Assets</th>-->
             </tr>
             </thead>
             <tbody>
