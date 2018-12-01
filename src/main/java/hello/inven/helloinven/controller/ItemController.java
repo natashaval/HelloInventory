@@ -52,8 +52,10 @@ public class ItemController {
         return itemService.getAllItems();
     }
 
-    @GetMapping(value = "/clerk/item/{id}/delete")
+    @PostMapping(value = "/clerk/item/{id}/delete")
     public @ResponseBody ResponseAjax itemDelete(@PathVariable Long id){
+        System.out.println("Item id: " + id);
+//        return null;
         return itemService.deleteItem(id);
     }
 

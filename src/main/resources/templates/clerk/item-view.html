@@ -8,18 +8,50 @@
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
-        <!--<a th:href="@{/admin/employeelist}" class="btn btn-primary">Back to Employee List</a> <br />-->
-        Id: <span th:text="${item.id}"></span> <br />
-        Name: <span th:text="${item.name}"></span> <br />
-        Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
-        Type: <span th:text="${item.itemType}"></span><br />
-        Category: <span th:text="${item.category.name}"></span> <br />
-        Quantity: <span th:text="${item.quantity}"></span> <br />
-        Price: <span th:text="${item.price}"></span> <br />
-        Weight: <span th:text="${item.weight}"></span> <br />
-        Weight: <span th:text="${item.height}"></span> <br />
-        Weight: <span th:text="${item.width}"></span> <br />
-        Weight: <span th:text="${item.depth}"></span> <br />
+        <a th:href="@{/clerk/item}" class="btn btn-primary">Back to Item List</a> <br />
+        <button class="btn btn-info" id="item-detail-print">Print</button>
+
+        <div class="item-detail">
+            Item id: <span th:text="${item.id}"></span> <br />
+            Name: <span th:text="${item.name}"></span> <br />
+            Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
+            Type: <span th:text="${item.itemType}"></span><br />
+            Category: <span th:text="${item.category.name}"></span> <br />
+            Quantity: <span th:text="${item.quantity}"></span> <br />
+            Price: <span th:text="${item.price}"></span> <br />
+            Weight: <span th:text="${item.weight}"></span> <br />
+            Weight: <span th:text="${item.height}"></span> <br />
+            Weight: <span th:text="${item.width}"></span> <br />
+            Weight: <span th:text="${item.depth}"></span> <br />
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#item-detail-print').click(function(){
+                    printData();
+                });
+            });
+
+            // https://jsfiddle.net/dimshik/9DbEP/4/
+            // https://stackoverflow.com/questions/468881/print-div-id-printarea-div-only
+            function printData(){
+
+                var divToPrint = $('.item-detail');
+                newWin = window.open("");
+                newWin.document.write(divToPrint);
+                newWin.print();
+                newWin.close();
+
+                /*
+                var printContents = document.getElementsByClassName("item-detail").innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+                window.print();
+                document.body.innerHTML = originalContents;
+                */
+            }
+        </script>
     </div>
 </body>
 </html>
