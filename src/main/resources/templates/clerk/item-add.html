@@ -34,42 +34,7 @@
         <a class="btn btn-secondary" href="/clerk/item">Cancel</a>
     </form>
 
-    <!--<script type="text/javascript" th:src="@{/js/clerk-item.js}"></script>-->
-    <script type="text/javascript">
-
-        // https://stackoverflow.com/questions/30162655/spring-mvc-ajax-file-upload-leading-to-415-unsupported-media-type
-        $('#item-add-form').submit(function(e){
-            e.preventDefault();
-            var $form = $('#item-add-form');
-            var fd = new FormData($(this)[0]);
-            console.info(fd);
-
-
-            $.ajax({
-                type: "POST",
-                enctype: "multipart/form-data",
-                url: "/clerk/item/add",
-                data: fd,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(response){
-                    console.info(response);
-                    $('#itemResult').text("Success in Adding Item");
-                    $('#item-add-form').each(function () {
-                        // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
-                        this.reset();
-                    });
-
-                },
-                error: function(e){
-                    $('#itemResult').text("Failed");
-                }
-            });
-
-
-        });
-    </script>
+    <script type="text/javascript" th:src="@{/js/clerk-item.js}"></script>
 </div>
 </body>
 </html>

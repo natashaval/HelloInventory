@@ -1,62 +1,122 @@
-// $(document).ready(function(){
-   // getItems();
+$(function(){
+   getItems();
+});
 
-    var table = $('#item-table').DataTable({
-        dom: 'Bfrtip',
-        ordering: false,
-        ajax: "/clerk/item/show",
-        dataSrc: 'data',
+/*
+$('#item-add-form').submit(function (e) {
+    e.preventDefault();
 
-        columns: [
-            {data: 'id'},
-            {data: 'name'},
-            {data: 'category.name'},
-            {data: 'quantity'},
-            {data: null}
-            // {data: "<button class='btn btn-info'>Edit</button> <button class='btn btn-warning'>Assets</button> <button class='btn btn-danger'>Delete</button>"}
-        ],
-        columnDefs: [
-            // https://datatables.net/examples/ajax/null_data_source.html
-            // https://stackoverflow.com/questions/31327933/how-add-more-then-one-button-in-each-row-in-jquery-datatables-and-how-to-apply-e
-            {
-                targets: -1,
-                data: null,
-                // defaultContent: "<button>Mboh</button>"
-                defaultContent: "<button class='btn btn-info item-details'>Edit</button> <button class='btn btn-warning item-serial'>Assets</button> <button class='btn btn-danger item-delete'>Delete</button>"
-
-            }
-        ],
-
-        // select: true,
-        buttons: [
-            'print',
-            // {extend: 'create', editor: editor},
-            // {extend: 'edit', editor: editor},
-            // {extend: 'remove', editor: editor}
-        ]
+    console.log("Submit item");
+    var data = {};
+    // from input type
+    $(this).children('input').each(function(){
+        var input = $(this);
+        console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr("name") + ' Value: ' + input.val());
+        data[input.attr('name')] = input.val();
+        delete data["undefined"];
+    });
+    // from select type
+    $(this).children('select').each(function(){
+       var select = $(this);
+       var category = {};
+       category["id"] = select.val();
+       data["category"] = category;
     });
 
-    $('#item-table tbody').on('click', '.item-details', function(e){
-        var data = table.row($(this).parents('tr')).data();
-        console.log(data["id"]);
-        // https://stackoverflow.com/questions/4944387/go-to-link-on-button-click-jquery
-        window.location = "/clerk/item/" + data["id"];
+    console.log(data);
 
+
+
+    $.ajax({
+        // contentType: "application/json; charset=utf-8",
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "/clerk/item/add",
+        data: data,
+        processData: false,
+        // contentType: false,
+        cache: false,
+        timeout: 600000,
+
+        // dataType: 'json',
+        // data: JSON.stringify(data),
+
+
+        success: function(data) {
+            $('#itemResult').text("Success in Adding Item");
+            console.log("SUCCESS: ", data);
+
+            $('#item-add-form').each(function () {
+                // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
+               this.reset();
+            });
+            // $(this).children('input').each(function() {
+            //     $(this).val("");
+            // });
+            // fetchCategory();
+        },
+
+        error: function(e){
+            $('#itemResult').text(e.ResponseText);
+            console.log("ERROR: ", e);
+        }
     });
 
-    $('#item-table tbody').on('click', '.item-delete', function(e){
-        var data = table.row($(this).parents('tr')).data();
-        console.log(data["id"]);
-        itemDelete(data["id"]);
 
+
+});
+*/
+
+/*
+$('#itemSubmit').click(function(e){
+   e.preventDefault();
+   AjaxItemSubmit();
+});
+
+
+function AjaxItemSubmit(){
+    var form = $('#item-add-form')[0];
+    var itemData = new FormData(form);
+
+    itemData.append("CustomField", "This is some extra testing");
+    $('#itemSubmit').prop("disabled", true);
+
+    console.log(itemData);
+}
+*/
+
+// https://stackoverflow.com/questions/30162655/spring-mvc-ajax-file-upload-leading-to-415-unsupported-media-type
+$('#item-add-form').submit(function(e){
+    e.preventDefault();
+    var $form = $('#item-add-form');
+    var fd = new FormData($(this)[0]);
+    console.info(fd);
+
+
+    $.ajax({
+        type: "POST",
+        enctype: "multipart/form-data",
+        url: "/clerk/item/add",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(response){
+            console.info(response);
+            $('#itemResult').text("Success in Adding Item");
+            $('#item-add-form').each(function () {
+                // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
+                this.reset();
+            });
+
+        },
+        error: function(e){
+            $('#itemResult').text(e.ResponseText);
+        }
     });
 
-    $('#item-table tbody').on('click', '.item-serial', function(e){
-        var data = table.row($(this).parents('tr')).data();
-        console.log(data["id"]);
 
-    });
-// });
+});
 
 
 $('#btn-coba').click(function(){
@@ -186,15 +246,16 @@ function itemDelete(itemId){
                 callback: function () {
                     console.log("delete has been clicked" + itemId);
 
+
                     $.ajax({
-                        type: "POST",
+                        type: "GET",
                         url: "/clerk/item/" + itemId + "/delete",
                         contentType: 'application/json; charset=utf-8',
                         success: function(result){
                             console.log(result);
                             // fetchCategory();
                             // getItems();
-                            // window.location.reload();
+                            window.location.reload();
                         },
                         error: function(e){
                             bootbox.alert('Error in Delete!');
@@ -222,89 +283,5 @@ function itemView(itemId){
             $('#item-details').html("Failed to view Item Details");
         }
     });
-}
-*/
-
-
-/*
-$('#item-add-form').submit(function (e) {
-    e.preventDefault();
-
-    console.log("Submit item");
-    var data = {};
-    // from input type
-    $(this).children('input').each(function(){
-        var input = $(this);
-        console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr("name") + ' Value: ' + input.val());
-        data[input.attr('name')] = input.val();
-        delete data["undefined"];
-    });
-    // from select type
-    $(this).children('select').each(function(){
-       var select = $(this);
-       var category = {};
-       category["id"] = select.val();
-       data["category"] = category;
-    });
-
-    console.log(data);
-
-
-
-    $.ajax({
-        // contentType: "application/json; charset=utf-8",
-        type: "POST",
-        enctype: 'multipart/form-data',
-        url: "/clerk/item/add",
-        data: data,
-        processData: false,
-        // contentType: false,
-        cache: false,
-        timeout: 600000,
-
-        // dataType: 'json',
-        // data: JSON.stringify(data),
-
-
-        success: function(data) {
-            $('#itemResult').text("Success in Adding Item");
-            console.log("SUCCESS: ", data);
-
-            $('#item-add-form').each(function () {
-                // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
-               this.reset();
-            });
-            // $(this).children('input').each(function() {
-            //     $(this).val("");
-            // });
-            // fetchCategory();
-        },
-
-        error: function(e){
-            $('#itemResult').text(e.ResponseText);
-            console.log("ERROR: ", e);
-        }
-    });
-
-
-
-});
-*/
-
-/*
-$('#itemSubmit').click(function(e){
-   e.preventDefault();
-   AjaxItemSubmit();
-});
-
-
-function AjaxItemSubmit(){
-    var form = $('#item-add-form')[0];
-    var itemData = new FormData(form);
-
-    itemData.append("CustomField", "This is some extra testing");
-    $('#itemSubmit').prop("disabled", true);
-
-    console.log(itemData);
 }
 */
