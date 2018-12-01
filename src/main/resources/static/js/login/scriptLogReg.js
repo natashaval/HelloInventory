@@ -1,5 +1,5 @@
 // JQUERY
-$(function() {
+$(document).ready(function() {
 	
 	// Switch to Register
 	$('.needAccount, .backLogin').click(function() {

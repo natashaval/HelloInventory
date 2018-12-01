@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -59,9 +60,13 @@ public class Item extends AuditModel {
     @JsonIgnoreProperties(value = "items", allowSetters = true)
     private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "primaryKey.item", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<Asset> assets = new HashSet<Asset>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "primaryKey.item", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Set<Asset> assets = new HashSet<Asset>();
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = {"item", "myUser"})
+    private List<ItemSerial> itemSerials;
 
     public Long getId() {
         return id;
@@ -160,11 +165,19 @@ public class Item extends AuditModel {
     }
 
 //    @OneToMany(mappedBy = "primaryKey.item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<Asset> getAssets() {
-        return assets;
+//    public Set<Asset> getAssets() {
+//        return assets;
+//    }
+//
+//    public void setAssets(Set<Asset> assets) {
+//        this.assets = assets;
+//    }
+
+    public List<ItemSerial> getItemSerials() {
+        return itemSerials;
     }
 
-    public void setAssets(Set<Asset> assets) {
-        this.assets = assets;
+    public void setItemSerials(List<ItemSerial> itemSerials) {
+        this.itemSerials = itemSerials;
     }
 }

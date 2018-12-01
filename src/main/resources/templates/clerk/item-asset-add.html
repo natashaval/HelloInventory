@@ -15,7 +15,8 @@
 
         <form method="post" id="asset-add-form">
             <div class="assets-add">
-                <div><input type="text" name="assets[]"/></div>
+                <!--<div><input type="text" name="assets[]"/></div>-->
+                <div><input type="number" name="serials[]"/></div>
             </div>
             <input type="submit" />
         </form>
@@ -35,7 +36,7 @@
                 e.preventDefault();
                 if(now_fields < max_fields){ // max input box allowed
                     now_fields++;
-                    $(assetDiv).append("<div><input type='text' name='assets[]'/> <a href='#' class='remove_field'>Remove</a></div>");
+                    $(assetDiv).append("<div><input type='number' name='serials[]'/> <a href='#' class='remove_field'>Remove</a></div>");
                     // add input box
                 }
             });
@@ -52,14 +53,14 @@
             $('#asset-add-form').submit(function (e) {
                 e.preventDefault();
                 var assetFormData = $(this).serializeArray();
-                var assetItemId = $('#asset-itemId').attr('item-id');
+                var itemId = $('#asset-itemId').attr('item-id');
                 console.log(assetFormData);
-                console.log("Item Id: " + assetItemId);
+                console.log("Item Id: " + itemId);
 
 
                 $.ajax({
                     method: "POST",
-                    url: "/clerk/item/" + assetItemId + "/assets",
+                    url: "/clerk/item/" + itemId + "/serial",
                     data: assetFormData,
                     success: function(response){
                         $('.assetResult').append("<p style='color: green;'>Success</p>");

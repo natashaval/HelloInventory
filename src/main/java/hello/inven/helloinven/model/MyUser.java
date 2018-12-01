@@ -72,8 +72,12 @@ public class MyUser { //extends User {
     @JsonIgnoreProperties(value = "users", allowSetters = true)
     private Role role;
 
-    @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Asset> assets = new HashSet<Asset>();
+//    @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<Asset> assets = new HashSet<Asset>();
+
+    @OneToMany(mappedBy = "myUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnoreProperties(value = "myUser")
+    private List<ItemSerial> userItemSerials;
 
 //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
 //    private boolean enabled;
@@ -248,11 +252,20 @@ public class MyUser { //extends User {
 //    }
 
 //    @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<Asset> getAssets() {
-        return assets;
+//    public Set<Asset> getAssets() {
+//        return assets;
+//    }
+//
+//    public void setAssets(Set<Asset> assets) {
+//        this.assets = assets;
+//    }
+
+
+    public List<ItemSerial> getUserItemSerials() {
+        return userItemSerials;
     }
 
-    public void setAssets(Set<Asset> assets) {
-        this.assets = assets;
+    public void setUserItemSerials(List<ItemSerial> userItemSerials) {
+        this.userItemSerials = userItemSerials;
     }
 }
