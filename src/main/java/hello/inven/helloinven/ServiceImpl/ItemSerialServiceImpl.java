@@ -67,6 +67,7 @@ public class ItemSerialServiceImpl implements ItemSerialService {
             newItemSerial.setSerialId(itemSerial);
             newItemSerial.setItem(item);
             newItemSerial.setMyUser(clerk);
+            newItemSerial.setClerkId(clerk.getId());
 
             itemSerialList.add(newItemSerial);
         }

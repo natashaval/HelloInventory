@@ -116,3 +116,8 @@ Enum in Model Entity:
 https://www.codejava.net/frameworks/hibernate/hibernate-enum-type-mapping-example
 https://www.mkyong.com/hibernate/hibernate-many-to-many-example-join-table-extra-column-annotation/
 https://vladmihalcea.com/the-best-way-to-map-an-enum-type-with-jpa-and-hibernate/
+
+TESTING (PERLU DIPELAJARI LAGI + buka spring-boot-demo-master):
+https://gigsterous.github.io/engineering/2016/10/18/spring-boot-3.html
+https://ajayiyengar.com/2017/07/08/testing-jpa-entities-in-a-spring-boot-application/
+https://www.baeldung.com/spring-boot-testing

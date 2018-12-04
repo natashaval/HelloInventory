@@ -3,22 +3,21 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
     <title>Item Add</title>
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="asset-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
-    <div class="assetResult"></div>
+    <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
+    <div class="serialResult"></div>
     <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
     <div id="item-serial-list">
         <h6>List of Item Serial Number: </h6>
     </div>
-    <button type="button" class="btn btn-success" id="asset-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Serial Field</button>
+    <button type="button" class="btn btn-success" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Serial Field</button>
 
 
-        <form method="post" id="asset-add-form">
-            <div class="assets-add">
+        <form method="post" id="serial-add-form">
+            <div class="serial-add">
                 <!--<div><input type="text" name="assets[]"/></div>-->
                 <div><input type="number" name="serials[]"/></div>
             </div>
@@ -35,23 +34,23 @@
         // https://www.sanwebe.com/2013/03/addremove-input-fields-dynamically-with-jquery
         $(document).ready(function(){
 
-            var assetDiv = $('.assets-add');
-            var itemId = $('#asset-itemId').attr('item-id');
+            var serialDiv = $('.serial-add');
+            var itemId = $('#serial-itemId').attr('item-id');
             var max_fields = 10;
             var now_fields = 1;
 
             getItemSerial(itemId);
 
-            $('#asset-input-add').click(function (e) {
+            $('#serial-input-add').click(function (e) {
                 e.preventDefault();
                 if(now_fields < max_fields){ // max input box allowed
                     now_fields++;
-                    $(assetDiv).append("<div><input type='number' name='serials[]'/> <a href='#' class='remove_field'>Remove</a></div>");
+                    $(serialDiv).append("<div><input type='number' name='serials[]'/> <a href='#' class='remove_field'>Remove</a></div>");
                     // add input box
                 }
             });
 
-            $(assetDiv).on("click", ".remove_field", function(e){
+            $(serialDiv).on("click", ".remove_field", function(e){
                 e.preventDefault();
                 $(this).parent('div').remove();
                 now_fields--;
@@ -60,23 +59,23 @@
 
             // https://stackoverflow.com/questions/26555928/ajax-send-value-of-dynamically-created-input-boxes
 
-            $('#asset-add-form').submit(function (e) {
+            $('#serial-add-form').submit(function (e) {
                 e.preventDefault();
-                var assetFormData = $(this).serializeArray();
-                console.log(assetFormData);
+                var serialFormData = $(this).serializeArray();
+                console.log(serialFormData);
                 console.log("Item Id: " + itemId);
 
 
                 $.ajax({
                     method: "POST",
                     url: "/clerk/item/" + itemId + "/serial",
-                    data: assetFormData,
+                    data: serialFormData,
                     success: function(response){
                         window.location.reload();
-                        $('.assetResult').append("<p style='color: green;'>Success</p>");
+                        $('.serialResult').append("<p style='color: green;'>Success</p>");
                     },
                     error: function (e){
-                        $('.assetResult').append("<p style='color: red;'>Error</p>");
+                        $('.serialResult').append("<p style='color: red;'>Error</p>");
                     }
                 });
 

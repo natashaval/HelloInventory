@@ -17,27 +17,27 @@ public class AssetController {
     @Autowired
     AssetService assetService;
 
-    @GetMapping(value = "/clerk/item/{id}/assets")
-    public String assetsAdd(@PathVariable Long id, Model model) {
-        model.addAttribute("itemId", id);
-        return "/clerk/item-asset-add";
-    }
+//    @GetMapping(value = "/clerk/item/{id}/assets")
+//    public String assetsAdd(@PathVariable Long id, Model model) {
+//        model.addAttribute("itemId", id);
+//        return "/clerk/item-asset-add";
+//    }
 
     //    https://stackoverflow.com/questions/5399347/how-to-pass-post-array-parameter-in-spring-mvc
-    @PostMapping(value = "/clerk/item/{id}/assets")
-    public @ResponseBody
-    ResponseAjax assetAddPost(@PathVariable Long id, @RequestParam(value = "assets[]") List<String> assetValues){
-        // Get Clerk ID
-        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MyUser clerk = myUserDetails.getUser();
-
-        System.out.println("Item Id: " + id);
-        for (String asset: assetValues) {
-            System.out.println(asset);
-        }
-        return assetService.createAssets(clerk, id, assetValues);
-//        return null;
-    }
+//    @PostMapping(value = "/clerk/item/{id}/assets")
+//    public @ResponseBody
+//    ResponseAjax assetAddPost(@PathVariable Long id, @RequestParam(value = "assets[]") List<String> assetValues){
+//        // Get Clerk ID
+//        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        MyUser clerk = myUserDetails.getUser();
+//
+//        System.out.println("Item Id: " + id);
+//        for (String asset: assetValues) {
+//            System.out.println(asset);
+//        }
+//        return assetService.createAssets(clerk, id, assetValues);
+////        return null;
+//    }
 
 
 }

@@ -21,6 +21,9 @@ public class ItemSerial {
     @JsonIgnoreProperties(value = "userItemSerials", allowSetters = true)
     private MyUser myUser;
 
+    @Column(name = "clerk_id")
+    private Long clerkId; // clerk yang bertugas menghandle barang tersebut
+
     public Long getSerialId() {
         return serialId;
     }
@@ -43,5 +46,13 @@ public class ItemSerial {
 
     public void setMyUser(MyUser myUser) {
         this.myUser = myUser;
+    }
+
+    public Long getClerkId() {
+        return clerkId;
+    }
+
+    public void setClerkId(Long clerkId) {
+        this.clerkId = clerkId;
     }
 }

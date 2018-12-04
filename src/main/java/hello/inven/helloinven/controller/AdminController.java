@@ -43,7 +43,7 @@ public class AdminController {
         return "/admin/dashboard";
     }
 
-    @GetMapping(value = "/admin/employeelist")
+    @GetMapping(value = "/admin/employeelist") // Menampilkan daftar seluruh Employee
     public String employeeList(Model model) {
         List<MyUser> employees = adminService.findAll();
         for (MyUser emp : employees) {
