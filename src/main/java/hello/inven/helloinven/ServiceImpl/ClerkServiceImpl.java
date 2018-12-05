@@ -26,9 +26,24 @@ public class ClerkServiceImpl implements ClerkService {
     }
 
     @Override
-    public ResponseAjax getItemSerialHandleByClerk(MyUser clerk, Long itemId){
+    public ResponseAjax assignItemSerial(MyUser clerk, Long itemId, List<Long> employeeValues){
         Long clerkId = clerk.getId();
         List<ItemSerial> itemSerialNotAssigned = itemSerialRepository.findItemSerialNotAssigned(itemId, clerkId);
-        return new ResponseAjax("Found", itemSerialNotAssigned);
+
+        if (itemSerialNotAssigned.size() >= employeeValues.size()){
+            for (int i = 0; i < employeeValues.size(); i++){
+                ItemSerial itemSerial = itemSerialNotAssigned.get(i);
+                MyUser myUser = myUserRepository.findById(employeeValues.get(i)).orElse(null);
+                itemSerial.setMyUser(myUser);
+                itemSerialRepository.save(itemSerial);
+            }
+
+            return new ResponseAjax("Done", "Assign Item Serial to Employee Finished");
+        }
+
+        else {
+            return new ResponseAjax("Failed", "Assign Item Serial to Employee FAILED");
+        }
+
     }
 }

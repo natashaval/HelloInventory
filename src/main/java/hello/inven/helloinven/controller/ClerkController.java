@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class ClerkController {
@@ -33,11 +32,11 @@ public class ClerkController {
 
     @PostMapping(value = "/clerk/item/{id}/assign")
     @ResponseBody
-    public ResponseAjax itemAssignPost(@PathVariable Long id){
+    public ResponseAjax itemAssignPost(@PathVariable Long id, @RequestParam(value = "serial_employee[]") List<Long> employeeValues){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser clerk = myUserDetails.getUser();
 
-        return clerkService.getItemSerialHandleByClerk(clerk, id);
+        return clerkService.assignItemSerial(clerk, id, employeeValues);
     }
 
 

@@ -130,4 +130,19 @@ $('#serial-assign-form').submit(function(e){
     e.preventDefault();
     var serialFormData = $(this).serializeArray();
     console.log(serialFormData);
+
+    $.ajax({
+        type: "POST",
+        url: "/clerk/item/" + itemId + "/assign",
+        data: serialFormData,
+        success: function(data){
+            console.log(data.data);
+            $('.serial-assign-result').html("<p>"+ data.data + "</p>");
+            $('#item-serial-table').DataTable().ajax.reload();
+        },
+        error: function(data){
+            console.log(data.data);
+            $('.serial-assign-result').html("<p>"+ data.data + "</p>");
+        }
+    });
 });
