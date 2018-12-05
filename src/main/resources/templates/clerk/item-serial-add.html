@@ -4,95 +4,65 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <title>Item Add</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <style type="text/css">
+        .serial-assign-div, .serial-add-div {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
     <div class="serialResult"></div>
     <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
-    <div id="item-serial-list">
-        <h6>List of Item Serial Number: </h6>
-    </div>
-    <button type="button" class="btn btn-success" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Serial Field</button>
+    <div class="row">
 
-
-        <form method="post" id="serial-add-form">
-            <div class="serial-add">
-                <!--<div><input type="text" name="assets[]"/></div>-->
-                <div><input type="number" name="serials[]"/></div>
+        <div class="col-lg-6">
+            <div id="item-serial-list">
+                <h6>List of Item Serial Number: </h6>
+                <table id="item-serial-table">
+                    <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Employee</th>
+                        <th>Clerk Id</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
-            <input type="submit" />
-        </form>
+        </div>
 
+        <div class="col-lg-6">
+            <button class="btn btn-info" id="serial-add-button"><span class="glyphicon glyphicon-plus"></span> Add Serial Number</button>
+            <div class="serial-add-div">
+                <button class="btn btn-success" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Add Field</button>
 
+                <form method="post" id="serial-add-form">
+                    <div class="serial-add">
+                        <!--<div><input type="text" name="assets[]"/></div>-->
+                        <div><input type="number" name="serials[]"/></div>
+                    </div>
+                    <input type="submit" />
+                </form>
+            </div>
+            <hr />
 
+            <button class="btn btn-info" id="serial-assign-button"><span class="glyphicon glyphicon-user"></span> Assign to Employee</button>
+            <div class="serial-assign-div" hidden="true">
+                <form id="serial-assign-form">
+                    <select multiple class="custom-select-lg" id="serial-assign" name="serial_employee[]">
+                    </select>
+                    <br />
+                    <input type="submit" class="btn btn-success" />
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        // https://www.sanwebe.com/snippet/add-and-remove-fields-dynamic-and-simple-with-jquery
-        // https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/
-        // https://www.sanwebe.com/2013/03/addremove-input-fields-dynamically-with-jquery
-        $(document).ready(function(){
-
-            var serialDiv = $('.serial-add');
-            var itemId = $('#serial-itemId').attr('item-id');
-            var max_fields = 10;
-            var now_fields = 1;
-
-            getItemSerial(itemId);
-
-            $('#serial-input-add').click(function (e) {
-                e.preventDefault();
-                if(now_fields < max_fields){ // max input box allowed
-                    now_fields++;
-                    $(serialDiv).append("<div><input type='number' name='serials[]'/> <a href='#' class='remove_field'>Remove</a></div>");
-                    // add input box
-                }
-            });
-
-            $(serialDiv).on("click", ".remove_field", function(e){
-                e.preventDefault();
-                $(this).parent('div').remove();
-                now_fields--;
-
-            });
-
-            // https://stackoverflow.com/questions/26555928/ajax-send-value-of-dynamically-created-input-boxes
-
-            $('#serial-add-form').submit(function (e) {
-                e.preventDefault();
-                var serialFormData = $(this).serializeArray();
-                console.log(serialFormData);
-                console.log("Item Id: " + itemId);
-
-
-                $.ajax({
-                    method: "POST",
-                    url: "/clerk/item/" + itemId + "/serial",
-                    data: serialFormData,
-                    success: function(response){
-                        window.location.reload();
-                        $('.serialResult').append("<p style='color: green;'>Success</p>");
-                    },
-                    error: function (e){
-                        $('.serialResult').append("<p style='color: red;'>Error</p>");
-                    }
-                });
-
-
-
-            });
-        });
-
-        function getItemSerial(itemId){
-            var serialURL = "/clerk/item/" + itemId + "/serialJSON";
-            $.getJSON(serialURL, function(data){
-                $.each(data.data, function(i, value){
-                    $('#item-serial-list').append("<p>" + value.serialId + "</p>");
-                });
-            });
-        }
-    </script>
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/clerk-item-serial.js}"></script>
 </div>
 </body>
 </html>

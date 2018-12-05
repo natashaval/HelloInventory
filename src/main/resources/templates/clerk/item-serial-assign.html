@@ -6,21 +6,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Item Assign</title>
+    <link rel="stylesheet" th:href="@{/plugin/EasyAutocomplete-1.3.5/easy-autocomplete.min.css}" />
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
-        <input type="text" id="emp_name" placeholder="Employee Name" />
-        <input type="number" id="emp_id" placeholder="Employee ID" />
+        <form id="item-assign-form">
+            <select multiple class="custom-select-lg" id="serial-assign" name="serial_employee[]">
+            </select>
 
+            <input type="submit" class="btn btn-success" id="serial-assign-submit"/>
+        </form>
         <script type="text/javascript" th:src="@{/plugin/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js}"></script>
 
         <script type="text/javascript">
-            var managerAndEmployee = {};
+
+            // var managerAndEmployee = [];
 
             $(document).ready(function () {
-                getManagerAndEmployee();
+                getEmployee();
+                // console.log(managerAndEmployee);
+                // selectMultiple();
+            });
+
+            function getEmployee() {
+                $.ajax({
+                    dataType: 'json',
+                    url: '/clerk/employeelist',
+                    // data: data,
+                    success: function (data) {
+                        // console.log(data.data);
+                        // managerAndEmployee = data.data;
+
+                        // https://stackoverflow.com/questions/733314/jquery-loop-over-json-result-from-ajax-success
+                        $.each(data.data, function(key, value){
+                            $('#serial-assign').append(
+                                "<option value='" + value.id + "'>" + value.name + "</option>"
+                            );
+                        });
+
+                    },
+                    error: function(e){
+                        console.log(e.stackTrace);
+                    }
+                });
+            }
+
+            $('#serial-assign-submit').submit(function(e){
+               e.preventDefault();
+                var serialFormData = $(this).serializeArray();
+                console.log(serialFormData);
+            });
+
+            /*
+
+                EmployeeIdIncr = 0;
+
                 options = {
-                    data: managerAndEmployee,
+                    // data: managerAndEmployee,
+                    url: "/clerk/employeelist",
+                    listLocation: "data",
                     getValue: "name",
                     list: {
                         match: {
@@ -28,28 +72,20 @@
                         },
 
                         onSelectItemEvent: function(){
-                            var value = $('#emp_name').getSelectedItemData().id;
-                            $('#emp_id').val(value).trigger("change");
+                            var value = $('.emp_name').getSelectedItemData().id;
+                            var empInput = document.getElementById('emp_id' + EmployeeIdIncr);
+
+                            $(empInput).val(value).trigger("change");
                         }
                     }
                 }
+
+                $('.emp_name').easyAutocomplete(options);
+                // $('.emp_name').on("focus", function () {
+                //     $(this).easyAutocomplete(options);
+                // });
             });
-
-            function getManagerAndEmployee(){
-                $.getJSON("/clerk/employeelist", function(data){
-                    console.log(data.data);
-                    $.each(data.data, function (key, val){
-                        var empObj = {};
-                        console.log("Key: " + key + "Val: " + val.name);
-                        empObj["name"] = val.name;
-                        empObj["id"] = val.id;
-                        managerAndEmployee.push(empObj);
-                    });
-
-                    console.log("Employee List: ");
-                    console.log(managerAndEmployee);
-                });
-            }
+            */
         </script>
     </div>
 

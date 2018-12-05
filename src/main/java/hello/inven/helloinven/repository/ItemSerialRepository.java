@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface ItemSerialRepository extends JpaRepository<ItemSerial, Long> {
 
-    @Query("SELECT u FROM MyUser AS u JOIN u.role AS r WHERE r.id = :roleId ")
-    List<MyUser> findByRole(@Param("roleId") Integer roleId);
-
-    @Query("SELECT s FROM ItemSerial AS s JOIN s.item AS i WHERE i.id = :itemId")
+    @Query(value = "SELECT s FROM ItemSerial AS s JOIN s.item AS i WHERE i.id = :itemId")
     List<ItemSerial> findItemSerialByItemId(@Param("itemId") Long itemId);
+
+    @Query(value = "SELECT * FROM item_serial AS s WHERE s.item_id = :itemId AND s.clerk_id = :clerkId", nativeQuery = true)
+    List<ItemSerial> findItemSerialNotAssigned(@Param("itemId") Long itemId, @Param("clerkId") Long clerkId);
 }

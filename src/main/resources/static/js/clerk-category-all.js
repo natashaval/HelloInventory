@@ -1,5 +1,6 @@
+var table;
 $(document).ready(function(){
-    $('#category-table').DataTable();
+    table = $('#category-table').DataTable();
 });
 
 $('.category-details').click(function(){
@@ -81,6 +82,7 @@ $('#category-edit-form').submit(function(e){
             // https://stackoverflow.com/questions/29754902/close-bootstrap-modal-after-submit/33647143
             $('#modal-category-edit').modal('hide').data('bs.modal',null); // close modal
             fetchCategory();
+            // table.ajax.reload();
         },
         error: function(e){
             $('.modal-category-edit-title').html("<strong>Error</strong>");
