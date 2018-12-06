@@ -7,7 +7,6 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    INI DASHBOARD CLERK
     <h1>Hello,CLERK! Sudah memakai layout</h1>
     <a th:href="@{/profile}">My Profile</a>
     <a th:href="@{/clerk/category}">Category</a>
@@ -17,15 +16,6 @@
     <a th:href="@{/profile}">Profile</a>
     <a style="color: blue" th:href="@{/}">Home</a>
 
-    <div class="panel-body">
-
-    </div>
-
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out" />
-    </form>
-
-    <script type="text/javascript" th:src="@{/js/clerk-dashboard.js}"></script>
 </div>
 </body>
 </html>

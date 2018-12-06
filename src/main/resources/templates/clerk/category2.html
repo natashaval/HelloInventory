@@ -3,10 +3,10 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
+    <!--<link rel="stylesheet" href="/webjars/datatables/1.10.19/css/dataTables.bootstrap.min.css" />-->
+    <!--<link rel="stylesheet" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css" />-->
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
-    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
-    <!--<link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/css/dataTables.bootstrap4.min.css}" />-->
-    <title>Category 2</title>
+    <title>Category</title>
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
@@ -56,15 +56,9 @@
         <div class="category-table">
         </div>
 
-        <div class="category-rest">
-            <div class="col-sm-7" style="margin:20px 0px 20px 0px">
-                <button id="getAllCustomerId" type="button" class="btn btn-primary">Get All Customers</button>
-                <div id="getResultDiv" style="padding:20px 10px 20px 50px">
-                    <ul class="list-group">
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <!--<script type="text/javascript" src="/webjars/datatables/1.10.19/js/dataTables.dataTables.min.js"></script>-->
+        <!--<script type="text/javascript" src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>-->
+        <!--<script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>-->
 
         <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
         <script type="text/javascript" th:src="@{/js/clerk-category.js}"></script>

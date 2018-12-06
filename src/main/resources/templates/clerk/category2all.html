@@ -85,8 +85,10 @@
 
 <!--Modal Category Delete using Bootbox Jquery plugin-->
 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<!--<link rel="stylesheet" href="/webjars/datatables/1.10.19/js/dataTables.bootstrap.min.js" />-->
+<!--<link rel="stylesheet" href="/webjars/datatables/1.10.19/js/dataTables.dataTables.min.js" />-->
+<!--<link rel="stylesheet" href="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js" />-->
+<script type="text/javascript" th:src="@{/plugin/DataTables/datatables.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/clerk-category-all.js}"></script>
 </html>

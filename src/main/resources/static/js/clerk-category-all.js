@@ -107,8 +107,8 @@ $('.category-delete').click(function(e) {
     console.log('category DELETE klik, id = ' + categoryId);
 
     bootbox.dialog({
-        message: "Are you sure you want to Delete? ",
         title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+        message: "Are you sure you want to Delete? ",
         buttons: {
             success: {
                 label: "Cancel",

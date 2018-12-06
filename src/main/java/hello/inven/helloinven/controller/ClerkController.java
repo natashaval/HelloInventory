@@ -25,11 +25,6 @@ public class ClerkController {
         return clerkService.findManagerAndEmployee();
     }
 
-    @GetMapping(value = "/clerk/item/{id}/assign")
-    public String itemAssign(@PathVariable Long id, Model model){
-        return "clerk/item-serial-assign";
-    }
-
     @PostMapping(value = "/clerk/item/{id}/assign")
     @ResponseBody
     public ResponseAjax itemAssignPost(@PathVariable Long id, @RequestParam(value = "serial_employee[]") List<Long> employeeValues){

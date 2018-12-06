@@ -91,6 +91,7 @@ function buttonView() {
     });
 
     $('#serial-assign-button').click(function () {
+        console.log("Clicked");
         $('.serial-assign-div').slideToggle();
     });
 

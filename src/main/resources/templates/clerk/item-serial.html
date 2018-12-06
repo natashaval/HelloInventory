@@ -5,6 +5,7 @@
 <head>
     <title>Item Add</title>
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+
     <style type="text/css">
         .serial-assign-div, .serial-add-div {
             display: none;
@@ -13,9 +14,11 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
+    <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
+    <br /><br />
     <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
     <div class="serialResult"></div>
-    <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
+
     <div class="row">
 
         <div class="col-lg-6">
@@ -36,25 +39,30 @@
 
         <div class="col-lg-6">
             <button class="btn btn-info" id="serial-add-button"><span class="glyphicon glyphicon-plus"></span> Add Serial Number</button>
+            <br/>
+            <br/>
             <div class="serial-add-div">
-                <button class="btn btn-success" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Add Field</button>
+                <button class="btn btn-dark" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Add Field</button>
 
                 <form method="post" id="serial-add-form">
                     <div class="serial-add">
                         <!--<div><input type="text" name="assets[]"/></div>-->
                         <div><input type="number" name="serials[]"/></div>
                     </div>
-                    <input type="submit" />
+                    <input type="submit" class="btn btn-success"/>
                 </form>
             </div>
             <hr />
 
             <button class="btn btn-info" id="serial-assign-button"><span class="glyphicon glyphicon-user"></span> Assign to Employee</button>
             <div class="serial-assign-result"></div>
-            <div class="serial-assign-div" hidden="true">
+            <div class="serial-assign-div">
                 <form id="serial-assign-form">
-                    <select multiple class="custom-select-lg" id="serial-assign" name="serial_employee[]">
-                    </select>
+                    <div class="form-group">
+                        <label>Employee List</label>
+                        <select multiple class="form-control" id="serial-assign" name="serial_employee[]">
+                        </select>
+                    </div>
                     <br />
                     <input type="submit" class="btn btn-success" />
                 </form>

@@ -78,13 +78,6 @@ public class CategoryController {
     @GetMapping("/clerk/category2")
     public String category2(){ return "clerk/category2";}
 
-    @GetMapping("/clerk/category2/all")
-    public String category2all(Model model){
-        List<Category> categoryList = categoryService.getAllCategories();
-        model.addAttribute("categoryList", categoryList);
-        return "clerk/category2all";
-    }
-
     @PostMapping("/clerk/category2/add")
     public @ResponseBody ResponseAjax category2Add(@RequestBody Category category){
         return categoryService.createCategory(category);
