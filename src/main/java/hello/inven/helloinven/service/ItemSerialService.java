@@ -10,4 +10,5 @@ public interface ItemSerialService {
     ResponseAjax changeToItemSerial(Long itemId);
     ResponseAjax getItemSerialByItemId(Long itemId);
     ResponseAjax createItemSerial(MyUser clerk, Long itemId, List<Long> itemSerialValues);
+    ResponseAjax deleteItemSerial(Long serialId);
 }

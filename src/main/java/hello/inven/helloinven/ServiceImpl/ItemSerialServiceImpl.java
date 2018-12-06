@@ -76,4 +76,17 @@ public class ItemSerialServiceImpl implements ItemSerialService {
 
         return new ResponseAjax("Done", "Item Serials has been saved!");
     }
+
+    @Override
+    public ResponseAjax deleteItemSerial(Long serialId){
+        ItemSerial itemSerial = itemSerialRepository.findById(serialId).orElse(null);
+        if (itemSerial != null){
+            itemSerialRepository.deleteById(serialId);
+            return new ResponseAjax("Deleted", "Item Serial has been deleted!");
+        }
+        else {
+            return new ResponseAjax("Failed", "Item Serial is failed to be deleted!");
+        }
+
+    }
 }

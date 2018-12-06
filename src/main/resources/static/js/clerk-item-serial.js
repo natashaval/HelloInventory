@@ -97,9 +97,45 @@ function buttonView() {
 
     // https://stackoverflow.com/questions/31327933/how-add-more-then-one-button-in-each-row-in-jquery-datatables-and-how-to-apply-e
     $('#item-serial-table tbody').on('click', '.serial-delete-button', function (e) {
-        alert("Clicked Delete!");
         deleteRow = tableSerial.row($(this).parents('tr')).data();
         console.log(deleteRow);
+        serialId = deleteRow.serialId;
+
+        bootbox.dialog({
+            title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+            message: "Are you sure you want to Delete? ",
+            buttons: {
+                success: {
+                    label: "Cancel",
+                    className: "btn-secondary",
+                    callback: function(){
+                        $('.bootbox').modal('hide');
+                    }
+                },
+                danger: {
+                    label: "Delete",
+                    className: "btn-danger",
+                    callback: function () {
+                        console.log("delete has been clicked" + serialId);
+                        $.ajax({
+                            type: 'POST',
+                            url: "/clerk/item/serial/" + deleteRow.serialId + "/delete",
+                            success: function (data) {
+                                console.log(data.data);
+                                $('.serialResult').html("<p>"+ data.data + "</p>");
+                                $('#item-serial-table').DataTable().ajax.reload();
+                            },
+                            error: function (data) {
+                                console.log(data.data);
+                                $('.serialResult').html("<p>"+ data.data + "</p>");
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
     });
 }
 

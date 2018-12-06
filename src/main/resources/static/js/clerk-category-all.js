@@ -138,5 +138,5 @@ $('.category-delete').click(function(e) {
                 }
             }
         }
-    })
+    });
 });
