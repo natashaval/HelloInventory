@@ -79,6 +79,10 @@ public class MyUser { //extends User {
     @JsonIgnoreProperties(value = "myUser")
     private List<ItemSerial> userItemSerials;
 
+    //    https://stackoverflow.com/questions/11718459/onetomany-mappedby-maps-to
+    @OneToMany(mappedBy = "requestedBy")
+    private List<ActionTransaction> actionTransactions;
+
 //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
 //    private boolean enabled;
 //    private boolean accountNonExpired;

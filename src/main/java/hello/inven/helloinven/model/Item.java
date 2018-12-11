@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,6 +68,9 @@ public class Item extends AuditModel {
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = {"item", "myUser"})
     private List<ItemSerial> itemSerials;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.item", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<ActionItem> actionItemList = new ArrayList<>();
 
     public Long getId() {
         return id;
