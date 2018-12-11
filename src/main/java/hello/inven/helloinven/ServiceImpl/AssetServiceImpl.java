@@ -26,7 +26,7 @@ public class AssetServiceImpl implements AssetService {
     public ResponseAjax createAssets(MyUser clerk, Long itemId, List<String> assetValues){
         Item item = itemRepository.findById(itemId).orElse(null);
 
-        List<Asset> assetList = new ArrayList<>();
+//        List<Asset> assetList = new ArrayList<>();
 
         for (String asset: assetValues) {
             System.out.println(asset);
@@ -35,12 +35,12 @@ public class AssetServiceImpl implements AssetService {
             newAsset.setItem(item);
             newAsset.setSerialNumber(asset);
 
-            assetList.add(newAsset);
+//            assetList.add(newAsset);
 
-//            assetRepository.save(newAsset);
+            assetRepository.save(newAsset);
         }
 
-        assetRepository.saveAll(assetList);
+//        assetRepository.saveAll(assetList);
         /*
         for (int i = 0; i < assetList.size(); i++){
             assetRepository.save(assetList.get(i));

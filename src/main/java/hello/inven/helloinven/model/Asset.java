@@ -10,7 +10,7 @@ import java.util.Objects;
 @AssociationOverrides({ // override the mapping for MyUser and Item for composite key
         @AssociationOverride(name = "primaryKey.myUser", joinColumns = @JoinColumn(name = "emp_id")),
         @AssociationOverride(name = "primaryKey.item", joinColumns = @JoinColumn(name = "item_id"))
-        // Associati666666666666666666666666666666666666666666666666666666666666666666666666666666666666yyyyyyyyyyyyyyyyyyonOverride namanya harus sama dengan yang private AssetId primaryKey
+        // AssociationOverride namanya harus sama dengan yang private AssetId primaryKey
 })
 public class Asset implements Serializable {
 

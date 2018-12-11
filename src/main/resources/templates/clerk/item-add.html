@@ -3,13 +3,12 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Item Add</title>
+    <title>Add Item</title>
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Create Item</h3>
-    <h4>Ajax Post Result</h4><span id="itemResult" style="color: springgreen"></span>
+    <h4>Result</h4><span id="itemResult" style="color: springgreen"></span>
 
     <form method="POST" th:action="@{/clerk/item/add}" id="item-add-form" enctype="multipart/form-data">
         Identification Number (UPC): <input type="number" name="id"><br />

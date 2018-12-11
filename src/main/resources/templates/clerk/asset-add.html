@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Item Add</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
+    <br /><br />
+    <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
+
+    <div class="serialResult"></div>
+
+    <div class="row">
+
+        <!--<div class="col-lg-6">-->
+            <!--<div id="item-serial-list">-->
+                <!--<h6>List of Item Serial Number: </h6>-->
+                <!--<table id="item-serial-table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Serial Number</th>-->
+                        <!--<th>Employee</th>-->
+                        <!--<th>Clerk Id</th>-->
+                        <!--<th>Actions</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-lg-6">
+            <button class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> Add Serial Number</button>
+            <br/>
+            <br/>
+            <div class="serial-add-div">
+                <button class="btn btn-dark" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Add Field</button>
+
+                <form method="post" id="serial-add-form">
+                    <div class="serial-add">
+                        <div><input type="text" name="assets[]"/></div>
+                        <!--<div><input type="number" name="serials[]"/></div>-->
+                    </div>
+                    <input type="submit" class="btn btn-success"/>
+                </form>
+            </div>
+            <hr />
+
+            <!--<button class="btn btn-info" id="serial-assign-button"><span class="glyphicon glyphicon-user"></span> Assign to Employee</button>-->
+            <!--<div class="serial-assign-result"></div>-->
+            <!--<div class="serial-assign-div">-->
+                <!--<form id="serial-assign-form">-->
+                    <!--<div class="form-group">-->
+                        <!--<label>Employee List</label>-->
+                        <!--<select multiple class="form-control" id="serial-assign" name="serial_employee[]">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <!--<br />-->
+                    <!--<input type="submit" class="btn btn-success" />-->
+                <!--</form>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript">
+
+        var serialDiv = $('.serial-add');
+        var itemId = $('#serial-itemId').attr('item-id');
+        var max_fields = 10;
+        var now_fields = 1;
+
+        /* ITEM SERIAL ADD */
+
+        // https://www.sanwebe.com/snippet/add-and-remove-fields-dynamic-and-simple-with-jquery
+        // https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/
+        // https://www.sanwebe.com/2013/03/addremove-input-fields-dynamically-with-jquery
+        $('#serial-input-add').click(function (e) {
+            e.preventDefault();
+            if(now_fields < max_fields){ // max input box allowed
+                now_fields++;
+                $(serialDiv).append("<div><input type='text' name='assets[]'/> <a href='#' class='remove_field'>Remove</a></div>");
+                // add input box
+            }
+        });
+
+        $(serialDiv).on("click", ".remove_field", function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            now_fields--;
+
+        });
+
+
+        $('#serial-add-form').submit(function (e) {
+            e.preventDefault();
+            var serialFormData = $(this).serializeArray();
+            console.log(serialFormData);
+            console.log("Item Id: " + itemId);
+
+
+            $.ajax({
+                method: "POST",
+                url: "/clerk/item/" + itemId + "/assets",
+                data: serialFormData,
+                success: function(response){
+                    // window.location.reload();
+                    $('.serialResult').append("<p style='color: green;'>Success</p>");
+                    // $('#item-serial-table').DataTable().ajax.reload();
+                    // $('#serial-add-form')[0].reset();
+                },
+                error: function (e){
+                    $('.serialResult').append("<p style='color: red;'>Error</p>");
+                }
+            });
+
+        });
+    </script>
+</div>
+</body>
+</html>
