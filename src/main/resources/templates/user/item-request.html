@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8" />
+    <title>Request Items</title>
+    <link rel="stylesheet" th:href="@{/plugin/Dual-List-Box-Plugin-listSwap/listswap.css}" />
+</head>
+<body>
+    <div layout:fragment="content" th:remove="tag">
+        <h3>Request Items</h3>
+        <!--<form>-->
+            <!--<div class="custom-checkbox custom-control" th:each="item: ${itemAssets}">-->
+                <!--<input class="custom-control-input" type="checkbox" th:attr="data-item-request-id= ${item.id}">-->
+                <!--<img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="40" th:height="40" />-->
+                <!--<p th:if="${item.imagePath == null}" th:text="Image not available"></p>-->
+                <!--<label class="custom-control-label" th:text="${item.name}"></label>-->
+            <!--</div>-->
+            <!--<table>-->
+                <!--<tr th:each="item: ${itemAssets}">-->
+                    <!--<td><input type="checkbox" class="custom-checkbox"></td>-->
+                    <!--<td th:text="${item}"></td>-->
+                <!--</tr>-->
+            <!--</table>-->
+
+            <!--<input type="submit" class="btn btn-success"/>-->
+        <!--</form>-->
+
+
+        <!--https://www.jqueryscript.net/form/Lightweight-jQuery-Dual-List-Box-Plugin-listSwap.html-->
+            <select id="source" data-text="Item Available" data-search="Search for options">
+                <option th:each="item: ${itemAssets}" th:value="${item.id}" th:text="${item.name}"></option>
+            </select>
+        <form id="item-request-form" method="post">
+            <select multiple name="itemrequests[]" id="destination" data-text="Requested Items" data-search="Search for options">
+            </select>
+            <button type="submit" class="btn btn-primary" onclick="selectAllDestination()">Request</button>
+        </form>
+        <script type="text/javascript" th:src="@{/plugin/Dual-List-Box-Plugin-listSwap/jquery.listswap.js}"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+               $('#source, #destination').listswap({
+                   truncate: true,
+                   height: null,
+                   is_scroll: true,
+                   label_add: 'Add',
+                   labeel_remove: 'Remove',
+                   add_class: null,
+                   rtl: false
+               });
+            });
+
+            // selectAllDestination();
+
+            $('#item-request-form').submit(function(e){
+                e.preventDefault();
+                // var values = $('#destination select').serialize();
+                var values = $('#destination').val();
+                console.log(values);
+
+                $.ajax({
+                    method: 'POST',
+                    url: '/user/item/request',
+                    data: {'itemrequests': values},
+                    success: function(data){
+                        console.log("Success send ajax");
+                    },
+                    error: function(data){
+                        console.log("error send ajax");
+                    }
+                });
+
+            });
+
+            function selectAllDestination(){
+                $('#destination option').prop('selected', true);
+            }
+        </script>
+    </div>
+</body>
+</html>

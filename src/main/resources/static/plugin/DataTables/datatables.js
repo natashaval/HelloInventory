@@ -4,10 +4,10 @@
  *
  * To rebuild or modify this file with the latest versions of the included
  * software please visit:
- *   https://datatables.net/download/#dt/dt-1.10.18/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-print-1.5.4/r-2.2.2
+ *   https://datatables.net/download/#dt/dt-1.10.18/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/r-2.2.2/sl-1.2.6
  *
  * Included libraries:
- *   DataTables 1.10.18, Buttons 1.5.4, Column visibility 1.5.4, Flash export 1.5.4, Print view 1.5.4, Responsive 2.2.2
+ *   DataTables 1.10.18, Buttons 1.5.4, Column visibility 1.5.4, Flash export 1.5.4, HTML5 export 1.5.4, Print view 1.5.4, Responsive 2.2.2, Select 1.2.6
  */
 
 /*! DataTables 1.10.18
@@ -13898,7 +13898,7 @@
 		 *
 		 *  @type string
 		 */
-		build:"dt/dt-1.10.18/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-print-1.5.4/r-2.2.2",
+		build:"dt/dt-1.10.18/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/r-2.2.2/sl-1.2.6",
 	
 	
 		/**
@@ -18900,6 +18900,1467 @@ return DataTable.Buttons;
 
 
 /*!
+ * HTML5 export buttons for Buttons and DataTables.
+ * 2016 SpryMedia Ltd - datatables.net/license
+ *
+ * FileSaver.js (1.3.3) - MIT license
+ * Copyright © 2016 Eli Grey - http://eligrey.com
+ */
+
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery', 'datatables.net', 'datatables.net-buttons'], function ( $ ) {
+			return factory( $, window, document );
+		} );
+	}
+	else if ( typeof exports === 'object' ) {
+		// CommonJS
+		module.exports = function (root, $, jszip, pdfmake) {
+			if ( ! root ) {
+				root = window;
+			}
+
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			if ( ! $.fn.dataTable.Buttons ) {
+				require('datatables.net-buttons')(root, $);
+			}
+
+			return factory( $, root, root.document, jszip, pdfmake );
+		};
+	}
+	else {
+		// Browser
+		factory( jQuery, window, document );
+	}
+}(function( $, window, document, jszip, pdfmake, undefined ) {
+'use strict';
+var DataTable = $.fn.dataTable;
+
+// Allow the constructor to pass in JSZip and PDFMake from external requires.
+// Otherwise, use globally defined variables, if they are available.
+function _jsZip () {
+	return jszip || window.JSZip;
+}
+function _pdfMake () {
+	return pdfmake || window.pdfMake;
+}
+
+DataTable.Buttons.pdfMake = function (_) {
+	if ( ! _ ) {
+		return _pdfMake();
+	}
+	pdfmake = m_ake;
+}
+
+DataTable.Buttons.jszip = function (_) {
+	if ( ! _ ) {
+		return _jsZip();
+	}
+	jszip = _;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * FileSaver.js dependency
+ */
+
+/*jslint bitwise: true, indent: 4, laxbreak: true, laxcomma: true, smarttabs: true, plusplus: true */
+
+var _saveAs = (function(view) {
+	"use strict";
+	// IE <10 is explicitly unsupported
+	if (typeof view === "undefined" || typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
+		return;
+	}
+	var
+		  doc = view.document
+		  // only get URL when necessary in case Blob.js hasn't overridden it yet
+		, get_URL = function() {
+			return view.URL || view.webkitURL || view;
+		}
+		, save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
+		, can_use_save_link = "download" in save_link
+		, click = function(node) {
+			var event = new MouseEvent("click");
+			node.dispatchEvent(event);
+		}
+		, is_safari = /constructor/i.test(view.HTMLElement) || view.safari
+		, is_chrome_ios =/CriOS\/[\d]+/.test(navigator.userAgent)
+		, throw_outside = function(ex) {
+			(view.setImmediate || view.setTimeout)(function() {
+				throw ex;
+			}, 0);
+		}
+		, force_saveable_type = "application/octet-stream"
+		// the Blob API is fundamentally broken as there is no "downloadfinished" event to subscribe to
+		, arbitrary_revoke_timeout = 1000 * 40 // in ms
+		, revoke = function(file) {
+			var revoker = function() {
+				if (typeof file === "string") { // file is an object URL
+					get_URL().revokeObjectURL(file);
+				} else { // file is a File
+					file.remove();
+				}
+			};
+			setTimeout(revoker, arbitrary_revoke_timeout);
+		}
+		, dispatch = function(filesaver, event_types, event) {
+			event_types = [].concat(event_types);
+			var i = event_types.length;
+			while (i--) {
+				var listener = filesaver["on" + event_types[i]];
+				if (typeof listener === "function") {
+					try {
+						listener.call(filesaver, event || filesaver);
+					} catch (ex) {
+						throw_outside(ex);
+					}
+				}
+			}
+		}
+		, auto_bom = function(blob) {
+			// prepend BOM for UTF-8 XML and text/* types (including HTML)
+			// note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
+			if (/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
+				return new Blob([String.fromCharCode(0xFEFF), blob], {type: blob.type});
+			}
+			return blob;
+		}
+		, FileSaver = function(blob, name, no_auto_bom) {
+			if (!no_auto_bom) {
+				blob = auto_bom(blob);
+			}
+			// First try a.download, then web filesystem, then object URLs
+			var
+				  filesaver = this
+				, type = blob.type
+				, force = type === force_saveable_type
+				, object_url
+				, dispatch_all = function() {
+					dispatch(filesaver, "writestart progress write writeend".split(" "));
+				}
+				// on any filesys errors revert to saving with object URLs
+				, fs_error = function() {
+					if ((is_chrome_ios || (force && is_safari)) && view.FileReader) {
+						// Safari doesn't allow downloading of blob urls
+						var reader = new FileReader();
+						reader.onloadend = function() {
+							var url = is_chrome_ios ? reader.result : reader.result.replace(/^data:[^;]*;/, 'data:attachment/file;');
+							var popup = view.open(url, '_blank');
+							if(!popup) view.location.href = url;
+							url=undefined; // release reference before dispatching
+							filesaver.readyState = filesaver.DONE;
+							dispatch_all();
+						};
+						reader.readAsDataURL(blob);
+						filesaver.readyState = filesaver.INIT;
+						return;
+					}
+					// don't create more object URLs than needed
+					if (!object_url) {
+						object_url = get_URL().createObjectURL(blob);
+					}
+					if (force) {
+						view.location.href = object_url;
+					} else {
+						var opened = view.open(object_url, "_blank");
+						if (!opened) {
+							// Apple does not allow window.open, see https://developer.apple.com/library/safari/documentation/Tools/Conceptual/SafariExtensionGuide/WorkingwithWindowsandTabs/WorkingwithWindowsandTabs.html
+							view.location.href = object_url;
+						}
+					}
+					filesaver.readyState = filesaver.DONE;
+					dispatch_all();
+					revoke(object_url);
+				}
+			;
+			filesaver.readyState = filesaver.INIT;
+
+			if (can_use_save_link) {
+				object_url = get_URL().createObjectURL(blob);
+				setTimeout(function() {
+					save_link.href = object_url;
+					save_link.download = name;
+					click(save_link);
+					dispatch_all();
+					revoke(object_url);
+					filesaver.readyState = filesaver.DONE;
+				});
+				return;
+			}
+
+			fs_error();
+		}
+		, FS_proto = FileSaver.prototype
+		, saveAs = function(blob, name, no_auto_bom) {
+			return new FileSaver(blob, name || blob.name || "download", no_auto_bom);
+		}
+	;
+	// IE 10+ (native saveAs)
+	if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
+		return function(blob, name, no_auto_bom) {
+			name = name || blob.name || "download";
+
+			if (!no_auto_bom) {
+				blob = auto_bom(blob);
+			}
+			return navigator.msSaveOrOpenBlob(blob, name);
+		};
+	}
+
+	FS_proto.abort = function(){};
+	FS_proto.readyState = FS_proto.INIT = 0;
+	FS_proto.WRITING = 1;
+	FS_proto.DONE = 2;
+
+	FS_proto.error =
+	FS_proto.onwritestart =
+	FS_proto.onprogress =
+	FS_proto.onwrite =
+	FS_proto.onabort =
+	FS_proto.onerror =
+	FS_proto.onwriteend =
+		null;
+
+	return saveAs;
+}(
+	   typeof self !== "undefined" && self
+	|| typeof window !== "undefined" && window
+	|| this.content
+));
+
+
+// Expose file saver on the DataTables API. Can't attach to `DataTables.Buttons`
+// since this file can be loaded before Button's core!
+DataTable.fileSave = _saveAs;
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Local (private) functions
+ */
+
+/**
+ * Get the sheet name for Excel exports.
+ *
+ * @param {object}	config Button configuration
+ */
+var _sheetname = function ( config )
+{
+	var sheetName = 'Sheet1';
+
+	if ( config.sheetName ) {
+		sheetName = config.sheetName.replace(/[\[\]\*\/\\\?\:]/g, '');
+	}
+
+	return sheetName;
+};
+
+/**
+ * Get the newline character(s)
+ *
+ * @param {object}	config Button configuration
+ * @return {string}				Newline character
+ */
+var _newLine = function ( config )
+{
+	return config.newline ?
+		config.newline :
+		navigator.userAgent.match(/Windows/) ?
+			'\r\n' :
+			'\n';
+};
+
+/**
+ * Combine the data from the `buttons.exportData` method into a string that
+ * will be used in the export file.
+ *
+ * @param	{DataTable.Api} dt		 DataTables API instance
+ * @param	{object}				config Button configuration
+ * @return {object}							 The data to export
+ */
+var _exportData = function ( dt, config )
+{
+	var newLine = _newLine( config );
+	var data = dt.buttons.exportData( config.exportOptions );
+	var boundary = config.fieldBoundary;
+	var separator = config.fieldSeparator;
+	var reBoundary = new RegExp( boundary, 'g' );
+	var escapeChar = config.escapeChar !== undefined ?
+		config.escapeChar :
+		'\\';
+	var join = function ( a ) {
+		var s = '';
+
+		// If there is a field boundary, then we might need to escape it in
+		// the source data
+		for ( var i=0, ien=a.length ; i<ien ; i++ ) {
+			if ( i > 0 ) {
+				s += separator;
+			}
+
+			s += boundary ?
+				boundary + ('' + a[i]).replace( reBoundary, escapeChar+boundary ) + boundary :
+				a[i];
+		}
+
+		return s;
+	};
+
+	var header = config.header ? join( data.header )+newLine : '';
+	var footer = config.footer && data.footer ? newLine+join( data.footer ) : '';
+	var body = [];
+
+	for ( var i=0, ien=data.body.length ; i<ien ; i++ ) {
+		body.push( join( data.body[i] ) );
+	}
+
+	return {
+		str: header + body.join( newLine ) + footer,
+		rows: body.length
+	};
+};
+
+/**
+ * Older versions of Safari (prior to tech preview 18) don't support the
+ * download option required.
+ *
+ * @return {Boolean} `true` if old Safari
+ */
+var _isDuffSafari = function ()
+{
+	var safari = navigator.userAgent.indexOf('Safari') !== -1 &&
+		navigator.userAgent.indexOf('Chrome') === -1 &&
+		navigator.userAgent.indexOf('Opera') === -1;
+
+	if ( ! safari ) {
+		return false;
+	}
+
+	var version = navigator.userAgent.match( /AppleWebKit\/(\d+\.\d+)/ );
+	if ( version && version.length > 1 && version[1]*1 < 603.1 ) {
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * Convert from numeric position to letter for column names in Excel
+ * @param  {int} n Column number
+ * @return {string} Column letter(s) name
+ */
+function createCellPos( n ){
+	var ordA = 'A'.charCodeAt(0);
+	var ordZ = 'Z'.charCodeAt(0);
+	var len = ordZ - ordA + 1;
+	var s = "";
+
+	while( n >= 0 ) {
+		s = String.fromCharCode(n % len + ordA) + s;
+		n = Math.floor(n / len) - 1;
+	}
+
+	return s;
+}
+
+try {
+	var _serialiser = new XMLSerializer();
+	var _ieExcel;
+}
+catch (t) {}
+
+/**
+ * Recursively add XML files from an object's structure to a ZIP file. This
+ * allows the XSLX file to be easily defined with an object's structure matching
+ * the files structure.
+ *
+ * @param {JSZip} zip ZIP package
+ * @param {object} obj Object to add (recursive)
+ */
+function _addToZip( zip, obj ) {
+	if ( _ieExcel === undefined ) {
+		// Detect if we are dealing with IE's _awful_ serialiser by seeing if it
+		// drop attributes
+		_ieExcel = _serialiser
+			.serializeToString(
+				$.parseXML( excelStrings['xl/worksheets/sheet1.xml'] )
+			)
+			.indexOf( 'xmlns:r' ) === -1;
+	}
+
+	$.each( obj, function ( name, val ) {
+		if ( $.isPlainObject( val ) ) {
+			var newDir = zip.folder( name );
+			_addToZip( newDir, val );
+		}
+		else {
+			if ( _ieExcel ) {
+				// IE's XML serialiser will drop some name space attributes from
+				// from the root node, so we need to save them. Do this by
+				// replacing the namespace nodes with a regular attribute that
+				// we convert back when serialised. Edge does not have this
+				// issue
+				var worksheet = val.childNodes[0];
+				var i, ien;
+				var attrs = [];
+
+				for ( i=worksheet.attributes.length-1 ; i>=0 ; i-- ) {
+					var attrName = worksheet.attributes[i].nodeName;
+					var attrValue = worksheet.attributes[i].nodeValue;
+
+					if ( attrName.indexOf( ':' ) !== -1 ) {
+						attrs.push( { name: attrName, value: attrValue } );
+
+						worksheet.removeAttribute( attrName );
+					}
+				}
+
+				for ( i=0, ien=attrs.length ; i<ien ; i++ ) {
+					var attr = val.createAttribute( attrs[i].name.replace( ':', '_dt_b_namespace_token_' ) );
+					attr.value = attrs[i].value;
+					worksheet.setAttributeNode( attr );
+				}
+			}
+
+			var str = _serialiser.serializeToString(val);
+
+			// Fix IE's XML
+			if ( _ieExcel ) {
+				// IE doesn't include the XML declaration
+				if ( str.indexOf( '<?xml' ) === -1 ) {
+					str = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+str;
+				}
+
+				// Return namespace attributes to being as such
+				str = str.replace( /_dt_b_namespace_token_/g, ':' );
+
+				// Remove testing name space that IE puts into the space preserve attr
+				str = str.replace( /xmlns:NS[\d]+="" NS[\d]+:/g, '' );
+			}
+
+			// Safari, IE and Edge will put empty name space attributes onto
+			// various elements making them useless. This strips them out
+			str = str.replace( /<([^<>]*?) xmlns=""([^<>]*?)>/g, '<$1 $2>' );
+
+			zip.file( name, str );
+		}
+	} );
+}
+
+/**
+ * Create an XML node and add any children, attributes, etc without needing to
+ * be verbose in the DOM.
+ *
+ * @param  {object} doc      XML document
+ * @param  {string} nodeName Node name
+ * @param  {object} opts     Options - can be `attr` (attributes), `children`
+ *   (child nodes) and `text` (text content)
+ * @return {node}            Created node
+ */
+function _createNode( doc, nodeName, opts ) {
+	var tempNode = doc.createElement( nodeName );
+
+	if ( opts ) {
+		if ( opts.attr ) {
+			$(tempNode).attr( opts.attr );
+		}
+
+		if ( opts.children ) {
+			$.each( opts.children, function ( key, value ) {
+				tempNode.appendChild( value );
+			} );
+		}
+
+		if ( opts.text !== null && opts.text !== undefined ) {
+			tempNode.appendChild( doc.createTextNode( opts.text ) );
+		}
+	}
+
+	return tempNode;
+}
+
+/**
+ * Get the width for an Excel column based on the contents of that column
+ * @param  {object} data Data for export
+ * @param  {int}    col  Column index
+ * @return {int}         Column width
+ */
+function _excelColWidth( data, col ) {
+	var max = data.header[col].length;
+	var len, lineSplit, str;
+
+	if ( data.footer && data.footer[col].length > max ) {
+		max = data.footer[col].length;
+	}
+
+	for ( var i=0, ien=data.body.length ; i<ien ; i++ ) {
+		var point = data.body[i][col];
+		str = point !== null && point !== undefined ?
+			point.toString() :
+			'';
+
+		// If there is a newline character, workout the width of the column
+		// based on the longest line in the string
+		if ( str.indexOf('\n') !== -1 ) {
+			lineSplit = str.split('\n');
+			lineSplit.sort( function (a, b) {
+				return b.length - a.length;
+			} );
+
+			len = lineSplit[0].length;
+		}
+		else {
+			len = str.length;
+		}
+
+		if ( len > max ) {
+			max = len;
+		}
+
+		// Max width rather than having potentially massive column widths
+		if ( max > 40 ) {
+			return 54; // 40 * 1.35
+		}
+	}
+
+	max *= 1.35;
+
+	// And a min width
+	return max > 6 ? max : 6;
+}
+
+// Excel - Pre-defined strings to build a basic XLSX file
+var excelStrings = {
+	"_rels/.rels":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+			'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'+
+		'</Relationships>',
+
+	"xl/_rels/workbook.xml.rels":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+			'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'+
+			'<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+		'</Relationships>',
+
+	"[Content_Types].xml":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+			'<Default Extension="xml" ContentType="application/xml" />'+
+			'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />'+
+			'<Default Extension="jpeg" ContentType="image/jpeg" />'+
+			'<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml" />'+
+			'<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" />'+
+			'<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml" />'+
+		'</Types>',
+
+	"xl/workbook.xml":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
+			'<fileVersion appName="xl" lastEdited="5" lowestEdited="5" rupBuild="24816"/>'+
+			'<workbookPr showInkAnnotation="0" autoCompressPictures="0"/>'+
+			'<bookViews>'+
+				'<workbookView xWindow="0" yWindow="0" windowWidth="25600" windowHeight="19020" tabRatio="500"/>'+
+			'</bookViews>'+
+			'<sheets>'+
+				'<sheet name="Sheet1" sheetId="1" r:id="rId1"/>'+
+			'</sheets>'+
+			'<definedNames/>'+
+		'</workbook>',
+
+	"xl/worksheets/sheet1.xml":
+		'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+		'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">'+
+			'<sheetData/>'+
+			'<mergeCells count="0"/>'+
+		'</worksheet>',
+
+	"xl/styles.xml":
+		'<?xml version="1.0" encoding="UTF-8"?>'+
+		'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">'+
+			'<numFmts count="6">'+
+				'<numFmt numFmtId="164" formatCode="#,##0.00_-\ [$$-45C]"/>'+
+				'<numFmt numFmtId="165" formatCode="&quot;£&quot;#,##0.00"/>'+
+				'<numFmt numFmtId="166" formatCode="[$€-2]\ #,##0.00"/>'+
+				'<numFmt numFmtId="167" formatCode="0.0%"/>'+
+				'<numFmt numFmtId="168" formatCode="#,##0;(#,##0)"/>'+
+				'<numFmt numFmtId="169" formatCode="#,##0.00;(#,##0.00)"/>'+
+			'</numFmts>'+
+			'<fonts count="5" x14ac:knownFonts="1">'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<color rgb="FFFFFFFF" />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<b />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<i />'+
+				'</font>'+
+				'<font>'+
+					'<sz val="11" />'+
+					'<name val="Calibri" />'+
+					'<u />'+
+				'</font>'+
+			'</fonts>'+
+			'<fills count="6">'+
+				'<fill>'+
+					'<patternFill patternType="none" />'+
+				'</fill>'+
+				'<fill>'+ // Excel appears to use this as a dotted background regardless of values but
+					'<patternFill patternType="none" />'+ // to be valid to the schema, use a patternFill
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="FFD9D9D9" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="FFD99795" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="ffc6efce" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+				'<fill>'+
+					'<patternFill patternType="solid">'+
+						'<fgColor rgb="ffc6cfef" />'+
+						'<bgColor indexed="64" />'+
+					'</patternFill>'+
+				'</fill>'+
+			'</fills>'+
+			'<borders count="2">'+
+				'<border>'+
+					'<left />'+
+					'<right />'+
+					'<top />'+
+					'<bottom />'+
+					'<diagonal />'+
+				'</border>'+
+				'<border diagonalUp="false" diagonalDown="false">'+
+					'<left style="thin">'+
+						'<color auto="1" />'+
+					'</left>'+
+					'<right style="thin">'+
+						'<color auto="1" />'+
+					'</right>'+
+					'<top style="thin">'+
+						'<color auto="1" />'+
+					'</top>'+
+					'<bottom style="thin">'+
+						'<color auto="1" />'+
+					'</bottom>'+
+					'<diagonal />'+
+				'</border>'+
+			'</borders>'+
+			'<cellStyleXfs count="1">'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" />'+
+			'</cellStyleXfs>'+
+			'<cellXfs count="67">'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="2" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="3" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="4" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="5" borderId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="1" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="2" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="3" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="4" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="left"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="center"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="right"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment horizontal="fill"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment textRotation="90"/>'+
+				'</xf>'+
+				'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">'+
+					'<alignment wrapText="1"/>'+
+				'</xf>'+
+				'<xf numFmtId="9"   fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="164" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="165" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="166" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="167" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="168" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="169" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="3" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="4" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="1" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+				'<xf numFmtId="2" fontId="0" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>'+
+			'</cellXfs>'+
+			'<cellStyles count="1">'+
+				'<cellStyle name="Normal" xfId="0" builtinId="0" />'+
+			'</cellStyles>'+
+			'<dxfs count="0" />'+
+			'<tableStyles count="0" defaultTableStyle="TableStyleMedium9" defaultPivotStyle="PivotStyleMedium4" />'+
+		'</styleSheet>'
+};
+// Note we could use 3 `for` loops for the styles, but when gzipped there is
+// virtually no difference in size, since the above can be easily compressed
+
+// Pattern matching for special number formats. Perhaps this should be exposed
+// via an API in future?
+// Ref: section 3.8.30 - built in formatters in open spreadsheet
+//   https://www.ecma-international.org/news/TC45_current_work/Office%20Open%20XML%20Part%204%20-%20Markup%20Language%20Reference.pdf
+var _excelSpecials = [
+	{ match: /^\-?\d+\.\d%$/,       style: 60, fmt: function (d) { return d/100; } }, // Precent with d.p.
+	{ match: /^\-?\d+\.?\d*%$/,     style: 56, fmt: function (d) { return d/100; } }, // Percent
+	{ match: /^\-?\$[\d,]+.?\d*$/,  style: 57 }, // Dollars
+	{ match: /^\-?£[\d,]+.?\d*$/,   style: 58 }, // Pounds
+	{ match: /^\-?€[\d,]+.?\d*$/,   style: 59 }, // Euros
+	{ match: /^\-?\d+$/,            style: 65 }, // Numbers without thousand separators
+	{ match: /^\-?\d+\.\d{2}$/,     style: 66 }, // Numbers 2 d.p. without thousands separators
+	{ match: /^\([\d,]+\)$/,        style: 61, fmt: function (d) { return -1 * d.replace(/[\(\)]/g, ''); } },  // Negative numbers indicated by brackets
+	{ match: /^\([\d,]+\.\d{2}\)$/, style: 62, fmt: function (d) { return -1 * d.replace(/[\(\)]/g, ''); } },  // Negative numbers indicated by brackets - 2d.p.
+	{ match: /^\-?[\d,]+$/,         style: 63 }, // Numbers with thousand separators
+	{ match: /^\-?[\d,]+\.\d{2}$/,  style: 64 }  // Numbers with 2 d.p. and thousands separators
+];
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Buttons
+ */
+
+//
+// Copy to clipboard
+//
+DataTable.ext.buttons.copyHtml5 = {
+	className: 'buttons-copy buttons-html5',
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.copy', 'Copy' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		this.processing( true );
+
+		var that = this;
+		var exportData = _exportData( dt, config );
+		var info = dt.buttons.exportInfo( config );
+		var newline = _newLine(config);
+		var output = exportData.str;
+		var hiddenDiv = $('<div/>')
+			.css( {
+				height: 1,
+				width: 1,
+				overflow: 'hidden',
+				position: 'fixed',
+				top: 0,
+				left: 0
+			} );
+
+		if ( info.title ) {
+			output = info.title + newline + newline + output;
+		}
+
+		if ( info.messageTop ) {
+			output = info.messageTop + newline + newline + output;
+		}
+
+		if ( info.messageBottom ) {
+			output = output + newline + newline + info.messageBottom;
+		}
+
+		if ( config.customize ) {
+			output = config.customize( output, config, dt );
+		}
+
+		var textarea = $('<textarea readonly/>')
+			.val( output )
+			.appendTo( hiddenDiv );
+
+		// For browsers that support the copy execCommand, try to use it
+		if ( document.queryCommandSupported('copy') ) {
+			hiddenDiv.appendTo( dt.table().container() );
+			textarea[0].focus();
+			textarea[0].select();
+
+			try {
+				var successful = document.execCommand( 'copy' );
+				hiddenDiv.remove();
+
+				if (successful) {
+					dt.buttons.info(
+						dt.i18n( 'buttons.copyTitle', 'Copy to clipboard' ),
+						dt.i18n( 'buttons.copySuccess', {
+							1: 'Copied one row to clipboard',
+							_: 'Copied %d rows to clipboard'
+						}, exportData.rows ),
+						2000
+					);
+
+					this.processing( false );
+					return;
+				}
+			}
+			catch (t) {}
+		}
+
+		// Otherwise we show the text box and instruct the user to use it
+		var message = $('<span>'+dt.i18n( 'buttons.copyKeys',
+				'Press <i>ctrl</i> or <i>\u2318</i> + <i>C</i> to copy the table data<br>to your system clipboard.<br><br>'+
+				'To cancel, click this message or press escape.' )+'</span>'
+			)
+			.append( hiddenDiv );
+
+		dt.buttons.info( dt.i18n( 'buttons.copyTitle', 'Copy to clipboard' ), message, 0 );
+
+		// Select the text so when the user activates their system clipboard
+		// it will copy that text
+		textarea[0].focus();
+		textarea[0].select();
+
+		// Event to hide the message when the user is done
+		var container = $(message).closest('.dt-button-info');
+		var close = function () {
+			container.off( 'click.buttons-copy' );
+			$(document).off( '.buttons-copy' );
+			dt.buttons.info( false );
+		};
+
+		container.on( 'click.buttons-copy', close );
+		$(document)
+			.on( 'keydown.buttons-copy', function (e) {
+				if ( e.keyCode === 27 ) { // esc
+					close();
+					that.processing( false );
+				}
+			} )
+			.on( 'copy.buttons-copy cut.buttons-copy', function () {
+				close();
+				that.processing( false );
+			} );
+	},
+
+	exportOptions: {},
+
+	fieldSeparator: '\t',
+
+	fieldBoundary: '',
+
+	header: true,
+
+	footer: false,
+
+	title: '*',
+
+	messageTop: '*',
+
+	messageBottom: '*'
+};
+
+//
+// CSV export
+//
+DataTable.ext.buttons.csvHtml5 = {
+	bom: false,
+
+	className: 'buttons-csv buttons-html5',
+
+	available: function () {
+		return window.FileReader !== undefined && window.Blob;
+	},
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.csv', 'CSV' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		this.processing( true );
+
+		// Set the text
+		var output = _exportData( dt, config ).str;
+		var info = dt.buttons.exportInfo(config);
+		var charset = config.charset;
+
+		if ( config.customize ) {
+			output = config.customize( output, config, dt );
+		}
+
+		if ( charset !== false ) {
+			if ( ! charset ) {
+				charset = document.characterSet || document.charset;
+			}
+
+			if ( charset ) {
+				charset = ';charset='+charset;
+			}
+		}
+		else {
+			charset = '';
+		}
+
+		if ( config.bom ) {
+			output = '\ufeff' + output;
+		}
+
+		_saveAs(
+			new Blob( [output], {type: 'text/csv'+charset} ),
+			info.filename,
+			true
+		);
+
+		this.processing( false );
+	},
+
+	filename: '*',
+
+	extension: '.csv',
+
+	exportOptions: {},
+
+	fieldSeparator: ',',
+
+	fieldBoundary: '"',
+
+	escapeChar: '"',
+
+	charset: null,
+
+	header: true,
+
+	footer: false
+};
+
+//
+// Excel (xlsx) export
+//
+DataTable.ext.buttons.excelHtml5 = {
+	className: 'buttons-excel buttons-html5',
+
+	available: function () {
+		return window.FileReader !== undefined && _jsZip() !== undefined && ! _isDuffSafari() && _serialiser;
+	},
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.excel', 'Excel' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		this.processing( true );
+
+		var that = this;
+		var rowPos = 0;
+		var dataStartRow, dataEndRow;
+		var getXml = function ( type ) {
+			var str = excelStrings[ type ];
+
+			//str = str.replace( /xmlns:/g, 'xmlns_' ).replace( /mc:/g, 'mc_' );
+
+			return $.parseXML( str );
+		};
+		var rels = getXml('xl/worksheets/sheet1.xml');
+		var relsGet = rels.getElementsByTagName( "sheetData" )[0];
+
+		var xlsx = {
+			_rels: {
+				".rels": getXml('_rels/.rels')
+			},
+			xl: {
+				_rels: {
+					"workbook.xml.rels": getXml('xl/_rels/workbook.xml.rels')
+				},
+				"workbook.xml": getXml('xl/workbook.xml'),
+				"styles.xml": getXml('xl/styles.xml'),
+				"worksheets": {
+					"sheet1.xml": rels
+				}
+
+			},
+			"[Content_Types].xml": getXml('[Content_Types].xml')
+		};
+
+		var data = dt.buttons.exportData( config.exportOptions );
+		var currentRow, rowNode;
+		var addRow = function ( row ) {
+			currentRow = rowPos+1;
+			rowNode = _createNode( rels, "row", { attr: {r:currentRow} } );
+
+			for ( var i=0, ien=row.length ; i<ien ; i++ ) {
+				// Concat both the Cell Columns as a letter and the Row of the cell.
+				var cellId = createCellPos(i) + '' + currentRow;
+				var cell = null;
+
+				// For null, undefined of blank cell, continue so it doesn't create the _createNode
+				if ( row[i] === null || row[i] === undefined || row[i] === '' ) {
+					if ( config.createEmptyCells === true ) {
+						row[i] = '';
+					}
+					else {
+						continue;
+					}
+				}
+
+				var originalContent = row[i];
+				row[i] = $.trim( row[i] );
+
+				// Special number formatting options
+				for ( var j=0, jen=_excelSpecials.length ; j<jen ; j++ ) {
+					var special = _excelSpecials[j];
+
+					// TODO Need to provide the ability for the specials to say
+					// if they are returning a string, since at the moment it is
+					// assumed to be a number
+					if ( row[i].match && ! row[i].match(/^0\d+/) && row[i].match( special.match ) ) {
+						var val = row[i].replace(/[^\d\.\-]/g, '');
+
+						if ( special.fmt ) {
+							val = special.fmt( val );
+						}
+
+						cell = _createNode( rels, 'c', {
+							attr: {
+								r: cellId,
+								s: special.style
+							},
+							children: [
+								_createNode( rels, 'v', { text: val } )
+							]
+						} );
+
+						break;
+					}
+				}
+
+				if ( ! cell ) {
+					if ( typeof row[i] === 'number' || (
+						row[i].match &&
+						row[i].match(/^-?\d+(\.\d+)?$/) &&
+						! row[i].match(/^0\d+/) )
+					) {
+						// Detect numbers - don't match numbers with leading zeros
+						// or a negative anywhere but the start
+						cell = _createNode( rels, 'c', {
+							attr: {
+								t: 'n',
+								r: cellId
+							},
+							children: [
+								_createNode( rels, 'v', { text: row[i] } )
+							]
+						} );
+					}
+					else {
+						// String output - replace non standard characters for text output
+						var text = ! originalContent.replace ?
+							originalContent :
+							originalContent.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, '');
+
+						cell = _createNode( rels, 'c', {
+							attr: {
+								t: 'inlineStr',
+								r: cellId
+							},
+							children:{
+								row: _createNode( rels, 'is', {
+									children: {
+										row: _createNode( rels, 't', {
+											text: text,
+											attr: {
+												'xml:space': 'preserve'
+											}
+										} )
+									}
+								} )
+							}
+						} );
+					}
+				}
+
+				rowNode.appendChild( cell );
+			}
+
+			relsGet.appendChild(rowNode);
+			rowPos++;
+		};
+
+		if ( config.customizeData ) {
+			config.customizeData( data );
+		}
+
+		var mergeCells = function ( row, colspan ) {
+			var mergeCells = $('mergeCells', rels);
+
+			mergeCells[0].appendChild( _createNode( rels, 'mergeCell', {
+				attr: {
+					ref: 'A'+row+':'+createCellPos(colspan)+row
+				}
+			} ) );
+			mergeCells.attr( 'count', parseFloat(mergeCells.attr( 'count' ))+1 );
+			$('row:eq('+(row-1)+') c', rels).attr( 's', '51' ); // centre
+		};
+
+		// Title and top messages
+		var exportInfo = dt.buttons.exportInfo( config );
+		if ( exportInfo.title ) {
+			addRow( [exportInfo.title], rowPos );
+			mergeCells( rowPos, data.header.length-1 );
+		}
+
+		if ( exportInfo.messageTop ) {
+			addRow( [exportInfo.messageTop], rowPos );
+			mergeCells( rowPos, data.header.length-1 );
+		}
+
+
+		// Table itself
+		if ( config.header ) {
+			addRow( data.header, rowPos );
+			$('row:last c', rels).attr( 's', '2' ); // bold
+		}
+	
+		dataStartRow = rowPos;
+
+		for ( var n=0, ie=data.body.length ; n<ie ; n++ ) {
+			addRow( data.body[n], rowPos );
+		}
+	
+		dataEndRow = rowPos;
+
+		if ( config.footer && data.footer ) {
+			addRow( data.footer, rowPos);
+			$('row:last c', rels).attr( 's', '2' ); // bold
+		}
+
+		// Below the table
+		if ( exportInfo.messageBottom ) {
+			addRow( [exportInfo.messageBottom], rowPos );
+			mergeCells( rowPos, data.header.length-1 );
+		}
+
+		// Set column widths
+		var cols = _createNode( rels, 'cols' );
+		$('worksheet', rels).prepend( cols );
+
+		for ( var i=0, ien=data.header.length ; i<ien ; i++ ) {
+			cols.appendChild( _createNode( rels, 'col', {
+				attr: {
+					min: i+1,
+					max: i+1,
+					width: _excelColWidth( data, i ),
+					customWidth: 1
+				}
+			} ) );
+		}
+
+		// Auto filter for columns
+		$('mergeCells', rels).before( _createNode( rels, 'autoFilter', {
+			attr: {
+				ref: 'A'+dataStartRow+':'+createCellPos(data.header.length-1)+dataEndRow
+			}
+		} ) );
+
+		// Workbook modifications
+		var workbook = xlsx.xl['workbook.xml'];
+
+		$( 'sheets sheet', workbook ).attr( 'name', _sheetname( config ) );
+
+		if ( config.autoFilter ) {
+			$('definedNames', workbook).append( _createNode( workbook, 'definedName', {
+				attr: {
+					name: '_xlnm._FilterDatabase',
+					localSheetId: '0',
+					hidden: 1
+				},
+				text: _sheetname(config)+'!$A$'+dataStartRow+':'+createCellPos(data.header.length-1)+dataEndRow
+			} ) );
+		}
+
+		// Let the developer customise the document if they want to
+		if ( config.customize ) {
+			config.customize( xlsx, config, dt );
+		}
+
+		// Excel doesn't like an empty mergeCells tag
+		if ( $('mergeCells', rels).children().length === 0 ) {
+			$('mergeCells', rels).remove();
+		}
+
+		var jszip = _jsZip();
+		var zip = new jszip();
+		var zipConfig = {
+			type: 'blob',
+			mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		};
+
+		_addToZip( zip, xlsx );
+
+		if ( zip.generateAsync ) {
+			// JSZip 3+
+			zip
+				.generateAsync( zipConfig )
+				.then( function ( blob ) {
+					_saveAs( blob, exportInfo.filename );
+					that.processing( false );
+				} );
+		}
+		else {
+			// JSZip 2.5
+			_saveAs(
+				zip.generate( zipConfig ),
+				exportInfo.filename
+			);
+			this.processing( false );
+		}
+	},
+
+	filename: '*',
+
+	extension: '.xlsx',
+
+	exportOptions: {},
+
+	header: true,
+
+	footer: false,
+
+	title: '*',
+
+	messageTop: '*',
+
+	messageBottom: '*',
+
+	createEmptyCells: false,
+
+	autoFilter: false,
+
+	sheetName: ''
+};
+
+//
+// PDF export - using pdfMake - http://pdfmake.org
+//
+DataTable.ext.buttons.pdfHtml5 = {
+	className: 'buttons-pdf buttons-html5',
+
+	available: function () {
+		return window.FileReader !== undefined && _pdfMake();
+	},
+
+	text: function ( dt ) {
+		return dt.i18n( 'buttons.pdf', 'PDF' );
+	},
+
+	action: function ( e, dt, button, config ) {
+		this.processing( true );
+
+		var that = this;
+		var data = dt.buttons.exportData( config.exportOptions );
+		var info = dt.buttons.exportInfo( config );
+		var rows = [];
+
+		if ( config.header ) {
+			rows.push( $.map( data.header, function ( d ) {
+				return {
+					text: typeof d === 'string' ? d : d+'',
+					style: 'tableHeader'
+				};
+			} ) );
+		}
+
+		for ( var i=0, ien=data.body.length ; i<ien ; i++ ) {
+			rows.push( $.map( data.body[i], function ( d ) {
+				if ( d === null || d === undefined ) {
+					d = '';
+				}
+				return {
+					text: typeof d === 'string' ? d : d+'',
+					style: i % 2 ? 'tableBodyEven' : 'tableBodyOdd'
+				};
+			} ) );
+		}
+
+		if ( config.footer && data.footer) {
+			rows.push( $.map( data.footer, function ( d ) {
+				return {
+					text: typeof d === 'string' ? d : d+'',
+					style: 'tableFooter'
+				};
+			} ) );
+		}
+
+		var doc = {
+			pageSize: config.pageSize,
+			pageOrientation: config.orientation,
+			content: [
+				{
+					table: {
+						headerRows: 1,
+						body: rows
+					},
+					layout: 'noBorders'
+				}
+			],
+			styles: {
+				tableHeader: {
+					bold: true,
+					fontSize: 11,
+					color: 'white',
+					fillColor: '#2d4154',
+					alignment: 'center'
+				},
+				tableBodyEven: {},
+				tableBodyOdd: {
+					fillColor: '#f3f3f3'
+				},
+				tableFooter: {
+					bold: true,
+					fontSize: 11,
+					color: 'white',
+					fillColor: '#2d4154'
+				},
+				title: {
+					alignment: 'center',
+					fontSize: 15
+				},
+				message: {}
+			},
+			defaultStyle: {
+				fontSize: 10
+			}
+		};
+
+		if ( info.messageTop ) {
+			doc.content.unshift( {
+				text: info.messageTop,
+				style: 'message',
+				margin: [ 0, 0, 0, 12 ]
+			} );
+		}
+
+		if ( info.messageBottom ) {
+			doc.content.push( {
+				text: info.messageBottom,
+				style: 'message',
+				margin: [ 0, 0, 0, 12 ]
+			} );
+		}
+
+		if ( info.title ) {
+			doc.content.unshift( {
+				text: info.title,
+				style: 'title',
+				margin: [ 0, 0, 0, 12 ]
+			} );
+		}
+
+		if ( config.customize ) {
+			config.customize( doc, config, dt );
+		}
+
+		var pdf = _pdfMake().createPdf( doc );
+
+		if ( config.download === 'open' && ! _isDuffSafari() ) {
+			pdf.open();
+		}
+		else {
+			pdf.download( info.filename );
+		}
+
+		this.processing( false );
+	},
+
+	title: '*',
+
+	filename: '*',
+
+	extension: '.pdf',
+
+	exportOptions: {},
+
+	orientation: 'portrait',
+
+	pageSize: 'A4',
+
+	header: true,
+
+	footer: false,
+
+	messageTop: '*',
+
+	messageBottom: '*',
+
+	customize: null,
+
+	download: 'download'
+};
+
+
+return DataTable.Buttons;
+}));
+
+
+/*!
  * Print button for Buttons and DataTables.
  * 2016 SpryMedia Ltd - datatables.net/license
  */
@@ -20503,6 +21964,1183 @@ $(document).on( 'preInit.dt.dtr', function (e, settings, json) {
 
 
 return Responsive;
+}));
+
+
+/*! Select for DataTables 1.2.6
+ * 2015-2018 SpryMedia Ltd - datatables.net/license/mit
+ */
+
+/**
+ * @summary     Select for DataTables
+ * @description A collection of API methods, events and buttons for DataTables
+ *   that provides selection options of the items in a DataTable
+ * @version     1.2.6
+ * @file        dataTables.select.js
+ * @author      SpryMedia Ltd (www.sprymedia.co.uk)
+ * @contact     datatables.net/forums
+ * @copyright   Copyright 2015-2018 SpryMedia Ltd.
+ *
+ * This source file is free software, available under the following license:
+ *   MIT license - http://datatables.net/license/mit
+ *
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ *
+ * For details please refer to: http://www.datatables.net/extensions/select
+ */
+(function( factory ){
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery', 'datatables.net'], function ( $ ) {
+			return factory( $, window, document );
+		} );
+	}
+	else if ( typeof exports === 'object' ) {
+		// CommonJS
+		module.exports = function (root, $) {
+			if ( ! root ) {
+				root = window;
+			}
+
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			return factory( $, root, root.document );
+		};
+	}
+	else {
+		// Browser
+		factory( jQuery, window, document );
+	}
+}(function( $, window, document, undefined ) {
+'use strict';
+var DataTable = $.fn.dataTable;
+
+
+// Version information for debugger
+DataTable.select = {};
+
+DataTable.select.version = '1.2.6';
+
+DataTable.select.init = function ( dt ) {
+	var ctx = dt.settings()[0];
+	var init = ctx.oInit.select;
+	var defaults = DataTable.defaults.select;
+	var opts = init === undefined ?
+		defaults :
+		init;
+
+	// Set defaults
+	var items = 'row';
+	var style = 'api';
+	var blurable = false;
+	var info = true;
+	var selector = 'td, th';
+	var className = 'selected';
+	var setStyle = false;
+
+	ctx._select = {};
+
+	// Initialisation customisations
+	if ( opts === true ) {
+		style = 'os';
+		setStyle = true;
+	}
+	else if ( typeof opts === 'string' ) {
+		style = opts;
+		setStyle = true;
+	}
+	else if ( $.isPlainObject( opts ) ) {
+		if ( opts.blurable !== undefined ) {
+			blurable = opts.blurable;
+		}
+
+		if ( opts.info !== undefined ) {
+			info = opts.info;
+		}
+
+		if ( opts.items !== undefined ) {
+			items = opts.items;
+		}
+
+		if ( opts.style !== undefined ) {
+			style = opts.style;
+			setStyle = true;
+		}
+
+		if ( opts.selector !== undefined ) {
+			selector = opts.selector;
+		}
+
+		if ( opts.className !== undefined ) {
+			className = opts.className;
+		}
+	}
+
+	dt.select.selector( selector );
+	dt.select.items( items );
+	dt.select.style( style );
+	dt.select.blurable( blurable );
+	dt.select.info( info );
+	ctx._select.className = className;
+
+
+	// Sort table based on selected rows. Requires Select Datatables extension
+	$.fn.dataTable.ext.order['select-checkbox'] = function ( settings, col ) {
+		return this.api().column( col, {order: 'index'} ).nodes().map( function ( td ) {
+			if ( settings._select.items === 'row' ) {
+				return $( td ).parent().hasClass( settings._select.className );
+			} else if ( settings._select.items === 'cell' ) {
+				return $( td ).hasClass( settings._select.className );
+			}
+			return false;
+		});
+	};
+
+	// If the init options haven't enabled select, but there is a selectable
+	// class name, then enable
+	if ( ! setStyle && $( dt.table().node() ).hasClass( 'selectable' ) ) {
+		dt.select.style( 'os' );
+	}
+};
+
+/*
+
+Select is a collection of API methods, event handlers, event emitters and
+buttons (for the `Buttons` extension) for DataTables. It provides the following
+features, with an overview of how they are implemented:
+
+## Selection of rows, columns and cells. Whether an item is selected or not is
+   stored in:
+
+* rows: a `_select_selected` property which contains a boolean value of the
+  DataTables' `aoData` object for each row
+* columns: a `_select_selected` property which contains a boolean value of the
+  DataTables' `aoColumns` object for each column
+* cells: a `_selected_cells` property which contains an array of boolean values
+  of the `aoData` object for each row. The array is the same length as the
+  columns array, with each element of it representing a cell.
+
+This method of using boolean flags allows Select to operate when nodes have not
+been created for rows / cells (DataTables' defer rendering feature).
+
+## API methods
+
+A range of API methods are available for triggering selection and de-selection
+of rows. Methods are also available to configure the selection events that can
+be triggered by an end user (such as which items are to be selected). To a large
+extent, these of API methods *is* Select. It is basically a collection of helper
+functions that can be used to select items in a DataTable.
+
+Configuration of select is held in the object `_select` which is attached to the
+DataTables settings object on initialisation. Select being available on a table
+is not optional when Select is loaded, but its default is for selection only to
+be available via the API - so the end user wouldn't be able to select rows
+without additional configuration.
+
+The `_select` object contains the following properties:
+
+```
+{
+	items:string     - Can be `rows`, `columns` or `cells`. Defines what item 
+	                   will be selected if the user is allowed to activate row
+	                   selection using the mouse.
+	style:string     - Can be `none`, `single`, `multi` or `os`. Defines the
+	                   interaction style when selecting items
+	blurable:boolean - If row selection can be cleared by clicking outside of
+	                   the table
+	info:boolean     - If the selection summary should be shown in the table
+	                   information elements
+}
+```
+
+In addition to the API methods, Select also extends the DataTables selector
+options for rows, columns and cells adding a `selected` option to the selector
+options object, allowing the developer to select only selected items or
+unselected items.
+
+## Mouse selection of items
+
+Clicking on items can be used to select items. This is done by a simple event
+handler that will select the items using the API methods.
+
+ */
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Local functions
+ */
+
+/**
+ * Add one or more cells to the selection when shift clicking in OS selection
+ * style cell selection.
+ *
+ * Cell range is more complicated than row and column as we want to select
+ * in the visible grid rather than by index in sequence. For example, if you
+ * click first in cell 1-1 and then shift click in 2-2 - cells 1-2 and 2-1
+ * should also be selected (and not 1-3, 1-4. etc)
+ * 
+ * @param  {DataTable.Api} dt   DataTable
+ * @param  {object}        idx  Cell index to select to
+ * @param  {object}        last Cell index to select from
+ * @private
+ */
+function cellRange( dt, idx, last )
+{
+	var indexes;
+	var columnIndexes;
+	var rowIndexes;
+	var selectColumns = function ( start, end ) {
+		if ( start > end ) {
+			var tmp = end;
+			end = start;
+			start = tmp;
+		}
+		
+		var record = false;
+		return dt.columns( ':visible' ).indexes().filter( function (i) {
+			if ( i === start ) {
+				record = true;
+			}
+			
+			if ( i === end ) { // not else if, as start might === end
+				record = false;
+				return true;
+			}
+
+			return record;
+		} );
+	};
+
+	var selectRows = function ( start, end ) {
+		var indexes = dt.rows( { search: 'applied' } ).indexes();
+
+		// Which comes first - might need to swap
+		if ( indexes.indexOf( start ) > indexes.indexOf( end ) ) {
+			var tmp = end;
+			end = start;
+			start = tmp;
+		}
+
+		var record = false;
+		return indexes.filter( function (i) {
+			if ( i === start ) {
+				record = true;
+			}
+			
+			if ( i === end ) {
+				record = false;
+				return true;
+			}
+
+			return record;
+		} );
+	};
+
+	if ( ! dt.cells( { selected: true } ).any() && ! last ) {
+		// select from the top left cell to this one
+		columnIndexes = selectColumns( 0, idx.column );
+		rowIndexes = selectRows( 0 , idx.row );
+	}
+	else {
+		// Get column indexes between old and new
+		columnIndexes = selectColumns( last.column, idx.column );
+		rowIndexes = selectRows( last.row , idx.row );
+	}
+
+	indexes = dt.cells( rowIndexes, columnIndexes ).flatten();
+
+	if ( ! dt.cells( idx, { selected: true } ).any() ) {
+		// Select range
+		dt.cells( indexes ).select();
+	}
+	else {
+		// Deselect range
+		dt.cells( indexes ).deselect();
+	}
+}
+
+/**
+ * Disable mouse selection by removing the selectors
+ *
+ * @param {DataTable.Api} dt DataTable to remove events from
+ * @private
+ */
+function disableMouseSelection( dt )
+{
+	var ctx = dt.settings()[0];
+	var selector = ctx._select.selector;
+
+	$( dt.table().container() )
+		.off( 'mousedown.dtSelect', selector )
+		.off( 'mouseup.dtSelect', selector )
+		.off( 'click.dtSelect', selector );
+
+	$('body').off( 'click.dtSelect' + dt.table().node().id );
+}
+
+/**
+ * Attach mouse listeners to the table to allow mouse selection of items
+ *
+ * @param {DataTable.Api} dt DataTable to remove events from
+ * @private
+ */
+function enableMouseSelection ( dt )
+{
+	var container = $( dt.table().container() );
+	var ctx = dt.settings()[0];
+	var selector = ctx._select.selector;
+	var matchSelection;
+
+	container
+		.on( 'mousedown.dtSelect', selector, function(e) {
+			// Disallow text selection for shift clicking on the table so multi
+			// element selection doesn't look terrible!
+			if ( e.shiftKey || e.metaKey || e.ctrlKey ) {
+				container
+					.css( '-moz-user-select', 'none' )
+					.one('selectstart.dtSelect', selector, function () {
+						return false;
+					} );
+			}
+
+			if ( window.getSelection ) {
+				matchSelection = window.getSelection();
+			}
+		} )
+		.on( 'mouseup.dtSelect', selector, function() {
+			// Allow text selection to occur again, Mozilla style (tested in FF
+			// 35.0.1 - still required)
+			container.css( '-moz-user-select', '' );
+		} )
+		.on( 'click.dtSelect', selector, function ( e ) {
+			var items = dt.select.items();
+			var idx;
+
+			// If text was selected (click and drag), then we shouldn't change
+			// the row's selected state
+			if ( window.getSelection ) {
+				var selection = window.getSelection();
+
+				// If the element that contains the selection is not in the table, we can ignore it
+				// This can happen if the developer selects text from the click event
+				if ( ! selection.anchorNode || $(selection.anchorNode).closest('table')[0] === dt.table().node() ) {
+					if ( selection !== matchSelection ) {
+						return;
+					}
+				}
+			}
+
+			var ctx = dt.settings()[0];
+			var wrapperClass = dt.settings()[0].oClasses.sWrapper.replace(/ /g, '.');
+
+			// Ignore clicks inside a sub-table
+			if ( $(e.target).closest('div.'+wrapperClass)[0] != dt.table().container() ) {
+				return;
+			}
+
+			var cell = dt.cell( $(e.target).closest('td, th') );
+
+			// Check the cell actually belongs to the host DataTable (so child
+			// rows, etc, are ignored)
+			if ( ! cell.any() ) {
+				return;
+			}
+
+			var event = $.Event('user-select.dt');
+			eventTrigger( dt, event, [ items, cell, e ] );
+
+			if ( event.isDefaultPrevented() ) {
+				return;
+			}
+
+			var cellIndex = cell.index();
+			if ( items === 'row' ) {
+				idx = cellIndex.row;
+				typeSelect( e, dt, ctx, 'row', idx );
+			}
+			else if ( items === 'column' ) {
+				idx = cell.index().column;
+				typeSelect( e, dt, ctx, 'column', idx );
+			}
+			else if ( items === 'cell' ) {
+				idx = cell.index();
+				typeSelect( e, dt, ctx, 'cell', idx );
+			}
+
+			ctx._select_lastCell = cellIndex;
+		} );
+
+	// Blurable
+	$('body').on( 'click.dtSelect' + dt.table().node().id, function ( e ) {
+		if ( ctx._select.blurable ) {
+			// If the click was inside the DataTables container, don't blur
+			if ( $(e.target).parents().filter( dt.table().container() ).length ) {
+				return;
+			}
+
+			// Ignore elements which have been removed from the DOM (i.e. paging
+			// buttons)
+			if ( $(e.target).parents('html').length === 0 ) {
+			 	return;
+			}
+
+			// Don't blur in Editor form
+			if ( $(e.target).parents('div.DTE').length ) {
+				return;
+			}
+
+			clear( ctx, true );
+		}
+	} );
+}
+
+/**
+ * Trigger an event on a DataTable
+ *
+ * @param {DataTable.Api} api      DataTable to trigger events on
+ * @param  {boolean}      selected true if selected, false if deselected
+ * @param  {string}       type     Item type acting on
+ * @param  {boolean}      any      Require that there are values before
+ *     triggering
+ * @private
+ */
+function eventTrigger ( api, type, args, any )
+{
+	if ( any && ! api.flatten().length ) {
+		return;
+	}
+
+	if ( typeof type === 'string' ) {
+		type = type +'.dt';
+	}
+
+	args.unshift( api );
+
+	$(api.table().node()).trigger( type, args );
+}
+
+/**
+ * Update the information element of the DataTable showing information about the
+ * items selected. This is done by adding tags to the existing text
+ * 
+ * @param {DataTable.Api} api DataTable to update
+ * @private
+ */
+function info ( api )
+{
+	var ctx = api.settings()[0];
+
+	if ( ! ctx._select.info || ! ctx.aanFeatures.i ) {
+		return;
+	}
+
+	if ( api.select.style() === 'api' ) {
+		return;
+	}
+
+	var rows    = api.rows( { selected: true } ).flatten().length;
+	var columns = api.columns( { selected: true } ).flatten().length;
+	var cells   = api.cells( { selected: true } ).flatten().length;
+
+	var add = function ( el, name, num ) {
+		el.append( $('<span class="select-item"/>').append( api.i18n(
+			'select.'+name+'s',
+			{ _: '%d '+name+'s selected', 0: '', 1: '1 '+name+' selected' },
+			num
+		) ) );
+	};
+
+	// Internal knowledge of DataTables to loop over all information elements
+	$.each( ctx.aanFeatures.i, function ( i, el ) {
+		el = $(el);
+
+		var output  = $('<span class="select-info"/>');
+		add( output, 'row', rows );
+		add( output, 'column', columns );
+		add( output, 'cell', cells  );
+
+		var exisiting = el.children('span.select-info');
+		if ( exisiting.length ) {
+			exisiting.remove();
+		}
+
+		if ( output.text() !== '' ) {
+			el.append( output );
+		}
+	} );
+}
+
+/**
+ * Initialisation of a new table. Attach event handlers and callbacks to allow
+ * Select to operate correctly.
+ *
+ * This will occur _after_ the initial DataTables initialisation, although
+ * before Ajax data is rendered, if there is ajax data
+ *
+ * @param  {DataTable.settings} ctx Settings object to operate on
+ * @private
+ */
+function init ( ctx ) {
+	var api = new DataTable.Api( ctx );
+
+	// Row callback so that classes can be added to rows and cells if the item
+	// was selected before the element was created. This will happen with the
+	// `deferRender` option enabled.
+	// 
+	// This method of attaching to `aoRowCreatedCallback` is a hack until
+	// DataTables has proper events for row manipulation If you are reviewing
+	// this code to create your own plug-ins, please do not do this!
+	ctx.aoRowCreatedCallback.push( {
+		fn: function ( row, data, index ) {
+			var i, ien;
+			var d = ctx.aoData[ index ];
+
+			// Row
+			if ( d._select_selected ) {
+				$( row ).addClass( ctx._select.className );
+			}
+
+			// Cells and columns - if separated out, we would need to do two
+			// loops, so it makes sense to combine them into a single one
+			for ( i=0, ien=ctx.aoColumns.length ; i<ien ; i++ ) {
+				if ( ctx.aoColumns[i]._select_selected || (d._selected_cells && d._selected_cells[i]) ) {
+					$(d.anCells[i]).addClass( ctx._select.className );
+				}
+			}
+		},
+		sName: 'select-deferRender'
+	} );
+
+	// On Ajax reload we want to reselect all rows which are currently selected,
+	// if there is an rowId (i.e. a unique value to identify each row with)
+	api.on( 'preXhr.dt.dtSelect', function () {
+		// note that column selection doesn't need to be cached and then
+		// reselected, as they are already selected
+		var rows = api.rows( { selected: true } ).ids( true ).filter( function ( d ) {
+			return d !== undefined;
+		} );
+
+		var cells = api.cells( { selected: true } ).eq(0).map( function ( cellIdx ) {
+			var id = api.row( cellIdx.row ).id( true );
+			return id ?
+				{ row: id, column: cellIdx.column } :
+				undefined;
+		} ).filter( function ( d ) {
+			return d !== undefined;
+		} );
+
+		// On the next draw, reselect the currently selected items
+		api.one( 'draw.dt.dtSelect', function () {
+			api.rows( rows ).select();
+
+			// `cells` is not a cell index selector, so it needs a loop
+			if ( cells.any() ) {
+				cells.each( function ( id ) {
+					api.cells( id.row, id.column ).select();
+				} );
+			}
+		} );
+	} );
+
+	// Update the table information element with selected item summary
+	api.on( 'draw.dtSelect.dt select.dtSelect.dt deselect.dtSelect.dt info.dt', function () {
+		info( api );
+	} );
+
+	// Clean up and release
+	api.on( 'destroy.dtSelect', function () {
+		disableMouseSelection( api );
+		api.off( '.dtSelect' );
+	} );
+}
+
+/**
+ * Add one or more items (rows or columns) to the selection when shift clicking
+ * in OS selection style
+ *
+ * @param  {DataTable.Api} dt   DataTable
+ * @param  {string}        type Row or column range selector
+ * @param  {object}        idx  Item index to select to
+ * @param  {object}        last Item index to select from
+ * @private
+ */
+function rowColumnRange( dt, type, idx, last )
+{
+	// Add a range of rows from the last selected row to this one
+	var indexes = dt[type+'s']( { search: 'applied' } ).indexes();
+	var idx1 = $.inArray( last, indexes );
+	var idx2 = $.inArray( idx, indexes );
+
+	if ( ! dt[type+'s']( { selected: true } ).any() && idx1 === -1 ) {
+		// select from top to here - slightly odd, but both Windows and Mac OS
+		// do this
+		indexes.splice( $.inArray( idx, indexes )+1, indexes.length );
+	}
+	else {
+		// reverse so we can shift click 'up' as well as down
+		if ( idx1 > idx2 ) {
+			var tmp = idx2;
+			idx2 = idx1;
+			idx1 = tmp;
+		}
+
+		indexes.splice( idx2+1, indexes.length );
+		indexes.splice( 0, idx1 );
+	}
+
+	if ( ! dt[type]( idx, { selected: true } ).any() ) {
+		// Select range
+		dt[type+'s']( indexes ).select();
+	}
+	else {
+		// Deselect range - need to keep the clicked on row selected
+		indexes.splice( $.inArray( idx, indexes ), 1 );
+		dt[type+'s']( indexes ).deselect();
+	}
+}
+
+/**
+ * Clear all selected items
+ *
+ * @param  {DataTable.settings} ctx Settings object of the host DataTable
+ * @param  {boolean} [force=false] Force the de-selection to happen, regardless
+ *     of selection style
+ * @private
+ */
+function clear( ctx, force )
+{
+	if ( force || ctx._select.style === 'single' ) {
+		var api = new DataTable.Api( ctx );
+		
+		api.rows( { selected: true } ).deselect();
+		api.columns( { selected: true } ).deselect();
+		api.cells( { selected: true } ).deselect();
+	}
+}
+
+/**
+ * Select items based on the current configuration for style and items.
+ *
+ * @param  {object}             e    Mouse event object
+ * @param  {DataTables.Api}     dt   DataTable
+ * @param  {DataTable.settings} ctx  Settings object of the host DataTable
+ * @param  {string}             type Items to select
+ * @param  {int|object}         idx  Index of the item to select
+ * @private
+ */
+function typeSelect ( e, dt, ctx, type, idx )
+{
+	var style = dt.select.style();
+	var isSelected = dt[type]( idx, { selected: true } ).any();
+
+	if ( style === 'os' ) {
+		if ( e.ctrlKey || e.metaKey ) {
+			// Add or remove from the selection
+			dt[type]( idx ).select( ! isSelected );
+		}
+		else if ( e.shiftKey ) {
+			if ( type === 'cell' ) {
+				cellRange( dt, idx, ctx._select_lastCell || null );
+			}
+			else {
+				rowColumnRange( dt, type, idx, ctx._select_lastCell ?
+					ctx._select_lastCell[type] :
+					null
+				);
+			}
+		}
+		else {
+			// No cmd or shift click - deselect if selected, or select
+			// this row only
+			var selected = dt[type+'s']( { selected: true } );
+
+			if ( isSelected && selected.flatten().length === 1 ) {
+				dt[type]( idx ).deselect();
+			}
+			else {
+				selected.deselect();
+				dt[type]( idx ).select();
+			}
+		}
+	} else if ( style == 'multi+shift' ) {
+		if ( e.shiftKey ) {
+			if ( type === 'cell' ) {
+				cellRange( dt, idx, ctx._select_lastCell || null );
+			}
+			else {
+				rowColumnRange( dt, type, idx, ctx._select_lastCell ?
+					ctx._select_lastCell[type] :
+					null
+				);
+			}
+		}
+		else {
+			dt[ type ]( idx ).select( ! isSelected );
+		}
+	}
+	else {
+		dt[ type ]( idx ).select( ! isSelected );
+	}
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables selectors
+ */
+
+// row and column are basically identical just assigned to different properties
+// and checking a different array, so we can dynamically create the functions to
+// reduce the code size
+$.each( [
+	{ type: 'row', prop: 'aoData' },
+	{ type: 'column', prop: 'aoColumns' }
+], function ( i, o ) {
+	DataTable.ext.selector[ o.type ].push( function ( settings, opts, indexes ) {
+		var selected = opts.selected;
+		var data;
+		var out = [];
+
+		if ( selected !== true && selected !== false ) {
+			return indexes;
+		}
+
+		for ( var i=0, ien=indexes.length ; i<ien ; i++ ) {
+			data = settings[ o.prop ][ indexes[i] ];
+
+			if ( (selected === true && data._select_selected === true) ||
+			     (selected === false && ! data._select_selected )
+			) {
+				out.push( indexes[i] );
+			}
+		}
+
+		return out;
+	} );
+} );
+
+DataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
+	var selected = opts.selected;
+	var rowData;
+	var out = [];
+
+	if ( selected === undefined ) {
+		return cells;
+	}
+
+	for ( var i=0, ien=cells.length ; i<ien ; i++ ) {
+		rowData = settings.aoData[ cells[i].row ];
+
+		if ( (selected === true && rowData._selected_cells && rowData._selected_cells[ cells[i].column ] === true) ||
+		     (selected === false && ( ! rowData._selected_cells || ! rowData._selected_cells[ cells[i].column ] ) )
+		) {
+			out.push( cells[i] );
+		}
+	}
+
+	return out;
+} );
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables API
+ *
+ * For complete documentation, please refer to the docs/api directory or the
+ * DataTables site
+ */
+
+// Local variables to improve compression
+var apiRegister = DataTable.Api.register;
+var apiRegisterPlural = DataTable.Api.registerPlural;
+
+apiRegister( 'select()', function () {
+	return this.iterator( 'table', function ( ctx ) {
+		DataTable.select.init( new DataTable.Api( ctx ) );
+	} );
+} );
+
+apiRegister( 'select.blurable()', function ( flag ) {
+	if ( flag === undefined ) {
+		return this.context[0]._select.blurable;
+	}
+
+	return this.iterator( 'table', function ( ctx ) {
+		ctx._select.blurable = flag;
+	} );
+} );
+
+apiRegister( 'select.info()', function ( flag ) {
+	if ( info === undefined ) {
+		return this.context[0]._select.info;
+	}
+
+	return this.iterator( 'table', function ( ctx ) {
+		ctx._select.info = flag;
+	} );
+} );
+
+apiRegister( 'select.items()', function ( items ) {
+	if ( items === undefined ) {
+		return this.context[0]._select.items;
+	}
+
+	return this.iterator( 'table', function ( ctx ) {
+		ctx._select.items = items;
+
+		eventTrigger( new DataTable.Api( ctx ), 'selectItems', [ items ] );
+	} );
+} );
+
+// Takes effect from the _next_ selection. None disables future selection, but
+// does not clear the current selection. Use the `deselect` methods for that
+apiRegister( 'select.style()', function ( style ) {
+	if ( style === undefined ) {
+		return this.context[0]._select.style;
+	}
+
+	return this.iterator( 'table', function ( ctx ) {
+		ctx._select.style = style;
+
+		if ( ! ctx._select_init ) {
+			init( ctx );
+		}
+
+		// Add / remove mouse event handlers. They aren't required when only
+		// API selection is available
+		var dt = new DataTable.Api( ctx );
+		disableMouseSelection( dt );
+		
+		if ( style !== 'api' ) {
+			enableMouseSelection( dt );
+		}
+
+		eventTrigger( new DataTable.Api( ctx ), 'selectStyle', [ style ] );
+	} );
+} );
+
+apiRegister( 'select.selector()', function ( selector ) {
+	if ( selector === undefined ) {
+		return this.context[0]._select.selector;
+	}
+
+	return this.iterator( 'table', function ( ctx ) {
+		disableMouseSelection( new DataTable.Api( ctx ) );
+
+		ctx._select.selector = selector;
+
+		if ( ctx._select.style !== 'api' ) {
+			enableMouseSelection( new DataTable.Api( ctx ) );
+		}
+	} );
+} );
+
+
+
+apiRegisterPlural( 'rows().select()', 'row().select()', function ( select ) {
+	var api = this;
+
+	if ( select === false ) {
+		return this.deselect();
+	}
+
+	this.iterator( 'row', function ( ctx, idx ) {
+		clear( ctx );
+
+		ctx.aoData[ idx ]._select_selected = true;
+		$( ctx.aoData[ idx ].nTr ).addClass( ctx._select.className );
+	} );
+
+	this.iterator( 'table', function ( ctx, i ) {
+		eventTrigger( api, 'select', [ 'row', api[i] ], true );
+	} );
+
+	return this;
+} );
+
+apiRegisterPlural( 'columns().select()', 'column().select()', function ( select ) {
+	var api = this;
+
+	if ( select === false ) {
+		return this.deselect();
+	}
+
+	this.iterator( 'column', function ( ctx, idx ) {
+		clear( ctx );
+
+		ctx.aoColumns[ idx ]._select_selected = true;
+
+		var column = new DataTable.Api( ctx ).column( idx );
+
+		$( column.header() ).addClass( ctx._select.className );
+		$( column.footer() ).addClass( ctx._select.className );
+
+		column.nodes().to$().addClass( ctx._select.className );
+	} );
+
+	this.iterator( 'table', function ( ctx, i ) {
+		eventTrigger( api, 'select', [ 'column', api[i] ], true );
+	} );
+
+	return this;
+} );
+
+apiRegisterPlural( 'cells().select()', 'cell().select()', function ( select ) {
+	var api = this;
+
+	if ( select === false ) {
+		return this.deselect();
+	}
+
+	this.iterator( 'cell', function ( ctx, rowIdx, colIdx ) {
+		clear( ctx );
+
+		var data = ctx.aoData[ rowIdx ];
+
+		if ( data._selected_cells === undefined ) {
+			data._selected_cells = [];
+		}
+
+		data._selected_cells[ colIdx ] = true;
+
+		if ( data.anCells ) {
+			$( data.anCells[ colIdx ] ).addClass( ctx._select.className );
+		}
+	} );
+
+	this.iterator( 'table', function ( ctx, i ) {
+		eventTrigger( api, 'select', [ 'cell', api[i] ], true );
+	} );
+
+	return this;
+} );
+
+
+apiRegisterPlural( 'rows().deselect()', 'row().deselect()', function () {
+	var api = this;
+
+	this.iterator( 'row', function ( ctx, idx ) {
+		ctx.aoData[ idx ]._select_selected = false;
+		$( ctx.aoData[ idx ].nTr ).removeClass( ctx._select.className );
+	} );
+
+	this.iterator( 'table', function ( ctx, i ) {
+		eventTrigger( api, 'deselect', [ 'row', api[i] ], true );
+	} );
+
+	return this;
+} );
+
+apiRegisterPlural( 'columns().deselect()', 'column().deselect()', function () {
+	var api = this;
+
+	this.iterator( 'column', function ( ctx, idx ) {
+		ctx.aoColumns[ idx ]._select_selected = false;
+
+		var api = new DataTable.Api( ctx );
+		var column = api.column( idx );
+
+		$( column.header() ).removeClass( ctx._select.className );
+		$( column.footer() ).removeClass( ctx._select.className );
+
+		// Need to loop over each cell, rather than just using
+		// `column().nodes()` as cells which are individually selected should
+		// not have the `selected` class removed from them
+		api.cells( null, idx ).indexes().each( function (cellIdx) {
+			var data = ctx.aoData[ cellIdx.row ];
+			var cellSelected = data._selected_cells;
+
+			if ( data.anCells && (! cellSelected || ! cellSelected[ cellIdx.column ]) ) {
+				$( data.anCells[ cellIdx.column  ] ).removeClass( ctx._select.className );
+			}
+		} );
+	} );
+
+	this.iterator( 'table', function ( ctx, i ) {
+		eventTrigger( api, 'deselect', [ 'column', api[i] ], true );
+	} );
+
+	return this;
+} );
+
+apiRegisterPlural( 'cells().deselect()', 'cell().deselect()', function () {
+	var api = this;
+
+	this.iterator( 'cell', function ( ctx, rowIdx, colIdx ) {
+		var data = ctx.aoData[ rowIdx ];
+
+		data._selected_cells[ colIdx ] = false;
+
+		// Remove class only if the cells exist, and the cell is not column
+		// selected, in which case the class should remain (since it is selected
+		// in the column)
+		if ( data.anCells && ! ctx.aoColumns[ colIdx ]._select_selected ) {
+			$( data.anCells[ colIdx ] ).removeClass( ctx._select.className );
+		}
+	} );
+
+	this.iterator( 'table', function ( ctx, i ) {
+		eventTrigger( api, 'deselect', [ 'cell', api[i] ], true );
+	} );
+
+	return this;
+} );
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Buttons
+ */
+function i18n( label, def ) {
+	return function (dt) {
+		return dt.i18n( 'buttons.'+label, def );
+	};
+}
+
+// Common events with suitable namespaces
+function namespacedEvents ( config ) {
+	var unique = config._eventNamespace;
+
+	return 'draw.dt.DT'+unique+' select.dt.DT'+unique+' deselect.dt.DT'+unique;
+}
+
+function enabled ( dt, config ) {
+	if ( $.inArray( 'rows', config.limitTo ) !== -1 && dt.rows( { selected: true } ).any() ) {
+		return true;
+	}
+
+	if ( $.inArray( 'columns', config.limitTo ) !== -1 && dt.columns( { selected: true } ).any() ) {
+		return true;
+	}
+
+	if ( $.inArray( 'cells', config.limitTo ) !== -1 && dt.cells( { selected: true } ).any() ) {
+		return true;
+	}
+
+	return false;
+}
+
+var _buttonNamespace = 0;
+
+$.extend( DataTable.ext.buttons, {
+	selected: {
+		text: i18n( 'selected', 'Selected' ),
+		className: 'buttons-selected',
+		limitTo: [ 'rows', 'columns', 'cells' ],
+		init: function ( dt, node, config ) {
+			var that = this;
+			config._eventNamespace = '.select'+(_buttonNamespace++);
+
+			// .DT namespace listeners are removed by DataTables automatically
+			// on table destroy
+			dt.on( namespacedEvents(config), function () {
+				that.enable( enabled(dt, config) );
+			} );
+
+			this.disable();
+		},
+		destroy: function ( dt, node, config ) {
+			dt.off( config._eventNamespace );
+		}
+	},
+	selectedSingle: {
+		text: i18n( 'selectedSingle', 'Selected single' ),
+		className: 'buttons-selected-single',
+		init: function ( dt, node, config ) {
+			var that = this;
+			config._eventNamespace = '.select'+(_buttonNamespace++);
+
+			dt.on( namespacedEvents(config), function () {
+				var count = dt.rows( { selected: true } ).flatten().length +
+				            dt.columns( { selected: true } ).flatten().length +
+				            dt.cells( { selected: true } ).flatten().length;
+
+				that.enable( count === 1 );
+			} );
+
+			this.disable();
+		},
+		destroy: function ( dt, node, config ) {
+			dt.off( config._eventNamespace );
+		}
+	},
+	selectAll: {
+		text: i18n( 'selectAll', 'Select all' ),
+		className: 'buttons-select-all',
+		action: function () {
+			var items = this.select.items();
+			this[ items+'s' ]().select();
+		}
+	},
+	selectNone: {
+		text: i18n( 'selectNone', 'Deselect all' ),
+		className: 'buttons-select-none',
+		action: function () {
+			clear( this.settings()[0], true );
+		},
+		init: function ( dt, node, config ) {
+			var that = this;
+			config._eventNamespace = '.select'+(_buttonNamespace++);
+
+			dt.on( namespacedEvents(config), function () {
+				var count = dt.rows( { selected: true } ).flatten().length +
+				            dt.columns( { selected: true } ).flatten().length +
+				            dt.cells( { selected: true } ).flatten().length;
+
+				that.enable( count > 0 );
+			} );
+
+			this.disable();
+		},
+		destroy: function ( dt, node, config ) {
+			dt.off( config._eventNamespace );
+		}
+	}
+} );
+
+$.each( [ 'Row', 'Column', 'Cell' ], function ( i, item ) {
+	var lc = item.toLowerCase();
+
+	DataTable.ext.buttons[ 'select'+item+'s' ] = {
+		text: i18n( 'select'+item+'s', 'Select '+lc+'s' ),
+		className: 'buttons-select-'+lc+'s',
+		action: function () {
+			this.select.items( lc );
+		},
+		init: function ( dt ) {
+			var that = this;
+
+			dt.on( 'selectItems.dt.DT', function ( e, ctx, items ) {
+				that.active( items === lc );
+			} );
+		}
+	};
+} );
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Initialisation
+ */
+
+// DataTables creation - check if select has been defined in the options. Note
+// this required that the table be in the document! If it isn't then something
+// needs to trigger this method unfortunately. The next major release of
+// DataTables will rework the events and address this.
+$(document).on( 'preInit.dt.dtSelect', function (e, ctx) {
+	if ( e.namespace !== 'dt' ) {
+		return;
+	}
+
+	DataTable.select.init( new DataTable.Api( ctx ) );
+} );
+
+
+return DataTable.select;
 }));
 
 

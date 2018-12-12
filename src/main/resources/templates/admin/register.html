@@ -8,67 +8,81 @@
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
+        <a href="/admin/employeelist" class="btn btn-primary">Back to Employee List</a> <br />
         <!--https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/-->
         <!--https://spring.io/guides/gs/handling-form-submission/-->
         <div th:if="${param.success}">
-            You've successfully registered to our awesome app!
+            You've successfully registered employee!
         </div>
         <div th:if="${param.failure}">
-            <h1>Cannot save User</h1>
+            <h1>Failed in register employee!</h1>
         </div>
-
-        <h1>Registration Employee</h1>
+        <h1>Employee Registration</h1>
         <form th:action="@{/admin/register}" th:object="${newUser}" method="post" enctype="multipart/form-data" id="registerEmployeeForm">
-            <table>
-                <tr>
-                    <td>ID: <input type="text" th:field="*{id}" /> <br /></td>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">ID: </label>
+                <div class="col-sm-6"><input type="text" class="form-control" th:field="*{id}" /></div>
+                <div class="col-sm-4"></div>
+            </div>
             <!--https://spring.io/guides/gs/validating-form-input/-->
-                </tr>
-                <tr>
-                    <td>Name: <input type="text" th:field="*{name}" /> <br /></td>
-                    <!--<p th:if="${fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>-->
-                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
-                </tr>
-                <tr>
-                    <td>Email: <input type="text" th:field="*{email}" /> <br /></td>
-                    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Name: </label>
+                <div class="col-sm-6"><input type="text" class="form-control" th:field="*{name}" /></div>
+                <!--<p th:if="${fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>-->
+                <div class="col-sm-4"><small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</small></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Email: </label>
+                <div class="col-sm-6"><input type="text" class="form-control" th:field="*{email}" /></div>
+                <div class="col-sm-4"><small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small></div>
+            </div>
             <!--<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>-->
-            <tr><td>Phone: <input type="text" th:field="*{phone}" /> <br /></td></tr>
-            <tr><td>Birthday: <input type="date" th:field="*{birthday}" /><br /></td></tr>
-                <tr>
-                    <td>Username: <input type="text" th:field="*{username}" /> <br /></td>
-                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
-                </tr>
-                <tr>
-                    <td>Password: <input type="password" th:field="*{password}" /> <br /></td>
-                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Phone: </label>
+                <div class="col-sm-6"><input type="text" class="form-control" th:field="*{phone}" /></div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Birthday: </label>
+                <div class="col-sm-6"><input type="date" class="form-control" th:field="*{birthday}" /></div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Username: </label>
+                <div class="col-sm-6"><input type="text" class="form-control" th:field="*{username}" /></div>
+                <div class="col-sm-4"><small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</small></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Password: </label>
+                <div class="col-sm-6"><input type="password" class="form-control" th:field="*{password}" /></div>
+                <div class="col-sm-4"><small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small></div>
+            </div>
 
             <!--https://o7planning.org/en/11659/thymeleaf-form-select-option-example-->
-                <tr>
-                    <td> Role:
-                        <select th:field="*{role}" id="employee_role">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Role: </label>
+                        <div class="col-sm-6">
+                            <select class="form-control" th:field="*{role}" id="employee_role">
             <!--<select th:field="*{role.roleId}">-->
-                         <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
-                        </select>
-
-                        <input id="manager_name" placeholder="Manager name" />
-                        <input type="number" id="manager_id" th:field="*{managerId}" placeholder="Manager ID" />
-
-                    </td>
-                </tr>
+                                <option th:each="role: ${roles}" th:value="${role.roleId}" th:text="${role.role}" />
+                            </select>
+                        </div>
+                        <div class="col-sm-3"><input class="form-control" id="manager_name" placeholder="Manager name" /></div>
+                        <div class="col-sm-1"><input type="number" class="form-control" id="manager_id" th:field="*{managerId}" placeholder="Manager ID" /></div>
+                </div>
 
 
 
             <!--http://zetcode.com/springboot/uploadfile/-->
-                <tr><td>Upload Profile Picture: <input type="file" name="file" /></td></tr>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Upload Profile Picture: </label>
+                    <div class="col-sm-6"><input type="file" class="form-control-file" name="file" /></div>
+                </div>
 
-                <tr><td><input type="submit" value="Register" id="registerSubmit" class="btn btn-success"/></td></tr>
-            </table>
+                <input type="submit" value="Register" id="registerSubmit" class="btn btn-success"/>
         </form>
 
-        <a href="/admin/employeelist" class="btn btn-primary">Employee List</a>
+
         <!--<div>-->
             <!--<h1>Ajax Post Result</h1>-->
             <!--<span id="result"></span>-->
