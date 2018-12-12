@@ -14,7 +14,7 @@ public class ActionItemId implements Serializable {
     private Item item;
 
     @ManyToOne
-    private MyUser myUser;
+    private ActionTransaction actionTransaction;
 
     public Item getItem() {
         return item;
@@ -24,11 +24,11 @@ public class ActionItemId implements Serializable {
         this.item = item;
     }
 
-    public MyUser getMyUser() {
-        return myUser;
+    public ActionTransaction getActionTransaction() {
+        return actionTransaction;
     }
 
-    public void setMyUser(MyUser myUser) {
-        this.myUser = myUser;
+    public void setActionTransaction(ActionTransaction actionTransaction) {
+        this.actionTransaction = actionTransaction;
     }
 }

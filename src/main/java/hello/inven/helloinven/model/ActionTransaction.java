@@ -1,5 +1,7 @@
 package hello.inven.helloinven.model;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +12,7 @@ import java.util.List;
 public class ActionTransaction {
     public enum ActionType {
         Requested, AskApproval, Approved, AskInventory, HandedOver,
-        Received, Rejected, Cancelled, Returned
+        Done, Rejected, Cancelled, Returned
     }
 
     @Id
@@ -24,7 +26,8 @@ public class ActionTransaction {
     @ManyToOne
     private MyUser requestedBy; // Employee / manager who request the items
 
-    @Column
+    @Column(nullable = false, updatable = false)
+    @CreatedDate
     private Date requestTime;
 
     @Column
@@ -33,16 +36,16 @@ public class ActionTransaction {
     @Column
     private Date approvedTime;
 
-    @Column
-    private Long receivedBy; // Ask the item to clerk
-
-    @Column
-    private Long receivedTime;
+//    @Column
+//    private Long receivedBy; // Ask the item to clerk
+//
+//    @Column
+//    private Long receivedTime;
 
     @Column
     private String actionRemarks;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.item", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.actionTransaction", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ActionItem> actionItemList = new ArrayList<>();
 
     public Long getActionId() {
@@ -93,21 +96,21 @@ public class ActionTransaction {
         this.approvedTime = approvedTime;
     }
 
-    public Long getReceivedBy() {
-        return receivedBy;
-    }
-
-    public void setReceivedBy(Long receivedBy) {
-        this.receivedBy = receivedBy;
-    }
-
-    public Long getReceivedTime() {
-        return receivedTime;
-    }
-
-    public void setReceivedTime(Long receivedTime) {
-        this.receivedTime = receivedTime;
-    }
+//    public Long getReceivedBy() {
+//        return receivedBy;
+//    }
+//
+//    public void setReceivedBy(Long receivedBy) {
+//        this.receivedBy = receivedBy;
+//    }
+//
+//    public Long getReceivedTime() {
+//        return receivedTime;
+//    }
+//
+//    public void setReceivedTime(Long receivedTime) {
+//        this.receivedTime = receivedTime;
+//    }
 
     public String getActionRemarks() {
         return actionRemarks;

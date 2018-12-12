@@ -1,8 +1,11 @@
 package hello.inven.helloinven.controller;
 
+import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.service.EmployeeService;
+import hello.inven.helloinven.service.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +40,15 @@ public class EmployeeController {
 
     @PostMapping("/user/item/request")
     @ResponseBody
-    public ResponseAjax userItemRequestPost(@RequestParam("itemrequests[]") List<Long> requestValues){
+    public ResponseAjax userItemRequestPost(@RequestParam("itemrequests[]") List<Long> requestValues,
+                                            @RequestParam("requestcomment") String comment){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+
         for (Long requestId: requestValues) {
             System.out.println(requestId);
         }
-        return null;
+        System.out.println(comment);
+        return employeeService.requestItemAssets(employee, requestValues, comment);
     }
 }

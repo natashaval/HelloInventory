@@ -10,6 +10,7 @@
 <body>
     <div layout:fragment="content" th:remove="tag">
         <h3>Request Items</h3>
+        <div id="request-result"></div>
         <!--<form>-->
             <!--<div class="custom-checkbox custom-control" th:each="item: ${itemAssets}">-->
                 <!--<input class="custom-control-input" type="checkbox" th:attr="data-item-request-id= ${item.id}">-->
@@ -35,6 +36,11 @@
         <form id="item-request-form" method="post">
             <select multiple name="itemrequests[]" id="destination" data-text="Requested Items" data-search="Search for options">
             </select>
+            <div class="form-group">
+                <label>Additional Comment</label>
+                <textarea class="form-control" id="requestcomment"></textarea>
+            </div>
+
             <button type="submit" class="btn btn-primary" onclick="selectAllDestination()">Request</button>
         </form>
         <script type="text/javascript" th:src="@{/plugin/Dual-List-Box-Plugin-listSwap/jquery.listswap.js}"></script>
@@ -57,17 +63,23 @@
                 e.preventDefault();
                 // var values = $('#destination select').serialize();
                 var values = $('#destination').val();
+                var comment = $('#requestcomment').val();
                 console.log(values);
 
                 $.ajax({
                     method: 'POST',
                     url: '/user/item/request',
-                    data: {'itemrequests': values},
+                    data: {
+                        'itemrequests': values,
+                        'requestcomment': comment
+                    },
                     success: function(data){
                         console.log("Success send ajax");
+                        $('#request-result').append("<p class='text-success'>" + data.data + "</p>");
                     },
                     error: function(data){
                         console.log("error send ajax");
+                        $('#request-result').append("<p class='text-danger'>Error in Request Item</p>");
                     }
                 });
 

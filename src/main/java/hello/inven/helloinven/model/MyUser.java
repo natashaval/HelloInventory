@@ -62,7 +62,7 @@ public class MyUser { //extends User {
 //     LOGIN pakai username & password dari table user_role
 
     @Column(name = "emp_manager_id", nullable = true)
-    private Integer managerId;
+    private Long managerId;
 
 //    @Column(name = "emp_active")
 //    private boolean emp_active = true;
@@ -191,11 +191,11 @@ public class MyUser { //extends User {
         this.password = password;
     }
 
-    public Integer getManagerId() {
+    public Long getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(Integer managerId) {
+    public void setManagerId(Long managerId) {
         this.managerId = managerId;
     }
 
@@ -271,5 +271,13 @@ public class MyUser { //extends User {
 
     public void setUserItemSerials(List<ItemSerial> userItemSerials) {
         this.userItemSerials = userItemSerials;
+    }
+
+    public List<ActionTransaction> getActionTransactions() {
+        return actionTransactions;
+    }
+
+    public void setActionTransactions(List<ActionTransaction> actionTransactions) {
+        this.actionTransactions = actionTransactions;
     }
 }
