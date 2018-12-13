@@ -9,6 +9,7 @@
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
+        <div id="approval-result"></div>
         <table id="item-approval-table">
             <thead>
                 <th>Request ID</th>
@@ -20,11 +21,12 @@
         </table>
 
         <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
         <script type="text/javascript">
             var approvalTable;
             $(document).ready(function(){
                 approvalTable = $('#item-approval-table').DataTable({
-                   ajax: '/manager/item/assets/approval',
+                   ajax: '/manager/action/approval',
                    columns: [
                        {"data": "actionId"},
                        {"data": "requestTime"},
@@ -50,20 +52,116 @@
             function approvalButton(){
                 $('#item-approval-table tbody').on('click', '.approval-item', function (e) {
                     approvalRow = approvalTable.row($(this).parents('tr')).data();
-                    console.log(approvalRow);
+                    console.log(approvalRow.actionItemList);
                     actionId = approvalRow.actionId;
+
+                    itemList = approvalRow.actionItemList;
+                    var itemMessage = "<ol>";
+                    // for (var i = 0; i < itemList.length; i++){
+                    //     console.log(itemList[i].name);
+                    // }
+                    for (var i in approvalRow.actionItemList){
+                        console.log(approvalRow.actionItemList[i].item.name);
+                        // itemMessage += "<input type='text' class='form-control' readonly placeholder='" + approvalRow.actionItemList[i].item.name +
+                        //         "' /><br />";
+                        itemMessage += "<li>" + approvalRow.actionItemList[i].item.name + "</li><br />";
+                    }
+                    itemMessage += "</ol>";
+
+                    bootbox.dialog({
+                       title: "<span class='glyphicon glyphicon-info-sign'></span> Requested Items",
+                       message: itemMessage,
+                       buttons: {
+                           ok: {
+                               label: "Close",
+                               className: "btn-secondary",
+                               callback: function () {
+
+                               }
+                           }
+                       }
+                    });
                 });
 
                 $('#item-approval-table tbody').on('click', '.approval-accepted', function (e) {
                     approvalRow = approvalTable.row($(this).parents('tr')).data();
                     console.log(approvalRow);
                     actionId = approvalRow.actionId;
+
+                    bootbox.dialog({
+                       title: "<span class='glyphicon glyphicon-ok-circle'></span> Approve Request?",
+                        message: "Are you sure to accept this request?",
+                        backdrop: true,
+                        buttons: {
+                           cancel: {
+                               label: "Cancel",
+                               className: "btn-secondary",
+                               callback: function(){
+                                   $('.bootbox').modal('hide');
+                               }
+                           },
+                            accept: {
+                                label: "<span class='glyphicon glyphicon-ok-sign'></span> Approve",
+                                className: "btn-success",
+                                callback: function(){
+                                    console.log("approve clicked");
+
+                                    // AJAX approve request
+                                    $.ajax({
+                                       type: "POST",
+                                       url: "/manager/action/" + actionId + "/approved",
+                                       success: function(data){
+                                           $('#item-approval-table').DataTable().ajax.reload();
+                                           $('#approval-result').append("<p class='text-success'>"+ data.data +"</p>");
+                                       },
+                                        error: function(e){
+                                            $('#approval-result').append("<p class='text-danger'>"+ data.data +"</p>");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
                 });
 
                 $('#item-approval-table tbody').on('click', '.approval-rejected', function (e) {
                     approvalRow = approvalTable.row($(this).parents('tr')).data();
                     console.log(approvalRow);
                     actionId = approvalRow.actionId;
+
+                    bootbox.dialog({
+                        title: "<span class='glyphicon glyphicon-remove-circle'></span> Reject Request?",
+                        message: "Are you sure to reject this request?",
+                        buttons: {
+                            success: {
+                                label: "Cancel",
+                                className: "btn-secondary",
+                                callback: function(){
+                                    $('.bootbox').modal('hide');
+                                }
+                            },
+                            danger: {
+                                label: "<span class='glyphicon glyphicon-remove-sign'></span> Reject",
+                                className: "btn-danger",
+                                callback: function(){
+                                    console.log("reject clicked");
+
+                                    // AJAX reject request
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/manager/action/" + actionId + "/rejected",
+                                        success: function(data){
+                                            $('#item-approval-table').DataTable().ajax.reload();
+                                            $('#approval-result').append("<p class='text-warning'>"+ data.data +"</p>");
+                                        },
+                                        error: function(e){
+                                            $('#approval-result').append("<p class='text-danger'>"+ data.data +"</p>");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
                 });
 
 

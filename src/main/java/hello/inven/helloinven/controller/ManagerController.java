@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -16,9 +18,9 @@ public class ManagerController {
     @Autowired
     ManagerService managerService;
 
-    @GetMapping("/manager/item/assets/approval")
+    @GetMapping("/manager/action/approval")
     @ResponseBody
-    public ResponseAjax managerItemApprovalJSON(){
+    public ResponseAjax managerActionApprovalJSON(){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser manager = myUserDetails.getUser();
         return managerService.requestApproval(manager);
@@ -27,5 +29,17 @@ public class ManagerController {
     @GetMapping("/manager/item/approval")
     public String managerItemApproval(Model model){
         return "manager/item-approval";
+    }
+
+    @PostMapping("/manager/action/{id}/approved")
+    @ResponseBody
+    public ResponseAjax actionApproved(@PathVariable Long id){
+        return managerService.approvedApproval(id);
+    }
+
+    @PostMapping("/manager/action/{id}/rejected")
+    @ResponseBody
+    public ResponseAjax actionRejected(@PathVariable Long id){
+        return managerService.rejectedApproval(id);
     }
 }

@@ -5,4 +5,7 @@ import hello.inven.helloinven.model.ResponseAjax;
 
 public interface ManagerService {
     ResponseAjax requestApproval(MyUser manager);
+    ResponseAjax approvedApproval(Long actionId);
+    ResponseAjax rejectedApproval(Long actionId);
+
 }
