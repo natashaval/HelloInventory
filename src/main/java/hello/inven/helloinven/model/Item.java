@@ -70,6 +70,9 @@ public class Item extends AuditModel {
     private List<ItemSerial> itemSerials;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.item", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JsonIgnoreProperties(value = {"item", "actionTransaction"})
+//    @JsonIgnoreProperties(value = "actionItemId")
+    @JsonIgnore
     private List<ActionItem> actionItemList = new ArrayList<>();
 
     public Long getId() {
@@ -183,5 +186,13 @@ public class Item extends AuditModel {
 
     public void setItemSerials(List<ItemSerial> itemSerials) {
         this.itemSerials = itemSerials;
+    }
+
+    public List<ActionItem> getActionItemList() {
+        return actionItemList;
+    }
+
+    public void setActionItemList(List<ActionItem> actionItemList) {
+        this.actionItemList = actionItemList;
     }
 }

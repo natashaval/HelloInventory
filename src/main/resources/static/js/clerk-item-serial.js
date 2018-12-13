@@ -97,9 +97,9 @@ function buttonView() {
 
     // https://stackoverflow.com/questions/31327933/how-add-more-then-one-button-in-each-row-in-jquery-datatables-and-how-to-apply-e
     $('#item-serial-table tbody').on('click', '.serial-delete-button', function (e) {
-        deleteRow = tableSerial.row($(this).parents('tr')).data();
-        console.log(deleteRow);
-        serialId = deleteRow.serialId;
+            deleteRow = tableSerial.row($(this).parents('tr')).data();
+            console.log(deleteRow);
+            serialId = deleteRow.serialId;
 
         bootbox.dialog({
             title: "<span class='glyphicon glyphicon-trash'></span> Delete",

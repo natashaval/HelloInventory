@@ -1,5 +1,8 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,10 +14,16 @@ import javax.persistence.*;
 })
 public class ActionItem { // Result of Many to Many Table
     @EmbeddedId
+//    @JsonIgnoreProperties(value = {"item.actionItemList", "item.category"})
+//    @JsonIgnoreProperties(value = {"item", "actionTransaction"})
+    @JsonIgnore
     private ActionItemId actionItemId = new ActionItemId();
 
     public enum ItemStatus {
-        Pending, Sent, Received, Rejected
+        Pending, // Still in waiting list after request item
+        Sent, //  Clerk has approved and the item is on going
+        Received, // Employee has receive the item
+        Rejected // Clerk has rejected the request
     }
 
     @Column(name = "status", nullable = false)

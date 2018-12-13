@@ -103,7 +103,7 @@ $('#item-add-form').submit(function(e){
         contentType: false,
         success: function(response){
             console.info(response);
-            $('#itemResult').text("Success in Adding Item");
+            $('#itemResult').append("<p class='text text-success'>Success in Adding Item</p>");
             $('#item-add-form').each(function () {
                 // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
                 this.reset();
@@ -111,22 +111,12 @@ $('#item-add-form').submit(function(e){
 
         },
         error: function(e){
-            $('#itemResult').text(e.ResponseText);
+            $('#itemResult').append("<p class='text text-danger'>Failed in Adding Item</p>");
         }
     });
 
 
 });
-
-
-$('#btn-coba').click(function(){
-    alert("COBA");
-    $('#item-add-form').children('input, select').each(function(){
-        var input = $(this);
-        console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr("name") + ' Value: ' + input.val());
-    });
-});
-
 
 
 // var item_table_data;
@@ -231,7 +221,7 @@ function itemDelete(itemId){
 
 
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: "/clerk/item/" + itemId + "/delete",
                         contentType: 'application/json; charset=utf-8',
                         success: function(result){

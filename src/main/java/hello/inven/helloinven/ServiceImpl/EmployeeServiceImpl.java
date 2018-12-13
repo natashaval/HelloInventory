@@ -41,6 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Date currenttime = new Date();
         transaction.setRequestedBy(requester);
         transaction.setRequestTime(currenttime);
+        transaction.setActionType(ActionTransaction.ActionType.PendingApproval);
         if (requester.getManagerId() != null) transaction.setApprovedBy(requester.getManagerId());
         transaction.setActionRemarks(comment);
         transaction = transactionRepository.save(transaction);

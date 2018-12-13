@@ -26,15 +26,15 @@ public class EmployeeController {
         return employeeService.getAllItemAssets();
     }
 
-    @GetMapping("/user/request") //tidak jalan karena datatablesnya kadang tidak load
-    public String userRequestPage(){
-        return "user/request";
-    }
+//    @GetMapping("/user/request") //tidak jalan karena datatablesnya kadang tidak load
+//    public String userRequestPage(){
+//        return "user/request";
+//    }
 
     @GetMapping("/user/item/request")
     public String userItemRequest(Model model){
         ResponseAjax responseAjax = employeeService.getAllItemAssets();
-        model.addAttribute("itemAssets", responseAjax.getData());
+        model.addAttribute("itemAssets", responseAjax.getData()); // karena bentuknya listSwap
         return "user/item-request";
     }
 

@@ -75,6 +75,7 @@
                     },
                     success: function(data){
                         console.log("Success send ajax");
+                        window.location.reload();
                         $('#request-result').append("<p class='text-success'>" + data.data + "</p>");
                     },
                     error: function(data){

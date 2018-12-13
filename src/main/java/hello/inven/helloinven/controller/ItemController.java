@@ -52,7 +52,7 @@ public class ItemController {
         return itemService.getAllItems();
     }
 
-    @GetMapping(value = "/clerk/item/{id}/delete")
+    @PostMapping(value = "/clerk/item/{id}/delete")
     public @ResponseBody ResponseAjax itemDelete(@PathVariable Long id){
         return itemService.deleteItem(id);
     }

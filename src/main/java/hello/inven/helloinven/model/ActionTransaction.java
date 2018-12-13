@@ -1,5 +1,8 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -11,8 +14,15 @@ import java.util.List;
 @Table(name = "action_transaction")
 public class ActionTransaction {
     public enum ActionType {
-        Requested, AskApproval, Approved, AskInventory, HandedOver,
-        Done, Rejected, Cancelled, Returned
+//        Requested, AskApproval, Approved, AskInventory, HandedOver,
+//        Done, Rejected, Cancelled, Returned
+        PendingApproval, // Waiting for Manager Approval
+        PendingInventory, // Waiting for Clerk to accept it
+        HandedOver, // (Several) item is being sent
+        Done, // The item(s) has been received
+        RejectApproval, // Manager reject request
+        RejectInventory, // Clerk reject request
+        CancelRequest // Employee cancel on going request
     }
 
     @Id
@@ -22,10 +32,12 @@ public class ActionTransaction {
     @Column(name = "action_id", unique = true, nullable = false, updatable = false)
     private Long actionId;
 
+    @Column(nullable = false)
     @Enumerated
     private ActionType actionType;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "actionTransactions")
     private MyUser requestedBy; // Employee / manager who request the items
 
     @Column(nullable = false, updatable = false)
@@ -48,6 +60,12 @@ public class ActionTransaction {
     private String actionRemarks;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.actionTransaction", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JsonIgnoreProperties(value = {"item", "actionTransaction"})
+//    @JsonIgnoreProperties(value = {"actionItemId", "item", "actionTransaction"})
+    @JsonIgnoreProperties(value = {"actionItemId", "actionTransaction"})
+//    @JsonIgnoreProperties(value = {"actionItemId.item.category", "actionItemId.item.item"})
+//    @JsonIgnore
+
     private List<ActionItem> actionItemList = new ArrayList<>();
 
     public Long getActionId() {

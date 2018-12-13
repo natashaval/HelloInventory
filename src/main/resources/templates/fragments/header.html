@@ -33,15 +33,30 @@
                     </li>
                 </ul>
 
+                <ul class="navbar-nav mr-auto" sec:authorize="hasAuthority('MANAGER')">
+                    <li class="nav-item" >
+                        <a class="nav-link" href="/manager/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Request Item</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manager/item/approval">Request Approval</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Request Status</a>
+                    </li>
+                </ul>
+
                 <ul class="navbar-nav mr-auto" sec:authorize="hasAuthority('EMPLOYEE')">
                     <li class="nav-item" >
                         <a class="nav-link" href="/user/dashboard">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/request">Request Item</a>
+                        <a class="nav-link" href="/user/item/request">Request Item</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Status</a>
+                        <a class="nav-link" href="">Request Status</a>
                     </li>
                 </ul>
 

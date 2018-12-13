@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8" />
+    <title>Require Approval</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+</head>
+<body>
+    <div layout:fragment="content" th:remove="tag">
+        <table id="item-approval-table">
+            <thead>
+                <th>Request ID</th>
+                <th>Request Time</th>
+                <th>Requester ID</th>
+                <th>Requester Name</th>
+                <th>Actions</th>
+            </thead>
+        </table>
+
+        <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+        <script type="text/javascript">
+            var approvalTable;
+            $(document).ready(function(){
+                approvalTable = $('#item-approval-table').DataTable({
+                   ajax: '/manager/item/assets/approval',
+                   columns: [
+                       {"data": "actionId"},
+                       {"data": "requestTime"},
+                       {"data": "requestedBy.id"},
+                       {"data": "requestedBy.name"},
+                       {"data": null, "orderable": false}
+                   ],
+                    columnDefs: [
+                        {
+                            targets: -1,
+                            data: null,
+                            defaultContent:
+                                "<button class='btn btn-warning approval-item'><span class='glyphicon glyphicon-info-sign'></span> Items</button>" +
+                                " <button class='btn btn-success approval-accepted'><span class='glyphicon glyphicon-ok-circle'></span> Approve</button>" +
+                                " <button class='btn btn-danger approval-rejected'><span class='glyphicon glyphicon-remove-circle'></span> Reject</button>"
+                        }
+                    ]
+                });
+
+                approvalButton();
+            });
+
+            function approvalButton(){
+                $('#item-approval-table tbody').on('click', '.approval-item', function (e) {
+                    approvalRow = approvalTable.row($(this).parents('tr')).data();
+                    console.log(approvalRow);
+                    actionId = approvalRow.actionId;
+                });
+
+                $('#item-approval-table tbody').on('click', '.approval-accepted', function (e) {
+                    approvalRow = approvalTable.row($(this).parents('tr')).data();
+                    console.log(approvalRow);
+                    actionId = approvalRow.actionId;
+                });
+
+                $('#item-approval-table tbody').on('click', '.approval-rejected', function (e) {
+                    approvalRow = approvalTable.row($(this).parents('tr')).data();
+                    console.log(approvalRow);
+                    actionId = approvalRow.actionId;
+                });
+
+
+                }
+        </script>
+    </div>
+</body>
+</html>

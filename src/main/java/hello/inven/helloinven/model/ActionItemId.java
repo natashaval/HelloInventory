@@ -1,5 +1,8 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -12,9 +15,13 @@ import java.util.Objects;
 @Embeddable
 public class ActionItemId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties(value = {"category", "actionItemList"})
+//    @JsonIgnore
     private Item item;
 
     @ManyToOne
+//    @JsonIgnoreProperties(value = "actionItemList")
+//    @JsonIgnore
     private ActionTransaction actionTransaction;
 
     public Item getItem() {

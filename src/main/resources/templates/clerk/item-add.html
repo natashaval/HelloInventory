@@ -7,8 +7,9 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
+    <a href="/clerk/item" class="btn btn-primary">Back to Item List</a><br />
     <h3>Create Item</h3>
-    <h4>Result</h4><span id="itemResult" style="color: springgreen"></span>
+    <div id="itemResult"></div>
 
     <form method="POST" th:action="@{/clerk/item/add}" id="item-add-form" enctype="multipart/form-data">
         Identification Number (UPC): <input type="number" name="id"><br />
@@ -28,9 +29,7 @@
         Width: <input type="number" name="width" step="0.01"> <br />
         Depth: <input type="number" name="depth" step="0.01"> <br />
 
-        <button type="submit" class="btn btn-primary" id="itemSubmit">Create Item</button>
-        <a class="btn btn-danger" id="btn-coba">Coba coba</a>
-        <a class="btn btn-secondary" href="/clerk/item">Cancel</a>
+        <button type="submit" class="btn btn-success" id="itemSubmit">Create Item</button>
     </form>
 
     <script type="text/javascript" th:src="@{/js/clerk-item.js}"></script>
