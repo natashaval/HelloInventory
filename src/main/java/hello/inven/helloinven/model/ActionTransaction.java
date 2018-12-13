@@ -16,7 +16,9 @@ public class ActionTransaction {
     }
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "action_generator")
+//    @SequenceGenerator(name = "action_generator", sequenceName = "action_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "action_id", unique = true, nullable = false, updatable = false)
     private Long actionId;
 

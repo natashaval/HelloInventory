@@ -14,7 +14,7 @@ import java.util.Set;
 public class Category extends AuditModel {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
     private Integer id;
 

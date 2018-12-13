@@ -121,3 +121,8 @@ TESTING (PERLU DIPELAJARI LAGI + buka spring-boot-demo-master):
 https://gigsterous.github.io/engineering/2016/10/18/spring-boot-3.html
 https://ajayiyengar.com/2017/07/08/testing-jpa-entities-in-a-spring-boot-application/
 https://www.baeldung.com/spring-boot-testing
+
+GenerateValue (MySQL use GenerationType.Identity) => activate mySQL AutoIncrement
+https://vladmihalcea.com/hibernate-identity-sequence-and-table-sequence-generator/
+https://thoughts-on-java.org/jpa-generate-primary-keys/
+https://stackoverflow.com/questions/1817625/jpa-primary-key-auto-generate

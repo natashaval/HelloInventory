@@ -7,7 +7,7 @@ $(document).ready(function(){
     //     event.preventDefault();
     //     ajaxPhoto();
     // });
-
+    seedManagerData();
     getManager();
 
 });
@@ -33,7 +33,6 @@ function getManager(){
 }
 
 function autoCompleteManager(){
-    seedManagerData();
     options = {
         // url: "list/manager",
         // listLocation: "data",
@@ -62,10 +61,10 @@ function autoCompleteManager(){
 var managerList = [];
 function seedManagerData(){
     $.getJSON("/admin/list/manager", function(data){
-        console.log(data.data);
+        // console.log(data.data);
         $.each(data.data, function (key, val){
             var managerObj = {};
-            console.log("Key: " + key + "Val: " + val.name);
+            // console.log("Key: " + key + "Val: " + val.name);
             managerObj["name"] = val.name;
             managerObj["id"] = val.id;
             managerList.push(managerObj);

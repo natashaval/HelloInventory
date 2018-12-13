@@ -4,93 +4,121 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <title>Category</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
-        <h1>INI DIAKSES OLEH CLERK</h1>
-        <!--alert message-->
-        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.successadd}">
-            Success Add New Category!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        <h3>Category</h3>
 
-        <div class="alert alert-failed alert-dismissible fade show" role="alert" th:if="${param.failedadd}">
-            Failed in Adding New Category!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-category-add">
+            <span class="glyphicon glyphicon-plus-sign"></span>New Category</button>
 
-        <div class="alert alert-warning" role="alert">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
-                <span aria-hidden="true">&times;</span>
-            <!--</button>-->
-        </div>
+        <table class="table table-bordered table-hover" id="category-table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Category Id</th>
+                <th>Category Name</th>
+                <th>Category Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+        </table>
 
-        <span th:text="${message}"></span> = ini message harusnya
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryAdd">
-            Add Category
-        </button>
-
-        <!--Modal Add Category-->
-        <div class="modal fade" id="categoryAdd" role="dialog" aria-labelledby="exampleCategoryAdd" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <!--Modal Category Add-->
+        <div class="modal fade" id="modal-category-add" role="dialog" aria-labelledby="modal-category-add" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleCategoryAdd">Add Category</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form th:action="@{/clerk/category}" th:object="${newCategory}" method="post">
-                        <div class="modal-body">
-                            <table>
-                                <tr>
-                                    <td> Category Name: <input type="text" id="name" th:field="*{name}"/> </td>
-                                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
-                                </tr>
-                                <tr>
-                                    <td>Category Description: <textarea rows="5" cols="30" wrap="soft" th:field="*{description}"></textarea>
-                                    </td>
-                                </tr>
-                            </table>
+                    <form method="post" action="/clerk/category2/add" id="category-add-form">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="categoryTitle">Create New Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
+
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="category-name" class="col-form-label">Category Name: </label>
+                                <input type="text" class="form-control" id="category-name" required="true"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="category-description" class="col-form-label">Category Description: </label>
+                                <textarea class="form-control" id="category-description"></textarea>
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" value="SaveCategory"></input>
+                            <button type="reset" class="btn btn-warning">Reset</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
 
-        <!--Table list of category-->
-        <div id="categoryList">
-            <table class="table table-bordered table-hover">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Category Id</th>
-                    <th>Category Name</th>
-                    <th>Category Description</th>
-                    <th>Category Details</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="category: ${categoryList}">
-                    <td th:text="${category.id}"></td>
-                    <td th:text="${category.name}"></td>
-                    <td th:text="${category.description}"></td>
-                    <td><a th:href="@{/clerk/category/{id}/edit(id=${category.id})}">Edit</a>
-                        <a th:href="@{/clerk/category/{id}/delete(id=${category.id})}">Delete</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+
+        <!--Modal Category Details-->
+        <div id="modal-category-details" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-category-details-title">Category</h4>
+                        <button type="button" class="close pull-right" data-dismiss="modal"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="category-details-name">Category Name: </label>
+                            <input type="text" class="form-control" id="category-details-name" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="category-details-description">Category Description: </label>
+                            <textarea class="form-control" id="category-details-description" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!--Modal Category Edit-->
+        <div class="modal" id="modal-category-edit" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="category-edit-form">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal-category-edit-title">Category</h4>
+                            <button type="button" class="close pull-right" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="category-edit-name" class="col-form-label">Category Name: </label>
+                                <input type="text" class="form-control" id="category-edit-name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="category-edit-description" class="col-form-label">Category Description: </label>
+                                <textarea class="form-control" id="category-edit-description"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <!--<button type="button" class="btn btn-secondary" id="modal-edit-button-close">Close</button>-->
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--Modal Category Delete using Bootbox Jquery plugin-->
+
+
+
+        <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/clerk-category.js}"></script>
+        <!--<script type="text/javascript" th:src="@{/js/clerk-category-all.js}"></script>-->
     </div>
 </body>
 </html>
