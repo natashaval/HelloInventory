@@ -41,5 +41,10 @@ public class ClerkController {
         return clerkService.receiveItemRequest(clerk);
     }
 
+    @GetMapping(value = "/clerk/item/approval")
+    public String clerkItemApproval(){
+        return "clerk/item-approval";
+    }
+
 
 }

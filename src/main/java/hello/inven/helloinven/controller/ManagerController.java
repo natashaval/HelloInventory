@@ -27,7 +27,7 @@ public class ManagerController {
     }
 
     @GetMapping("/manager/item/approval")
-    public String managerItemApproval(Model model){
+    public String managerItemApproval(){
         return "manager/item-approval";
     }
 

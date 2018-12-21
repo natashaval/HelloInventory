@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ActionItemRepository extends JpaRepository<ActionItem, ActionItemId> {
-    List<ActionItem> findActionItemsByReceivedBy(Long clerkId);
+    List<ActionItem> findActionItemsByReceivedByAndItemStatus(Long clerkId, ActionItem.ItemStatus itemStatus);
 }

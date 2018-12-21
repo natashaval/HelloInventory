@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Item Requested</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h3>CLerk Approval Item Request by Employee</h3>
+    <table id="item-request-table">
+        <thead>
+            <th>Action Id</th>
+            <th>Requester</th>
+            <th>Item</th>
+            <th>Actions</th>
+        </thead>
+    </table>
+
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript">
+        var receiveTable;
+        $(document).ready(function(){
+           receiveTable = $('#item-request-table').DataTable({
+             ajax: "/clerk/item/receive",
+               columns: [
+                   {"data": "actionTransaction.actionId"},
+                   {"data" : "actionTransaction.requestedBy.id"},
+                   {"data": "item.id"},
+                   {"data": null}
+               ],
+               columnDefs: [
+                   {
+                       targets: -1,
+                       data: null,
+                       defaultContent:
+                           "<button class='btn btn-outline-primary item-request-employee'>View Employee</button>" +
+                               " <button class='btn btn-outline-warning item-request-item-details'>View Item</button>" +
+                               " <button class='btn btn-outline-success item-request-accept'><span class='glyphicon glyphicon-ok-circle'></span> Accept</button>" +
+                               " <button class='btn btn-outline-danger item-request-reject'><span class='glyphicon glyphicon-remove-circle'></span> Reject</button>"
+                   }
+               ]
+           });
+
+           buttonReceive();
+        });
+
+        function buttonReceive(){
+            $('#item-request-table tbody').on('click', '.item-request-employee', function (e) {
+                receiveRow = receiveTable.row($(this).parents('tr')).data();
+                console.log(receiveRow.actionTransaction.requestedBy);
+                employee = receiveRow.actionTransaction.requestedBy;
+
+                var employeeMessage = "<form>";
+                employeeMessage += "<div class ='form-group row'><label class='col-sm-4 col-form-label'>Id</label>";
+                employeeMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ employee.id +"'> </div></div>";
+                employeeMessage += "<div class='form-group row'><label class='col-sm-4 col-form-label'>Name</label>";
+                employeeMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ employee.name +"'> </div></div>";
+                employeeMessage += "<div class='form-group row'><label class='col-sm-4 col-form-label'>Email</label>";
+                employeeMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ employee.email +"'> </div></div>";
+                employeeMessage += "</form>";
+
+
+                bootbox.dialog({
+                    title: "<span class='glyphicon glyphicon-info-sign'></span> Employee Details",
+                    message: employeeMessage,
+                    buttons: {
+                        ok: {
+                            label: "Close",
+                            className: "btn-secondary",
+                        }
+                    }
+                });
+            });
+
+            $('#item-request-table tbody').on('click', '.item-request-item-details', function (e) {
+                receiveRow = receiveTable.row($(this).parents('tr')).data();
+                console.log(receiveRow.item);
+                item = receiveRow.item;
+
+                var itemMessage = "<form>";
+                itemMessage += "<div class ='form-group row'><label class='col-sm-4 col-form-label'>Id</label>";
+                itemMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ item.id +"'> </div></div>";
+                itemMessage += "<div class='form-group row'><label class='col-sm-4 col-form-label'>Name</label>";
+                itemMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ item.name +"'> </div></div>";
+                itemMessage += "<div class='form-group row'><label class='col-sm-4 col-form-label'>Type</label>";
+                itemMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ item.itemType +"'> </div></div>";
+                itemMessage += "<div class='form-group row'><label class='col-sm-4 col-form-label'>Quantity</label>";
+                itemMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ item.quantity +"'> </div></div>";
+                itemMessage += "<div class='form-group row'><label class='col-sm-4 col-form-label'>Category</label>";
+                itemMessage += "<div class='col-sm-8'><input type='text' readonly class='form-control' placeholder='"+ item.category.name +"'> </div></div>";
+                itemMessage += "</form>";
+
+                bootbox.dialog({
+                    title: "<span class='glyphicon glyphicon-info-sign'></span> Employee Details",
+                    message: itemMessage,
+                    buttons: {
+                        ok: {
+                            label: "Close",
+                            className: "btn-secondary",
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+</div>
+</body>
+</html>
