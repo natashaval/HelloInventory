@@ -1,8 +1,10 @@
 package hello.inven.helloinven.ServiceImpl;
 
+import hello.inven.helloinven.model.ActionItem;
 import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ItemSerialRepository;
 import hello.inven.helloinven.repository.MyUserRepository;
 import hello.inven.helloinven.service.ClerkService;
@@ -19,6 +21,9 @@ public class ClerkServiceImpl implements ClerkService {
 
     @Autowired
     ItemSerialRepository itemSerialRepository;
+
+    @Autowired
+    ActionItemRepository actionItemRepository;
 
     @Override
     public ResponseAjax findManagerAndEmployee(){
@@ -45,5 +50,11 @@ public class ClerkServiceImpl implements ClerkService {
             return new ResponseAjax("Failed", "Assign Item Serial to Employee FAILED");
         }
 
+    }
+
+    @Override
+    public ResponseAjax receiveItemRequest(MyUser clerk){
+        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedBy(clerk.getId());
+        return new ResponseAjax("Done", items);
     }
 }

@@ -29,6 +29,12 @@ public class ActionItem { // Result of Many to Many Table
     @Column(name = "status", nullable = false)
     private ItemStatus itemStatus;
 
+    @Column
+    private Long receivedBy; // Ask the item to clerk
+
+    @Column
+    private Long receivedTime;
+
     public ActionItemId getActionItemId() {
         return actionItemId;
     }
@@ -43,6 +49,22 @@ public class ActionItem { // Result of Many to Many Table
 
     public void setItemStatus(ItemStatus itemStatus) {
         this.itemStatus = itemStatus;
+    }
+
+    public Long getReceivedBy() {
+        return receivedBy;
+    }
+
+    public void setReceivedBy(Long receivedBy) {
+        this.receivedBy = receivedBy;
+    }
+
+    public Long getReceivedTime() {
+        return receivedTime;
+    }
+
+    public void setReceivedTime(Long receivedTime) {
+        this.receivedTime = receivedTime;
     }
 
     @Transient

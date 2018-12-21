@@ -4,6 +4,7 @@ import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ActionTransactionRepository;
 import hello.inven.helloinven.repository.ItemRepository;
+import hello.inven.helloinven.repository.ItemSerialRepository;
 import hello.inven.helloinven.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    ItemSerialRepository itemSerialRepository;
 
     @Autowired
     ActionTransactionRepository transactionRepository;
@@ -41,8 +45,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         Date currenttime = new Date();
         transaction.setRequestedBy(requester);
         transaction.setRequestTime(currenttime);
-        transaction.setActionType(ActionTransaction.ActionType.PendingApproval);
-        if (requester.getManagerId() != null) transaction.setApprovedBy(requester.getManagerId());
+        if (requester.getManagerId() != null) {
+            transaction.setActionType(ActionTransaction.ActionType.PendingApproval);
+            transaction.setApprovedBy(requester.getManagerId());
+        }
+        else if (requester.getManagerId() == null){
+            transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
+        }
         transaction.setActionRemarks(comment);
         transaction = transactionRepository.save(transaction);
 
@@ -53,11 +62,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<ActionItem> actionItemList = new ArrayList<>();
         for (Long requestId: requestValues) {
             Item item = itemRepository.findById(requestId).orElse(null);
+            Long clerkIdOne = itemSerialRepository.findClerkIdByItem(requestId);
             ActionItem actionItem = new ActionItem();
             if (item != null) {
                 actionItem.setActionTransaction(transaction);
                 actionItem.setItem(item);
                 actionItem.setItemStatus(ActionItem.ItemStatus.Pending);
+                actionItem.setReceivedBy(clerkIdOne);
                 actionItemList.add(actionItem);
             }
         }

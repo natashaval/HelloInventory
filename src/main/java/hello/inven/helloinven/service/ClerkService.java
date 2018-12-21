@@ -9,4 +9,6 @@ public interface ClerkService {
     ResponseAjax findManagerAndEmployee();
 
     ResponseAjax assignItemSerial(MyUser clerk, Long itemId, List<Long> employeeValues);
+
+    ResponseAjax receiveItemRequest(MyUser clerk);
 }

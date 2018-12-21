@@ -30,8 +30,15 @@ public class ClerkController {
     public ResponseAjax itemAssignPost(@PathVariable Long id, @RequestParam(value = "serial_employee[]") List<Long> employeeValues){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser clerk = myUserDetails.getUser();
-
         return clerkService.assignItemSerial(clerk, id, employeeValues);
+    }
+
+    @GetMapping(value = "/clerk/item/receive")
+    @ResponseBody
+    public ResponseAjax receiveItem(){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser clerk = myUserDetails.getUser();
+        return clerkService.receiveItemRequest(clerk);
     }
 
 
