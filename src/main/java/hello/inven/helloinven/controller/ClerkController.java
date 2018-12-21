@@ -46,5 +46,17 @@ public class ClerkController {
         return "clerk/item-approval";
     }
 
+    @PostMapping(value = "/clerk/item/approve")
+    @ResponseBody
+    public ResponseAjax approveItem(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
+        return clerkService.ItemRequestActions(actionTransId, itemId, Boolean.TRUE);
+    }
+
+    @PostMapping(value = "/clerk/item/reject")
+    @ResponseBody
+    public ResponseAjax rejectItem(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
+        return clerkService.ItemRequestActions(actionTransId, itemId, Boolean.FALSE);
+    }
+
 
 }

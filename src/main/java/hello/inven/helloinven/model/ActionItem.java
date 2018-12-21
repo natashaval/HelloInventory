@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "action_item")
@@ -33,7 +34,7 @@ public class ActionItem { // Result of Many to Many Table
     private Long receivedBy; // Ask the item to clerk
 
     @Column
-    private Long receivedTime;
+    private Date receivedTime;
 
     public ActionItemId getActionItemId() {
         return actionItemId;
@@ -59,11 +60,11 @@ public class ActionItem { // Result of Many to Many Table
         this.receivedBy = receivedBy;
     }
 
-    public Long getReceivedTime() {
+    public Date getReceivedTime() {
         return receivedTime;
     }
 
-    public void setReceivedTime(Long receivedTime) {
+    public void setReceivedTime(Date receivedTime) {
         this.receivedTime = receivedTime;
     }
 

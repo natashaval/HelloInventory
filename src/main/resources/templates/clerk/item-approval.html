@@ -50,7 +50,7 @@
         function buttonReceive(){
             $('#item-request-table tbody').on('click', '.item-request-employee', function (e) {
                 receiveRow = receiveTable.row($(this).parents('tr')).data();
-                console.log(receiveRow.actionTransaction.requestedBy);
+                // console.log(receiveRow.actionTransaction.requestedBy);
                 employee = receiveRow.actionTransaction.requestedBy;
 
                 var employeeMessage = "<form>";
@@ -103,6 +103,46 @@
                         }
                     }
                 });
+            });
+
+            $('#item-request-table tbody').on('click', '.item-request-accept', function (e) {
+                receiveRow = receiveTable.row($(this).parents('tr')).data();
+                employee = receiveRow.actionTransaction.requestedBy;
+                requestData = {'serial_employee[]': [employee.id]};
+                statusData = {'actionTransId': receiveRow.actionTransaction.actionId,
+                            'itemId': receiveRow.item.id}
+                console.log(receiveRow);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/clerk/item/" + receiveRow.item.id + "/assign",
+                    data: requestData,
+                    success: function(data) {
+                        console.log(data.data);
+
+                        $.ajax({
+                           type: "POST",
+                           url: "/clerk/item/approve",
+                           data: statusData,
+                            success: function(data){
+                               console.log(data.data);
+                            },
+                            error: function(e){
+                               console.log(e.messageerror);
+                            }
+                        });
+                    },
+                    error: function(e){
+                        e.statusMessage();
+                    }
+                });
+
+            });
+
+
+            $('#item-request-table tbody').on('click', '.item-request-reject', function (e) {
+
             });
         }
 

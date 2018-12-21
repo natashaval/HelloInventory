@@ -11,4 +11,7 @@ public interface ClerkService {
     ResponseAjax assignItemSerial(MyUser clerk, Long itemId, List<Long> employeeValues);
 
     ResponseAjax receiveItemRequest(MyUser clerk);
+
+    ResponseAjax ItemRequestActions(Long actionTransactionId, Long itemId, Boolean action);
+    //Accept / Reject Item Request
 }

@@ -1,9 +1,6 @@
 package hello.inven.helloinven.ServiceImpl;
 
-import hello.inven.helloinven.model.ActionItem;
-import hello.inven.helloinven.model.ItemSerial;
-import hello.inven.helloinven.model.MyUser;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ItemSerialRepository;
 import hello.inven.helloinven.repository.MyUserRepository;
@@ -12,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,5 +54,25 @@ public class ClerkServiceImpl implements ClerkService {
     public ResponseAjax receiveItemRequest(MyUser clerk){
         List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatus(clerk.getId(), ActionItem.ItemStatus.Pending);
         return new ResponseAjax("Done", items);
+    }
+
+    @Override
+    public ResponseAjax ItemRequestActions(Long actionTransactionId, Long itemId, Boolean action) {
+//        ActionItem actionItem = actionItemRepository.findActionItemByActionTransactionActionIdAndItemId(actionTransactionId, itemId);
+        ActionItem actionItem = actionItemRepository.findActionItemForStatus(actionTransactionId, itemId);
+        if (action == Boolean.TRUE) { //Inventory Item Request Accepted
+            actionItem.setItemStatus(ActionItem.ItemStatus.Sent);
+            Date currentTime = new Date();
+            actionItem.setReceivedTime(currentTime);
+            actionItemRepository.save(actionItem);
+            return new ResponseAjax("Done", "Item Sent to Employee");
+        } else if (action == Boolean.FALSE) {
+            actionItem.setItemStatus(ActionItem.ItemStatus.Rejected);
+            Date currentTime = new Date();
+            actionItem.setReceivedTime(currentTime);
+            actionItemRepository.save(actionItem);
+            return new ResponseAjax("Failed", "Item Request has been rejected!");
+        }
+        return null;
     }
 }
