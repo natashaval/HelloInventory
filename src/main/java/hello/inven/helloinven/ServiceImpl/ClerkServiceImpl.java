@@ -52,7 +52,8 @@ public class ClerkServiceImpl implements ClerkService {
 
     @Override
     public ResponseAjax receiveItemRequest(MyUser clerk){
-        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatus(clerk.getId(), ActionItem.ItemStatus.Pending);
+//        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatus(clerk.getId(), ActionItem.ItemStatus.Pending);
+        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending);
         return new ResponseAjax("Done", items);
     }
 

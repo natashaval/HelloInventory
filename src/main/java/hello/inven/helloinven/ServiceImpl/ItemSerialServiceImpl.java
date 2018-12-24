@@ -34,7 +34,7 @@ public class ItemSerialServiceImpl implements ItemSerialService {
 
     @Override
     public ResponseAjax getItemSerialByItemId(Long itemId){
-        List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialByItemId(itemId);
+        List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemId(itemId);
         return new ResponseAjax("Done", itemSerials);
     }
 

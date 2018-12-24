@@ -9,6 +9,7 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>CLerk Approval Item Request by Employee</h3>
+    <div id="approval-result"></div>
     <table id="item-request-table">
         <thead>
             <th>Action Id</th>
@@ -110,7 +111,7 @@
                 employee = receiveRow.actionTransaction.requestedBy;
                 requestData = {'serial_employee[]': [employee.id]};
                 statusData = {'actionTransId': receiveRow.actionTransaction.actionId,
-                            'itemId': receiveRow.item.id}
+                            'itemId': receiveRow.item.id};
                 console.log(receiveRow);
 
 
@@ -127,9 +128,12 @@
                            data: statusData,
                             success: function(data){
                                console.log(data.data);
+                                $('#item-request-table').DataTable().ajax.reload();
+                               $('#approval-result').append("<p class='text-success'>" + data.data + "</p>");
                             },
                             error: function(e){
                                console.log(e.messageerror);
+                               $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
                             }
                         });
                     },
@@ -142,7 +146,26 @@
 
 
             $('#item-request-table tbody').on('click', '.item-request-reject', function (e) {
+                receiveRow = receiveTable.row($(this).parents('tr')).data();
+                employee = receiveRow.actionTransaction.requestedBy;
+                requestData = {'serial_employee[]': [employee.id]};
+                statusData = {'actionTransId': receiveRow.actionTransaction.actionId,
+                    'itemId': receiveRow.item.id};
+                $.ajax({
+                    type: "POST",
+                    url: "/clerk/item/reject",
+                    data: statusData,
+                    success: function(data){
+                        console.log(data.data);
+                        $('#item-request-table').DataTable().ajax.reload();
+                        $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
 
+                    },
+                    error: function(e){
+                        e.statusMessage();
+                        $('#approval-result').append("<p class='text-danger'>" +  data.data);
+                    }
+                })
             });
         }
 

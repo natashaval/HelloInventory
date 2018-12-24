@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ActionItemRepository extends JpaRepository<ActionItem, ActionItemId> {
-    List<ActionItem> findActionItemsByReceivedByAndItemStatus(Long clerkId, ActionItem.ItemStatus itemStatus);
+    List<ActionItem> findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionApprovedTimeNotNull(Long clerkId, ActionItem.ItemStatus itemStatus);
 
 //    ActionItem findActionItemByActionTransactionActionIdAndItem_Id(Long actionTransactionId, Long ItemId);
     @Query(value = "SELECT * FROM action_item AS a WHERE a.action_id = :actionTransId AND a.item_id = :itemId AND a.status = 0", nativeQuery = true)
