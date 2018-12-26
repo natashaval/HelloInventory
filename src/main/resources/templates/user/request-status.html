@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8" />
+    <title>Request Status</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h3>Item Request / Return Status</h3>
+    <table id="request-status-table">
+        <thead class="thead-light">
+            <th>Action Id</th>
+            <th>Action Time</th>
+            <th>Approval Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </thead>
+    </table>
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript">
+        var statusTable;
+        $(document).ready(function(){
+
+        });
+    </script>
+</div>
+
+</body>
+</html>

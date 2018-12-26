@@ -19,10 +19,14 @@ public class ActionTransaction {
         PendingApproval, // Waiting for Manager Approval
         PendingInventory, // Waiting for Clerk to accept it
         HandedOver, // (Several) item is being sent
-        Done, // The item(s) has been received
+        RequestDone, // The item(s) has been received
         RejectApproval, // Manager reject request
         RejectInventory, // Clerk reject request
-        CancelRequest // Employee cancel on going request
+        CancelRequest, // Employee cancel on going request
+
+        ReturnApproval, // Employee return item and wait manager approval
+        ReturnInventory, // Employee return and wait inventory approval
+        ReturnDone // Employee return item(s)
     }
 
     @Id

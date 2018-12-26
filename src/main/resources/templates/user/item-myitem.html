@@ -10,8 +10,8 @@
 <body>
     <div layout:fragment="content" th:remove="tag">
         <h3>My Item</h3>
-        <table id="my-item-table">
-            <thead>
+        <table id="my-item-table" class="table table-striped">
+            <thead class="thead-light">
                 <th>Item Id</th>
                 <th>Name</th>
                 <th>Category</th>
@@ -26,23 +26,31 @@
             $(document).ready(function () {
                 myItemTable = $('#my-item-table').DataTable({
                    ajax: '/user/myitem/count',
+                    processing: true,
+                    serverSide: true,
                    columns: [
                        {"data": "itemId"},
                        {"data": "itemName"},
                        {"data": "categoryName"},
                        {"data": "countSerial"},
-                       {"data": null}
+                       {
+                           "class": "details-control",
+                           "orderable": false,
+                           "data": null,
+                           "defaultContent": "<button class='btn btn-info myitem-serial-button'>Serials</button>"
+                       }
                    ],
-                    columnDefs: [
-                        {
-                            targets: -1,
-                            data: null,
-                            defaultContent: "<button class='btn btn-primary myitem-serial-button'>Serials</button>"
-                        }
-                    ]
+                    // columnDefs: [
+                    //     {
+                    //         targets: -1,
+                    //         data: null,
+                    //         defaultContent: "<button class='btn btn-primary myitem-serial-button'>Serials</button>"
+                    //     }
+                    // ],
                 });
 
-                buttonMyItemSerial();
+                // buttonMyItemSerial();
+                serialRowDetails();
             });
 
             function buttonMyItemSerial(){
@@ -96,6 +104,86 @@
 
                     */
                 });
+            }
+
+            // https://datatables.net/examples/server_side/row_details.html
+            function serialRowDetails(){
+                var detailRows = [];
+                $('#my-item-table tbody').on('click', 'tr td.details-control', function (e) {
+                    var tr = $(this).closest('tr');
+                    var row = myItemTable.row(tr);
+                    console.log(row.data());
+                    var idx = $.inArray(tr.attr('id'), detailRows);
+
+                    if (row.child.isShown()){
+                        tr.removeClass('details');
+                        row.child.hide();
+
+                        // Remove open array
+                        detailRows.splice(idx, 1);
+                    }
+                    else {
+                        tr.addClass('details');
+                        // row.child(format(row.data())).show();
+                        var serialResult = "";
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/user/myitem/" + row.data().itemId + "/serial",
+                            success: function(data){
+                                // console.log(data.data);
+                                $.each(data.data, function(key,value){
+                                    // serialMessage += "<li>" + value.serialId + "</li>";
+                                    serialResult += "Serial: " + value.serialId.toString() + "<br />";
+                                });
+                                // serialMessage += "</ul>";
+                                console.log(serialResult);
+                                row.child(serialResult).show();
+                            },
+                            error: function(e){
+                                row.child('error').show();
+                            }
+                        });
+
+
+                        // add to open array
+                        if (idx === -1){
+                            detailRows.push(tr.attr('id'));
+                        }
+                    }
+                });
+
+                myItemTable.on('draw', function(){
+                    $.each(detailRows, function(i,id){
+                       $('#'+id+' td.details-control').trigger('click');
+                    });
+                });
+            }
+
+            function format(d){
+                // console.log(d.itemId);
+                var serialMessage = "<ul>";
+                var serialResult;
+                $.ajax({
+                    type: "GET",
+                    url: "/user/myitem/" + d.itemId + "/serial",
+                    success: function(data){
+                        // console.log(data.data);
+                        $.each(data.data, function(key,value){
+                            serialMessage += "<li>" + value.serialId + "</li>";
+                            serialResult += value.serialId.toString();
+                        });
+                        serialMessage += "</ul>";
+                        console.log(serialResult);
+                        return serialResult;
+                    },
+                    error: function(e){
+                        return "Error in get Serial Number";
+                    }
+                });
+                // console.log(serialMessage);
+                // return 'Item Id: ' + d.itemId;
+
             }
         </script>
     </div>
