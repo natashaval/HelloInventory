@@ -104,7 +104,15 @@
             <version>bdd2cbfba0</version>
         </dependency>
 
-        <!--jQuery dependency webjars-->
+		<!-- https://mvnrepository.com/artifact/org.webjars/font-awesome -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>5.5.0</version>
+		</dependency>
+
+
+		<!--jQuery dependency webjars-->
 		<!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
 		<dependency>
 			<groupId>org.webjars</groupId>

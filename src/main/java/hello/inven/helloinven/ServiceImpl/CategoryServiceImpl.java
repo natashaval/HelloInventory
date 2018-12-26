@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category newCategory = new Category();
         newCategory.setName(category.getName());
         newCategory.setDescription(category.getDescription());
-        return new ResponseAjax("Created", categoryRepository.save(newCategory));
+        return new ResponseAjax("Saved", categoryRepository.save(newCategory));
     }
 
     @Override

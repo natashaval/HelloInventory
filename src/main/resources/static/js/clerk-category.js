@@ -46,11 +46,16 @@ function addCategory() {
             dataType: 'json',
             data: JSON.stringify(data),
             success: function (data) {
+                console.log(data);
                 // bootbox.alert("Data has been successfully added");
                 // $('#modal-category-add').modal('hide');
                 $('#category-name').val("");
                 $('#category-description').val("");
                 // fetchCategory();
+                toastr.success('Category has been saved!', data.status, {
+                   closeButton: true,
+                   progressBar: true,
+                });
                 $('#category-table').DataTable().ajax.reload();
             }
         });
@@ -158,6 +163,10 @@ function categoryButton() {
                     $('#modal-category-edit').modal('hide').data('bs.modal', null); // close modal
                     // fetchCategory();
                     // table.ajax.reload();
+                    toastr.success('Category has been updated!', data.status, {
+                        closeButton: true,
+                        progressBar: true
+                    });
                     $('#category-table').DataTable().ajax.reload();
                 },
                 error: function (e) {
@@ -194,8 +203,12 @@ function categoryButton() {
                             // url: "/clerk/category2/" + categoryId + "/delete",
                             url: "/clerk/category2/" + categoryId,
                             contentType: 'application/json; charset=utf-8',
-                            success: function(result){
-                                console.log(result);
+                            success: function(data){
+                                console.log(data);
+                                toastr.success(data.data, data.status, {
+                                   closeButton: true,
+                                   progressBar: true
+                                });
                                 $('#category-table').DataTable().ajax.reload();
                             },
                             error: function(e){

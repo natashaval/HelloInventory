@@ -61,14 +61,22 @@ $('#serial-add-form').submit(function (e) {
         method: "POST",
         url: "/clerk/item/" + itemId + "/serial",
         data: serialFormData,
-        success: function(response){
+        success: function(data){
             // window.location.reload();
             // $('.serialResult').append("<p style='color: green;'>Success</p>");
             $('#item-serial-table').DataTable().ajax.reload();
+            toastr.success(data.data, data.status, {
+                closeButton: true,
+                progressBar: true
+            });
             $('#serial-add-form')[0].reset();
         },
         error: function (e){
-            $('.serialResult').append("<p style='color: red;'>Error</p>");
+            // $('.serialResult').append("<p style='color: red;'>Error</p>");
+            toastr.error(data.data, 'Error', {
+                closeButton: true,
+                progressBar: true
+            });
         }
     });
 
@@ -123,12 +131,20 @@ function buttonView() {
                             url: "/clerk/item/serial/" + deleteRow.serialId,
                             success: function (data) {
                                 console.log(data.data);
-                                $('.serialResult').html("<p>"+ data.data + "</p>");
+                                // $('.serialResult').html("<p>"+ data.data + "</p>");
+                                toastr.success(data.data, data.status, {
+                                    closeButton: true,
+                                    progressBar: true
+                                })
                                 $('#item-serial-table').DataTable().ajax.reload();
                             },
                             error: function (data) {
                                 console.log(data.data);
-                                $('.serialResult').html("<p>"+ data.data + "</p>");
+                                // $('.serialResult').html("<p>"+ data.data + "</p>");
+                                toastr.error(data.data, 'Error', {
+                                    closeButton: true,
+                                    progressBar: true
+                                });
                             }
                         });
                     }
@@ -175,12 +191,20 @@ $('#serial-assign-form').submit(function(e){
         data: serialFormData,
         success: function(data){
             console.log(data.data);
-            $('.serial-assign-result').html("<p>"+ data.data + "</p>");
+            // $('.serial-assign-result').html("<p>"+ data.data + "</p>");
+            toastr.success(data.data, data.status, {
+                closeButton: true,
+                progressBar: true
+            });
             $('#item-serial-table').DataTable().ajax.reload();
         },
         error: function(data){
             console.log(data.data);
-            $('.serial-assign-result').html("<p>"+ data.data + "</p>");
+            // $('.serial-assign-result').html("<p>"+ data.data + "</p>");
+            toastr.error(data.data, 'Error', {
+                closeButton: true,
+                progressBar: true
+            });
         }
     });
 });

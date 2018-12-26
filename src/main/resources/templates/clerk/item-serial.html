@@ -5,6 +5,7 @@
 <head>
     <title>Item Add</title>
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
     <style type="text/css">
         .serial-assign-div, .serial-add-div {
@@ -18,7 +19,7 @@
     <br /><br />
     <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
 
-    <div class="serialResult"></div>
+    <!--<div class="serialResult"></div>-->
 
     <div class="row">
 
@@ -73,6 +74,7 @@
 
     <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript" th:src="@{/js/clerk-item-serial.js}"></script>
 </div>
 </body>
