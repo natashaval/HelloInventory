@@ -38,7 +38,8 @@ public class CategoryController {
         return categoryService.createCategory(category);
     }
 
-    @GetMapping(value = "/clerk/category2/{id}/delete")
+//    @DeleteMapping(value = "/clerk/category2/{id}/delete")
+    @DeleteMapping(value = "/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Delete(@PathVariable Integer id){
         return categoryService.deleteCategory(id);
     }
@@ -48,7 +49,8 @@ public class CategoryController {
         return new ResponseAjax("Done", categoryService.getOneCategory(id));
     }
 
-    @PostMapping(value = "/clerk/category2/{id}/edit")
+//    @PutMapping(value = "/clerk/category2/{id}/edit")
+    @PutMapping(value = "/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Edit(@RequestBody Category category, @PathVariable Integer id){
         return categoryService.editCategory(category, id);
     }

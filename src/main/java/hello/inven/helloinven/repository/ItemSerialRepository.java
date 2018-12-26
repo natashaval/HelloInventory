@@ -1,8 +1,7 @@
 package hello.inven.helloinven.repository;
 
-import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ItemSerial;
-import hello.inven.helloinven.model.MyUser;
+import hello.inven.helloinven.dto.ItemSerialCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +22,15 @@ public interface ItemSerialRepository extends JpaRepository<ItemSerial, Long> {
 
     @Query(value = "SELECT DISTINCT clerk_id FROM item_serial AS s WHERE s.item_id = :itemId LIMIT 1", nativeQuery = true)
     Long findClerkIdByItem(@Param("itemId") Long itemId);
+
+//    @Query(value = "SELECT new map(s.serialId as cserial, s.myUser as cuser) FROM ItemSerial s")
+//    List<ItemSerial> findandCountMyItem();
+
+//    https://stackoverflow.com/questions/36328063/how-to-return-a-custom-object-from-a-spring-data-jpa-group-by-query
+//    https://stackoverflow.com/questions/49682068/return-custom-object-using-custom-query-with-spring-data-jpa?rq=1
+//    @Query(value = "SELECT it.item_id, it.name, iser.emp_id, count(serial_id) as countserial FROM item_serial as iser lefT JOIN item as it on iser.item_id = it.item_id where emp_id = 2222 group by item_id")
+    @Query(value = "SELECT new hello.inven.helloinven.dto.ItemSerialCount(s.item.id, s.item.name, s.item.category.name, s.myUser.id, count(s.serialId))" +
+    "FROM ItemSerial s WHERE s.myUser.id = :empId GROUP BY s.item")
+    List<ItemSerialCount> findAndCountItemSerialByEmpId(@Param("empId") Long empId);
 
 }

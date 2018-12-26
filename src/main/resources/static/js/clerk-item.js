@@ -221,8 +221,9 @@ function itemDelete(itemId){
 
 
                     $.ajax({
-                        type: "POST",
-                        url: "/clerk/item/" + itemId + "/delete",
+                        type: "DELETE",
+                        // url: "/clerk/item/" + itemId + "/delete",
+                        url: "/clerk/item/" + itemId,
                         contentType: 'application/json; charset=utf-8',
                         success: function(result){
                             console.log(result);

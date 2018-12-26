@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8" />
+    <title>My Item</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+</head>
+<body>
+    <div layout:fragment="content" th:remove="tag">
+        <h3>My Item</h3>
+        <table id="my-item-table">
+            <thead>
+                <th>Item Id</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </thead>
+        </table>
+        <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+        <script type="text/javascript">
+            var myItemTable;
+            $(document).ready(function () {
+                myItemTable = $('#my-item-table').DataTable({
+                   ajax: '/user/myitem/count',
+                   columns: [
+                       {"data": "itemId"},
+                       {"data": "itemName"},
+                       {"data": "categoryName"},
+                       {"data": "countSerial"},
+                       {"data": null}
+                   ],
+                    columnDefs: [
+                        {
+                            targets: -1,
+                            data: null,
+                            defaultContent: "<button class='btn btn-primary myitem-serial-button'>Serials</button>"
+                        }
+                    ]
+                });
+            })
+        </script>
+    </div>
+
+</body>
+</html>

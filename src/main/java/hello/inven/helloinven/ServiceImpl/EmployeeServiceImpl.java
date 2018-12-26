@@ -1,5 +1,6 @@
 package hello.inven.helloinven.ServiceImpl;
 
+import hello.inven.helloinven.dto.ItemSerialCount;
 import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ActionTransactionRepository;
@@ -76,5 +77,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         actionItemRepository.saveAll(actionItemList);
 
         return new ResponseAjax("Done", "Items have been requested!");
+    }
+
+    @Override
+    public ResponseAjax countMyItem(MyUser myUser){
+        List<ItemSerialCount> myItemCount = itemSerialRepository.findAndCountItemSerialByEmpId(myUser.getId());
+        return new ResponseAjax("Count Done", myItemCount);
     }
 }

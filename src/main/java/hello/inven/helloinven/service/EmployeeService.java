@@ -9,4 +9,6 @@ public interface EmployeeService {
     ResponseAjax getAllItemAssets();
 
     ResponseAjax requestItemAssets(MyUser requester, List<Long> requestValues, String comment);
+
+    ResponseAjax countMyItem(MyUser myUser);
 }

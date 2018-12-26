@@ -118,8 +118,9 @@ function buttonView() {
                     callback: function () {
                         console.log("delete has been clicked" + serialId);
                         $.ajax({
-                            type: 'POST',
-                            url: "/clerk/item/serial/" + deleteRow.serialId + "/delete",
+                            type: 'DELETE',
+                            // url: "/clerk/item/serial/" + deleteRow.serialId + "/delete",
+                            url: "/clerk/item/serial/" + deleteRow.serialId,
                             success: function (data) {
                                 console.log(data.data);
                                 $('.serialResult').html("<p>"+ data.data + "</p>");

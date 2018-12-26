@@ -20,17 +20,6 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-//    @GetMapping(value = "/user/item/assets")
-//    @ResponseBody
-//    public ResponseAjax getItemAssets(){
-//        return employeeService.getAllItemAssets();
-//    }
-
-//    @GetMapping("/user/request") //tidak jalan karena datatablesnya kadang tidak load
-//    public String userRequestPage(){
-//        return "user/request";
-//    }
-
     @GetMapping(value = {"/user/item/request", "/manager/item/request"})
     public String userItemRequest(Model model){
         ResponseAjax responseAjax = employeeService.getAllItemAssets();
@@ -50,5 +39,18 @@ public class EmployeeController {
         }
         System.out.println(comment);
         return employeeService.requestItemAssets(employee, requestValues, comment);
+    }
+
+    @GetMapping("/user/myitem/count")
+    @ResponseBody
+    public ResponseAjax countMyItem(){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.countMyItem(employee);
+    }
+
+    @GetMapping("/user/myitem")
+    public String myItem(){
+        return "user/item-myitem";
     }
 }

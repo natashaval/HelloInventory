@@ -145,8 +145,9 @@ function categoryButton() {
 
             $.ajax({
                 contentType: "application/json; charset=utf-8",
-                type: "POST",
-                url: "/clerk/category2/" + categoryId + "/edit",
+                type: "PUT",
+                // url: "/clerk/category2/" + categoryId + "/edit",
+                url: "/clerk/category2/" + categoryId,
                 dataType: 'json',
                 data: JSON.stringify(data),
                 success: function (data) {
@@ -189,8 +190,9 @@ function categoryButton() {
                     callback: function () {
                         console.log("delete has been clicked" + categoryId);
                         $.ajax({
-                            type: "GET",
-                            url: "/clerk/category2/" + categoryId + "/delete",
+                            type: "DELETE",
+                            // url: "/clerk/category2/" + categoryId + "/delete",
+                            url: "/clerk/category2/" + categoryId,
                             contentType: 'application/json; charset=utf-8',
                             success: function(result){
                                 console.log(result);

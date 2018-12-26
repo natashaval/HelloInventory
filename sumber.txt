@@ -127,3 +127,7 @@ GenerateValue (MySQL use GenerationType.Identity) => activate mySQL AutoIncremen
 https://vladmihalcea.com/hibernate-identity-sequence-and-table-sequence-generator/
 https://thoughts-on-java.org/jpa-generate-primary-keys/
 https://stackoverflow.com/questions/1817625/jpa-primary-key-auto-generate
+
+Custom Query with Custom Columns to mapped:
+https://stackoverflow.com/questions/36328063/how-to-return-a-custom-object-from-a-spring-data-jpa-group-by-query
+https://stackoverflow.com/questions/49682068/return-custom-object-using-custom-query-with-spring-data-jpa?rq=1

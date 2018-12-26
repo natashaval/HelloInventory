@@ -50,7 +50,7 @@ public class ItemSerialController {
 
     }
 
-    @PostMapping(value = "/clerk/item/serial/{serialId}/delete")
+    @DeleteMapping(value = "/clerk/item/serial/{serialId}")
     @ResponseBody
     public ResponseAjax serialDelete(@PathVariable Long serialId){
         return itemSerialService.deleteItemSerial(serialId);
