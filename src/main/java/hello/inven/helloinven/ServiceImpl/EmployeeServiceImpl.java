@@ -51,6 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         else if (requester.getManagerId() == null){
             transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
+            transaction.setApprovedTime(currenttime); // Jika sudah manager akan ter-approve dengan sendirinya
         }
         transaction.setActionRemarks(comment);
         transaction = transactionRepository.save(transaction);

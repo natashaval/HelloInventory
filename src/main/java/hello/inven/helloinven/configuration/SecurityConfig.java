@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .authenticated()
 //        https://stackoverflow.com/questions/43052745/how-to-fix-role-in-spring-security
                 .antMatchers("/user/**")
-                    .hasAuthority("EMPLOYEE")
+                    .hasAnyAuthority("EMPLOYEE", "MANAGER")
                 .antMatchers("/manager/**")
                     .hasAuthority("MANAGER")
                 .antMatchers("/clerk/**")

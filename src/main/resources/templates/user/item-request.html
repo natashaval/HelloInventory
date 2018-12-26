@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="UTF-8" />
@@ -28,21 +29,20 @@
             <!--<input type="submit" class="btn btn-success"/>-->
         <!--</form>-->
 
-
         <!--https://www.jqueryscript.net/form/Lightweight-jQuery-Dual-List-Box-Plugin-listSwap.html-->
             <select id="source" data-text="Item Available" data-search="Search for options">
                 <option th:each="item: ${itemAssets}" th:value="${item.id}" th:text="${item.name}"></option>
             </select>
-        <form id="item-request-form" method="post">
-            <select multiple name="itemrequests[]" id="destination" data-text="Requested Items" data-search="Search for options">
-            </select>
-            <div class="form-group">
-                <label>Additional Comment</label>
-                <textarea class="form-control" id="requestcomment"></textarea>
-            </div>
+            <form id="item-request-form" method="post">
+                <select multiple name="itemrequests[]" id="destination" data-text="Requested Items" data-search="Search for options">
+                </select>
+                <div class="form-group">
+                    <label>Additional Comment</label>
+                    <textarea class="form-control" id="requestcomment"></textarea>
+                </div>
 
-            <button type="submit" class="btn btn-primary" onclick="selectAllDestination()">Request</button>
-        </form>
+                <button type="submit" class="btn btn-primary" onclick="selectAllDestination()">Request</button>
+            </form>
         <script type="text/javascript" th:src="@{/plugin/Dual-List-Box-Plugin-listSwap/jquery.listswap.js}"></script>
         <script type="text/javascript">
             $(document).ready(function(){
