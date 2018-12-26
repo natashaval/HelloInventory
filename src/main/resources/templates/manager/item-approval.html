@@ -21,6 +21,7 @@
         </table>
 
         <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+        <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
         <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
         <script type="text/javascript">
             var approvalTable;
@@ -29,7 +30,14 @@
                    ajax: '/manager/action/approval',
                    columns: [
                        {"data": "actionId"},
-                       {"data": "requestTime"},
+                       {
+                           "data": "requestTime",
+                           render: function (data, type, row){
+                               // https://stackoverflow.com/questions/41514750/how-to-format-date-displayed-in-datatable
+                               if (type === "sort" || type === "type") return data;
+                               return moment(data).format("DD-MM-YYYY HH:mm");
+                           }
+                       },
                        {"data": "requestedBy.id"},
                        {"data": "requestedBy.name"},
                        {"data": null, "orderable": false}

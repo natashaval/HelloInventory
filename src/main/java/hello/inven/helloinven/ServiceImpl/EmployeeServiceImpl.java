@@ -90,4 +90,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemIdAndMyUser(itemId, myUser);
         return new ResponseAjax("Found", itemSerials);
     }
+
+    @Override
+    public ResponseAjax getActionTransactions(MyUser myUser){
+        List<ActionTransaction> transactionList = transactionRepository.findActionTransactionsByRequestedBy(myUser);
+        return new ResponseAjax("Found", transactionList);
+    }
 }

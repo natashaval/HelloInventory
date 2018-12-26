@@ -61,4 +61,16 @@ public class EmployeeController {
         MyUser employee = myUserDetails.getUser();
         return employeeService.findMyItemSerials(id, employee);
     }
+
+    /* ============ EMPLOYEE VIEW ACTION TRANSACTION ===========*/
+    @GetMapping("/user/item/status")
+    public String requestStatus(){return "user/request-status";}
+
+    @GetMapping("/user/item/actions")
+    @ResponseBody
+    public ResponseAjax getRequestStatus(){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.getActionTransactions(employee);
+    }
 }

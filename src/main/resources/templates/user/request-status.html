@@ -10,20 +10,75 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Item Request / Return Status</h3>
+    <a href="#" class="btn btn-success">Refresh</a>
     <table id="request-status-table">
         <thead class="thead-light">
             <th>Action Id</th>
             <th>Action Time</th>
             <th>Approval Time</th>
             <th>Status</th>
+            <th>Remarks</th>
             <th>Actions</th>
         </thead>
     </table>
     <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
     <script type="text/javascript">
         var statusTable;
         $(document).ready(function(){
+            statusTable = $('#request-status-table').DataTable({
+               ajax: '/user/item/actions',
+               columns: [
+                   {"data": "actionId"},
+                   {
+                       "data": "requestTime",
+                       render: function (data, type, row){
+                           // https://stackoverflow.com/questions/41514750/how-to-format-date-displayed-in-datatable
+                           if (type === "sort" || type === "type") return data;
+                           return moment(data).format("DD-MM-YYYY HH:mm");
+                       }
+                   },
+                   {
+                       "data": "approvedTime",
+                       render: function (data, type, row){
+                           if (type === "sort" || type === "type") return data;
+                           return moment(data).format("DD-MM-YYYY HH:mm");
+                       }
+                   },
+                   {
+                       // https://datatables.net/forums/discussion/50876/badges-and-tooltips-integration-with-bootstrap4
+                       // https://datatables.net/forums/discussion/50928/bootstrap-4-badges-inside-a-table
+                       "data": "actionType",
+                       render: function(data, type, row){
+                           if (data == 'PendingApproval' || data == 'ReturnApproval') return "<span class='badge badge-info'>" + data + "</span>";
+                           else if (data == 'PendingInventory' || data == 'ReturnInventory') return "<span class='badge badge-warning'>" + data + "</span>";
+                           else if (data == 'HandedOver') return "<span class='badge badge-secondary'>" + data + "</span>";
+                           else if (data == 'RequestDone' || data == 'ReturnDone') return "<span class='badge badge-success'>" + data + "</span>";
+                           else if (data == 'CancelRequest' || data == 'RejectApproval' || data == 'RejectInventory') return "<span class='badge badge-danger'>" + data + "</span>";
+                           else return "<span class='badge badge-dark'>" + data + "</span>";
+                       }
+                   },
+                   {
+                       "data": "actionRemarks",
+                       "orderable": false,
+                       render: function (data, type, row){
+                           // https://datatables.net/blog/2016-02-26
+                           return data.length > 10 ? data.substr(0, 10) + '...' : data;
+                       }
 
+                   },
+                   {"data": null},
+               ],
+                columnDefs: [
+                    {
+                        targets: -1,
+                        data: null,
+                        defaultContent:
+                            "<button class='btn btn-primary request-list-button'>Items</button>" +
+                            "<button class='btn btn-danger request-cancel-button'>Cancel</button>"
+                    }
+                ]
+            });
         });
     </script>
 </div>
