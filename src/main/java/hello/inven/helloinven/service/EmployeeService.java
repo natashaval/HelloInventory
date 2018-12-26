@@ -11,4 +11,5 @@ public interface EmployeeService {
     ResponseAjax requestItemAssets(MyUser requester, List<Long> requestValues, String comment);
 
     ResponseAjax countMyItem(MyUser myUser);
+    ResponseAjax findMyItemSerials(Long itemId, MyUser myUser);
 }

@@ -20,6 +20,7 @@
             </thead>
         </table>
         <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
         <script type="text/javascript">
             var myItemTable;
             $(document).ready(function () {
@@ -40,7 +41,62 @@
                         }
                     ]
                 });
-            })
+
+                buttonMyItemSerial();
+            });
+
+            function buttonMyItemSerial(){
+                $('#my-item-table tbody').on('click', '.myitem-serial-button', function (e) {
+                    itemRow = myItemTable.row($(this).parents('tr')).data();
+                    // console.log(itemRow);
+
+                    var serialMessage = "<ul>";
+                    $.ajax({
+                        type: "GET",
+                        url: "/user/myitem/" + itemRow.itemId + "/serial",
+                        success: function(data){
+                            // console.log(data.data);
+                            $.each(data.data, function(key,value){
+                                serialMessage += "<li>" + value.serialId + "</li>";
+                            });
+                            serialMessage += "</ul>";
+
+                            bootbox.dialog({
+                                title: "<span class='glyphicon glyphicon-th-list'></span> My Item Serial Number",
+                                message: serialMessage,
+                                buttons: {
+                                    ok: {
+                                        label: "Close",
+                                        className: "btn-secondary",
+                                        callback: function () {
+
+                                        }
+                                    }
+                                }
+                            });
+                        },
+                        error: function(e){
+                            throw e;
+                        }
+                    });
+                    /*
+                    itemList = approvalRow.actionItemList;
+                    var itemMessage = "<ol>";
+                    // for (var i = 0; i < itemList.length; i++){
+                    //     console.log(itemList[i].name);
+                    // }
+                    for (var i in approvalRow.actionItemList){
+                        console.log(approvalRow.actionItemList[i].item.name);
+                        // itemMessage += "<input type='text' class='form-control' readonly placeholder='" + approvalRow.actionItemList[i].item.name +
+                        //         "' /><br />";
+                        itemMessage += "<li>" + approvalRow.actionItemList[i].item.name + "</li><br />";
+                    }
+                    itemMessage += "</ol>";
+
+
+                    */
+                });
+            }
         </script>
     </div>
 

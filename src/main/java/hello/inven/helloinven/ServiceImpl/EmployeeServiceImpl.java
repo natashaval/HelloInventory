@@ -84,4 +84,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<ItemSerialCount> myItemCount = itemSerialRepository.findAndCountItemSerialByEmpId(myUser.getId());
         return new ResponseAjax("Count Done", myItemCount);
     }
+
+    @Override
+    public ResponseAjax findMyItemSerials(Long itemId, MyUser myUser){
+        List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemIdAndMyUser(itemId, myUser);
+        return new ResponseAjax("Found", itemSerials);
+    }
 }

@@ -2,6 +2,7 @@ package hello.inven.helloinven.repository;
 
 import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.dto.ItemSerialCount;
+import hello.inven.helloinven.model.MyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,7 @@ public interface ItemSerialRepository extends JpaRepository<ItemSerial, Long> {
 //    List<ItemSerial> findItemSerialByItemId(@Param("itemId") Long itemId);
 
     List<ItemSerial> findItemSerialsByItemId(Long itemId);
+    List<ItemSerial> findItemSerialsByItemIdAndMyUser(Long itemId, MyUser myUser);
 
     @Query(value = "SELECT * FROM item_serial AS s WHERE s.item_id = :itemId AND s.clerk_id = :clerkId AND s.emp_id = :clerkId", nativeQuery = true)
     List<ItemSerial> findItemSerialNotAssigned(@Param("itemId") Long itemId, @Param("clerkId") Long clerkId); // mengambil item yang masih berada dalam tangan clerk
