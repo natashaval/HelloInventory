@@ -73,4 +73,12 @@ public class EmployeeController {
         MyUser employee = myUserDetails.getUser();
         return employeeService.getActionTransactions(employee);
     }
+
+    @GetMapping("/user/item/actions/{id}")
+    @ResponseBody
+    public ResponseAjax getRequestActionItemStatus(@PathVariable Long id){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.getActionItemStatus(id, employee);
+    }
 }

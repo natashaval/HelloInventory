@@ -12,6 +12,6 @@ public interface ClerkService {
 
     ResponseAjax receiveItemRequest(MyUser clerk);
 
-    ResponseAjax ItemRequestActions(Long actionTransactionId, Long itemId, Boolean action);
+    ResponseAjax itemRequestActions(Long actionTransactionId, Long itemId, Boolean action);
     //Accept / Reject Item Request
 }

@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <title>Request Status</title>
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
@@ -22,6 +23,7 @@
         </thead>
     </table>
     <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
     <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
     <script type="text/javascript">
         var statusTable;
@@ -42,6 +44,7 @@
                        "data": "approvedTime",
                        render: function (data, type, row){
                            if (type === "sort" || type === "type") return data;
+                           if (data == null) return "<p class='text-danger'>Not Approved</p>";
                            return moment(data).format("DD-MM-YYYY HH:mm");
                        }
                    },
@@ -74,12 +77,64 @@
                         targets: -1,
                         data: null,
                         defaultContent:
-                            "<button class='btn btn-primary request-list-button'>Items</button>" +
-                            "<button class='btn btn-danger request-cancel-button'>Cancel</button>"
+                            "<button class='btn btn-primary request-list-button'>Item Status</button>" +
+                            " <button class='btn btn-danger request-cancel-button'>Cancel</button>"
                     }
                 ]
             });
+
+            requestButton();
         });
+
+        function requestButton(){
+            $('#request-status-table tbody').on('click', '.request-list-button', function (e) {
+                itemRow = statusTable.row($(this).parents('tr')).data();
+                console.log(itemRow);
+
+                $.ajax({
+                    type: "GET",
+                    url: "/user/item/actions/" + itemRow.actionId,
+                    success: function(data){
+                        if (data.status == "Not Found"){
+                            toastr.error(data.data, data.status, {
+                                closeButton: true,
+                                progressBar: true
+                            });
+                        }
+                        else {
+                            var itemMessage = "<ol>";
+                            $.each(data.data, function(key,value) {
+                                itemMessage += "<li>" + value.item.name.toString() + "\t";
+                                if (value.itemStatus == "Sent"){itemMessage += " <span class='badge badge-primary'>" + value.itemStatus + "</span></li>"}
+                                else if (value.itemStatus == "Pending"){itemMessage += " <span class='badge badge-warning'>" + value.itemStatus + "</span></li>"}
+                                else if (value.itemStatus == "Rejected"){itemMessage += " <span class='badge badge-danger'>" + value.itemStatus + "</span></li>"}
+                                else if (value.itemStatus == "Received"){itemMessage += " <span class='badge badge-success'>" + value.itemStatus + "</span></li>"}
+                            });
+                            itemMessage += "</ol>";
+
+                            bootbox.dialog({
+                                title: "<i class='fas fa-list-ol'></i> Item Status",
+                                message: itemMessage,
+                                buttons: {
+                                    ok: {
+                                        label: "Close",
+                                        className: "btn-secondary",
+                                        callback: function () {
+
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            $('#request-status-table tbody').on('click', '.request-cancel-button', function (e) {
+                itemRow = statusTable.row($(this).parents('tr')).data();
+            });
+
+        }
     </script>
 </div>
 

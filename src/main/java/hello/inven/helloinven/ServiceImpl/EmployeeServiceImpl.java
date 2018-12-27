@@ -82,18 +82,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ResponseAjax countMyItem(MyUser myUser){
         List<ItemSerialCount> myItemCount = itemSerialRepository.findAndCountItemSerialByEmpId(myUser.getId());
+        if (myItemCount == null) return new ResponseAjax("None", "No item found!");
         return new ResponseAjax("Count Done", myItemCount);
     }
 
     @Override
     public ResponseAjax findMyItemSerials(Long itemId, MyUser myUser){
         List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemIdAndMyUser(itemId, myUser);
+        if (itemSerials.isEmpty()) return new ResponseAjax("Not Found", "item serial not found!");
         return new ResponseAjax("Found", itemSerials);
     }
 
+    /* =========== Employee > Request Status ==========*/
     @Override
     public ResponseAjax getActionTransactions(MyUser myUser){
         List<ActionTransaction> transactionList = transactionRepository.findActionTransactionsByRequestedBy(myUser);
+        if (transactionList.isEmpty()) return new ResponseAjax("Not Found", "transaction list not found!");
         return new ResponseAjax("Found", transactionList);
+    }
+
+    @Override
+    public ResponseAjax getActionItemStatus(Long actionId, MyUser myUser){
+        List<ActionItem> itemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "Item status not found!");
+        return new ResponseAjax("Found", itemList);
     }
 }

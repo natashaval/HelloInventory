@@ -58,7 +58,7 @@ public class ClerkServiceImpl implements ClerkService {
     }
 
     @Override
-    public ResponseAjax ItemRequestActions(Long actionTransactionId, Long itemId, Boolean action) {
+    public ResponseAjax itemRequestActions(Long actionTransactionId, Long itemId, Boolean action) {
 //        ActionItem actionItem = actionItemRepository.findActionItemByActionTransactionActionIdAndItemId(actionTransactionId, itemId);
         ActionItem actionItem = actionItemRepository.findActionItemForStatus(actionTransactionId, itemId);
         if (action == Boolean.TRUE) { //Inventory Item Request Accepted

@@ -16,4 +16,5 @@ public interface EmployeeService {
 
     /* =========== Employee > Request Status ==========*/
     ResponseAjax getActionTransactions(MyUser myUser);
+    ResponseAjax getActionItemStatus(Long actionId, MyUser myUser);
 }

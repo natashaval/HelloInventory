@@ -49,13 +49,13 @@ public class ClerkController {
     @PostMapping(value = "/clerk/item/approve")
     @ResponseBody
     public ResponseAjax approveItem(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
-        return clerkService.ItemRequestActions(actionTransId, itemId, Boolean.TRUE);
+        return clerkService.itemRequestActions(actionTransId, itemId, Boolean.TRUE);
     }
 
     @PostMapping(value = "/clerk/item/reject")
     @ResponseBody
     public ResponseAjax rejectItem(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
-        return clerkService.ItemRequestActions(actionTransId, itemId, Boolean.FALSE);
+        return clerkService.itemRequestActions(actionTransId, itemId, Boolean.FALSE);
     }
 
 
