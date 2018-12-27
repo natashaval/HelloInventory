@@ -11,7 +11,8 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Item Request / Return Status</h3>
-    <a href="#" class="btn btn-success"><i class="fas fa-sync-alt"></i> Refresh</a>
+    <button class="btn btn-success" onclick="refreshStatus();"><i class="fas fa-sync-alt"></i> Refresh</button>
+    <br />
     <table id="request-status-table" class="table table-hover">
         <thead class="thead-light">
             <th>Action Id</th>
@@ -137,47 +138,72 @@
             $('#request-status-table tbody').on('click', '.request-cancel-button', function (e) {
                 itemRow = statusTable.row($(this).parents('tr')).data();
                 actionId = itemRow.actionId;
-                bootbox.dialog({
-                    title: "<i class=\"fas fa-times-circle\"></i> Cancel Request",
-                    message: "Are you sure you want to cancel this request? ",
-                    buttons: {
-                        success: {
-                            label: "No",
-                            className: "btn-secondary",
-                            callback: function(){
-                                $('.bootbox').modal('hide');
-                            }
-                        },
-                        danger: {
-                            label: "Yes",
-                            className: "btn-danger",
-                            callback: function () {
-                                console.log("cancel has been clicked" + actionId);
-                                $.ajax({
-                                    type: "POST",
-                                    url: "/user/item/actions/"+ actionId +"/cancel",
-                                    success: function(data){
-                                        console.log(data);
-                                        toastr.warning(data.data, data.status, {
-                                            closeButton: true,
-                                            progressBar: true
-                                        });
-                                        $('#request-status-table').DataTable().ajax.reload();
-                                    },
-                                    error: function(e){
-                                        toastr.error("Error in cancel request", "Error", {
-                                            closeButton: true,
-                                            progressBar: true
-                                        });
-                                    }
-                                });
 
+                console.log(itemRow);
+                if (itemRow.actionType == "PendingApproval" || itemRow.actionId == "PendingInventory") {
+                    bootbox.dialog({
+                        title: "<i class=\"fas fa-times-circle\"></i> Cancel Request",
+                        message: "Are you sure you want to cancel this request? ",
+                        buttons: {
+                            success: {
+                                label: "No",
+                                className: "btn-secondary",
+                                callback: function () {
+                                    $('.bootbox').modal('hide');
+                                }
+                            },
+                            danger: {
+                                label: "Yes",
+                                className: "btn-danger",
+                                callback: function () {
+                                    console.log("cancel has been clicked" + actionId);
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/user/item/actions/" + actionId + "/cancel",
+                                        success: function (data) {
+                                            console.log(data);
+                                            toastr.warning(data.data, data.status, {
+                                                closeButton: true,
+                                                progressBar: true
+                                            });
+                                            $('#request-status-table').DataTable().ajax.reload();
+                                        },
+                                        error: function (e) {
+                                            toastr.error("Error in cancel request", "Error", {
+                                                closeButton: true,
+                                                progressBar: true
+                                            });
+                                        }
+                                    });
+
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
+                else {
+                    toastr.error("Not allowed to cancel request!", "Error", {
+                        closeButton: true,
+                        progressBar: true
+
+                    });
+                }
             });
 
+        }
+
+        function refreshStatus(){
+            $.ajax({
+                type: "GET",
+                url: "/user/item/refresh",
+                success: function(data){
+                    toastr.success(data.data, data.status, {
+                        closeButton: true,
+                        progressBar: true
+                    });
+                    $('#request-status-table').DataTable().ajax.reload();
+                }
+            })
         }
     </script>
 </div>

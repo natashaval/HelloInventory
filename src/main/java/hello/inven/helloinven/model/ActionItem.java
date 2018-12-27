@@ -35,7 +35,13 @@ public class ActionItem { // Result of Many to Many Table
     private Long receivedBy; // Ask the item to clerk
 
     @Column
-    private Date receivedTime;
+    private Date receivedTime; // Time the clerk accept / reject item sent
+
+    @Column
+    private Date receiveEmpTime; // Time employee receive item
+
+    @Column
+    private Long itemSerialId;
 
     public ActionItemId getActionItemId() {
         return actionItemId;
@@ -67,6 +73,22 @@ public class ActionItem { // Result of Many to Many Table
 
     public void setReceivedTime(Date receivedTime) {
         this.receivedTime = receivedTime;
+    }
+
+    public Date getReceiveEmpTime() {
+        return receiveEmpTime;
+    }
+
+    public void setReceiveEmpTime(Date receiveEmpTime) {
+        this.receiveEmpTime = receiveEmpTime;
+    }
+
+    public Long getItemSerialId() {
+        return itemSerialId;
+    }
+
+    public void setItemSerialId(Long itemSerialId) {
+        this.itemSerialId = itemSerialId;
     }
 
     @Transient

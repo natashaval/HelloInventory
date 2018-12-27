@@ -18,4 +18,9 @@ public interface EmployeeService {
     ResponseAjax getActionTransactions(MyUser myUser);
     ResponseAjax getActionItemStatus(Long actionId, MyUser myUser);
     ResponseAjax cancelRequest(Long actionId, MyUser myUser);
+    ResponseAjax refreshRequest(MyUser myUser);
+
+    /* =========== Employee > Receive Item ==========*/
+    ResponseAjax getItemAssetsSent(MyUser myUser);
+    ResponseAjax receiveItem(Long actionTransactionId, Long itemId);
 }

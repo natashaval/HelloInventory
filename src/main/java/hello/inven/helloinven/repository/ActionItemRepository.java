@@ -19,8 +19,14 @@ public interface ActionItemRepository extends JpaRepository<ActionItem, ActionIt
     // Get action item FOR employee to see status
     List<ActionItem> findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(Long actionId, MyUser myUser);
 
+    // Get action item FOR employee which has been sent
+    List<ActionItem> findActionItemsByItemStatusAndActionItemIdActionTransactionRequestedBy(ActionItem.ItemStatus itemStatus, MyUser myUser);
+
 //    ActionItem findActionItemByActionTransactionActionIdAndItem_Id(Long actionTransactionId, Long ItemId);
-    @Query(value = "SELECT * FROM action_item AS a WHERE a.action_id = :actionTransId AND a.item_id = :itemId AND a.status = 0", nativeQuery = true)
-    ActionItem findActionItemForStatus(@Param("actionTransId") Long actionTransId, @Param("itemId") Long itemId);
+    @Query(value = "SELECT * FROM action_item AS a WHERE a.action_id = :actionTransId AND a.item_id = :itemId AND a.status = :itemStatus LIMIT 1", nativeQuery = true)
+    ActionItem findActionItemForStatus(@Param("actionTransId") Long actionTransId, @Param("itemId") Long itemId, @Param("itemStatus") Integer itemStatus);
+
+    // Get action item BY STATUS and actTransId and itemId
+    ActionItem findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus itemStatus, Long actionId, Long itemId);
 
 }

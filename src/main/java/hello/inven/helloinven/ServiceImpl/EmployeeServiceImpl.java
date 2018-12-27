@@ -122,4 +122,65 @@ public class EmployeeServiceImpl implements EmployeeService {
         transactionRepository.save(transaction);
         return new ResponseAjax("Cancelled", "Request has been cancelled!");
     }
+
+    @Override
+    public ResponseAjax refreshRequest(MyUser myUser){
+        List<ActionTransaction> transactionList = transactionRepository.findActionTransactionsByRequestedBy(myUser);
+        for (ActionTransaction transaction: transactionList) {
+            System.out.println(transaction.getActionType());
+            if (transaction.getActionType().toString() == "CancelRequest"){
+                continue;
+            }
+            else if (transaction.getActionType().toString() == "PendingInventory"){
+                // Check if clerk has accept / reject request inventory
+                Integer itemSize = transaction.getActionItemList().size();
+                Integer sentCount = 0, rejectCount = 0;
+                for (ActionItem actionItem: transaction.getActionItemList()) {
+                    if (actionItem.getItemStatus().toString() == "Sent") sentCount++;
+                    else if (actionItem.getItemStatus().toString() == "Rejected") rejectCount++;
+                }
+
+                if (rejectCount == itemSize) {
+                    transaction.setActionType(ActionTransaction.ActionType.RejectInventory);
+                    transactionRepository.save(transaction);
+                }
+                else {
+                    transaction.setActionType(ActionTransaction.ActionType.HandedOver);
+                    transactionRepository.save(transaction);
+                }
+            }
+            else if (transaction.getActionType().toString() == "HandedOver"){
+                Integer itemSize = transaction.getActionItemList().size();
+                Integer receiveCount = 0, rejectCount = 0;
+                for (ActionItem actionItem: transaction.getActionItemList()) {
+                    if (actionItem.getItemStatus().toString() == "Received") receiveCount++;
+                    else if (actionItem.getItemStatus().toString() == "Rejected") rejectCount++;
+                }
+
+                if (receiveCount + rejectCount == itemSize) {
+                    transaction.setActionType(ActionTransaction.ActionType.RequestDone);
+                    transactionRepository.save(transaction);
+                }
+            }
+        }
+        return new ResponseAjax("Done", "Request Status has been refreshed!");
+    }
+
+    /* ============ EMPLOYEE RECEIVE ITEM ============*/
+    @Override
+    public ResponseAjax getItemAssetsSent(MyUser myUser){
+        List<ActionItem> itemList = actionItemRepository.findActionItemsByItemStatusAndActionItemIdActionTransactionRequestedBy(ActionItem.ItemStatus.Sent, myUser);
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "No Item Available!");
+        return new ResponseAjax("Found", itemList);
+    }
+
+    @Override
+    public ResponseAjax receiveItem(Long actionTransactionId, Long itemId){
+        ActionItem actionItem = actionItemRepository.findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus.Sent, actionTransactionId, itemId);
+        actionItem.setItemStatus(ActionItem.ItemStatus.Received);
+        Date currentTime = new Date();
+        actionItem.setReceiveEmpTime(currentTime);
+        actionItemRepository.save(actionItem);
+        return new ResponseAjax("Success", "Item has been received! Check 'My Item'");
+    }
 }

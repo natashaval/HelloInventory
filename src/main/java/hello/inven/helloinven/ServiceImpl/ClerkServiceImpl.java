@@ -60,19 +60,20 @@ public class ClerkServiceImpl implements ClerkService {
     @Override
     public ResponseAjax itemRequestActions(Long actionTransactionId, Long itemId, Boolean action) {
 //        ActionItem actionItem = actionItemRepository.findActionItemByActionTransactionActionIdAndItemId(actionTransactionId, itemId);
-        ActionItem actionItem = actionItemRepository.findActionItemForStatus(actionTransactionId, itemId);
+//        ActionItem actionItem = actionItemRepository.findActionItemForStatus(actionTransactionId, itemId, 0);
+        ActionItem actionItem = actionItemRepository.findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus.Pending, actionTransactionId, itemId);
         if (action == Boolean.TRUE) { //Inventory Item Request Accepted
             actionItem.setItemStatus(ActionItem.ItemStatus.Sent);
             Date currentTime = new Date();
             actionItem.setReceivedTime(currentTime);
             actionItemRepository.save(actionItem);
-            return new ResponseAjax("Done", "Item Sent to Employee");
+            return new ResponseAjax("Approved", "Item Sent to Employee");
         } else if (action == Boolean.FALSE) {
             actionItem.setItemStatus(ActionItem.ItemStatus.Rejected);
             Date currentTime = new Date();
             actionItem.setReceivedTime(currentTime);
             actionItemRepository.save(actionItem);
-            return new ResponseAjax("Failed", "Item Request has been rejected!");
+            return new ResponseAjax("Rejected", "Item Request has been rejected!");
         }
         return null;
     }

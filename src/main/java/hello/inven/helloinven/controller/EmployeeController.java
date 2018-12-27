@@ -89,4 +89,32 @@ public class EmployeeController {
         MyUser employee = myUserDetails.getUser();
         return employeeService.cancelRequest(id, employee);
     }
+
+    @GetMapping("/user/item/refresh")
+    @ResponseBody
+    public ResponseAjax refreshRequest(){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.refreshRequest(employee);
+    }
+
+    /* =========== EMPLOYEE RECEIVE ITEM ========== */
+    @GetMapping("/user/item/receive")
+    public String receiveItem(){
+        return "user/item-receive";
+    }
+
+    @GetMapping("/user/item/receiveitem")
+    @ResponseBody
+    public ResponseAjax getItemSent(){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.getItemAssetsSent(employee);
+    }
+
+    @PutMapping("/user/item/receive/ok")
+    @ResponseBody
+    public ResponseAjax receiveItemAsset(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
+        return employeeService.receiveItem(actionTransId, itemId);
+    }
 }

@@ -67,7 +67,7 @@
 
 
                 bootbox.dialog({
-                    title: "<span class='glyphicon glyphicon-info-sign'></span> Employee Details",
+                    title: "<i class='fas fa-user'></i> Employee Details",
                     message: employeeMessage,
                     buttons: {
                         ok: {
@@ -97,7 +97,7 @@
                 itemMessage += "</form>";
 
                 bootbox.dialog({
-                    title: "<span class='glyphicon glyphicon-info-sign'></span> Employee Details",
+                    title: "<i class='fas fa-bars'></i> Item Details",
                     message: itemMessage,
                     buttons: {
                         ok: {
@@ -123,32 +123,51 @@
                     data: requestData,
                     success: function(data) {
                         console.log(data.data);
-
-                        $.ajax({
-                           type: "POST",
-                           url: "/clerk/item/approve",
-                           data: statusData,
-                            success: function(data){
-                               console.log(data.data);
-                                $('#item-request-table').DataTable().ajax.reload();
-                               // $('#approval-result').append("<p class='text-success'>" + data.data + "</p>");
-                                toastr.success(data.data, data.status, {
-                                    closeButton: true,
-                                    progressBar: true
-                                });
-                            },
-                            error: function(e){
-                               console.log(e.messageerror);
-                               toastr.error(e, "Error", {
-                                   closeButton: true,
-                                   progressBar: true
-                               });
-                               // $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
-                            }
-                        });
+                        if (data.status == "Failed"){
+                            toastr.error(data.data, data.status, {
+                                closeButton: true,
+                                progressBar: true
+                            });
+                        }
+                        else if (data.status == "Success") {
+                            $.ajax({
+                                type: "POST",
+                                url: "/clerk/item/approve",
+                                data: statusData,
+                                success: function (data) {
+                                    console.log(data.data);
+                                    $('#item-request-table').DataTable().ajax.reload();
+                                    // $('#approval-result').append("<p class='text-success'>" + data.data + "</p>");
+                                    if (data.status == "Approved"){
+                                        toastr.success(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
+                                    else if (data.status == "Rejected"){
+                                        toastr.warning(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
+                                },
+                                error: function (e) {
+                                    console.log(e.messageerror);
+                                    toastr.error(e, "Error", {
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
+                                    // $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
+                                }
+                            });
+                        }
                     },
                     error: function(e){
                         e.statusMessage();
+                        toastr.error(e, "Error", {
+                            closeButton: true,
+                            progressBar: true
+                        });
                     }
                 });
 
@@ -168,12 +187,21 @@
                     success: function(data){
                         console.log(data.data);
                         $('#item-request-table').DataTable().ajax.reload();
-                        $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
+                        toastr.warning(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                        // $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
+
 
                     },
                     error: function(e){
                         e.statusMessage();
-                        $('#approval-result').append("<p class='text-danger'>" +  data.data);
+                        toastr.error(e, "Error", {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                        // $('#approval-result').append("<p class='text-danger'>" +  data.data);
                     }
                 })
             });
