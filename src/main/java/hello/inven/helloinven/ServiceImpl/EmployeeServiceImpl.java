@@ -107,4 +107,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (itemList.isEmpty()) return new ResponseAjax("Not Found", "Item status not found!");
         return new ResponseAjax("Found", itemList);
     }
+
+    @Override
+    public ResponseAjax cancelRequest(Long actionId, MyUser myUser){
+        ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
+        if (transaction == null) return new ResponseAjax("Not Found", "Action Transaction not found!");
+
+        transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
+         List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
+        for (ActionItem item: actionItemList) {
+            item.setItemStatus(ActionItem.ItemStatus.Cancelled);
+            actionItemRepository.save(item);
+        }
+        transactionRepository.save(transaction);
+        return new ResponseAjax("Cancelled", "Request has been cancelled!");
+    }
 }

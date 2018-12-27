@@ -24,7 +24,8 @@ public class ActionItem { // Result of Many to Many Table
         Pending, // Still in waiting list after request item
         Sent, //  Clerk has approved and the item is on going
         Received, // Employee has receive the item
-        Rejected // Clerk has rejected the request
+        Rejected, // Clerk has rejected the request
+        Cancelled // Employee cancelled item request
     }
 
     @Column(name = "status", nullable = false)

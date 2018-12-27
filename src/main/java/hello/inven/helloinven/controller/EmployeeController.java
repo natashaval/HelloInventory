@@ -81,4 +81,12 @@ public class EmployeeController {
         MyUser employee = myUserDetails.getUser();
         return employeeService.getActionItemStatus(id, employee);
     }
+
+    @PostMapping("/user/item/actions/{id}/cancel")
+    @ResponseBody
+    public ResponseAjax cancelRequest(@PathVariable Long id){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.cancelRequest(id, employee);
+    }
 }

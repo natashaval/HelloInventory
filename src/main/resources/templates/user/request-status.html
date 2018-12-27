@@ -6,12 +6,12 @@
     <meta charset="UTF-8" />
     <title>Request Status</title>
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Item Request / Return Status</h3>
-    <a href="#" class="btn btn-success">Refresh</a>
+    <a href="#" class="btn btn-success"><i class="fas fa-sync-alt"></i> Refresh</a>
     <table id="request-status-table">
         <thead class="thead-light">
             <th>Action Id</th>
@@ -24,6 +24,7 @@
     </table>
     <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
     <script type="text/javascript">
         var statusTable;
@@ -57,8 +58,9 @@
                            else if (data == 'PendingInventory' || data == 'ReturnInventory') return "<span class='badge badge-warning'>" + data + "</span>";
                            else if (data == 'HandedOver') return "<span class='badge badge-secondary'>" + data + "</span>";
                            else if (data == 'RequestDone' || data == 'ReturnDone') return "<span class='badge badge-success'>" + data + "</span>";
-                           else if (data == 'CancelRequest' || data == 'RejectApproval' || data == 'RejectInventory') return "<span class='badge badge-danger'>" + data + "</span>";
-                           else return "<span class='badge badge-dark'>" + data + "</span>";
+                           else if (data == 'RejectApproval' || data == 'RejectInventory') return "<span class='badge badge-danger'>" + data + "</span>";
+                           else if (data == 'CancelRequest') return "<span class='badge badge-dark'>" + data + "</span>";
+                           else return "<span class='badge badge-light'>" + data + "</span>";
                        }
                    },
                    {
@@ -77,8 +79,8 @@
                         targets: -1,
                         data: null,
                         defaultContent:
-                            "<button class='btn btn-primary request-list-button'>Item Status</button>" +
-                            " <button class='btn btn-danger request-cancel-button'>Cancel</button>"
+                            "<button class='btn btn-primary request-list-button'><i class='fas fa-list-ol'></i> Item Status</button>" +
+                            " <button class='btn btn-danger request-cancel-button'><i class='far fa-times-circle'></i> Cancel</button>"
                     }
                 ]
             });
@@ -109,6 +111,8 @@
                                 else if (value.itemStatus == "Pending"){itemMessage += " <span class='badge badge-warning'>" + value.itemStatus + "</span></li>"}
                                 else if (value.itemStatus == "Rejected"){itemMessage += " <span class='badge badge-danger'>" + value.itemStatus + "</span></li>"}
                                 else if (value.itemStatus == "Received"){itemMessage += " <span class='badge badge-success'>" + value.itemStatus + "</span></li>"}
+                                else if (value.itemStatus == "Cancelled"){itemMessage += " <span class='badge badge-dark'>" + value.itemStatus + "</span></li>"}
+                                else {itemMessage += " <span class='badge badge-light'>" + value.itemStatus + "</span></li>"}
                             });
                             itemMessage += "</ol>";
 
@@ -132,6 +136,46 @@
 
             $('#request-status-table tbody').on('click', '.request-cancel-button', function (e) {
                 itemRow = statusTable.row($(this).parents('tr')).data();
+                actionId = itemRow.actionId;
+                bootbox.dialog({
+                    title: "<i class=\"fas fa-times-circle\"></i> Cancel Request",
+                    message: "Are you sure you want to cancel this request? ",
+                    buttons: {
+                        success: {
+                            label: "No",
+                            className: "btn-secondary",
+                            callback: function(){
+                                $('.bootbox').modal('hide');
+                            }
+                        },
+                        danger: {
+                            label: "Yes",
+                            className: "btn-danger",
+                            callback: function () {
+                                console.log("cancel has been clicked" + actionId);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/user/item/actions/"+ actionId +"/cancel",
+                                    success: function(data){
+                                        console.log(data);
+                                        toastr.warning(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                        $('#request-status-table').DataTable().ajax.reload();
+                                    },
+                                    error: function(e){
+                                        toastr.error("Error in cancel request", "Error", {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+                });
             });
 
         }
