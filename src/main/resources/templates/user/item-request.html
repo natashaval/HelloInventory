@@ -6,11 +6,12 @@
     <meta charset="UTF-8" />
     <title>Request Items</title>
     <link rel="stylesheet" th:href="@{/plugin/Dual-List-Box-Plugin-listSwap/listswap.css}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
         <h3>Request Items</h3>
-        <div id="request-result"></div>
+        <!--<div id="request-result"></div>-->
         <!--<form>-->
             <!--<div class="custom-checkbox custom-control" th:each="item: ${itemAssets}">-->
                 <!--<input class="custom-control-input" type="checkbox" th:attr="data-item-request-id= ${item.id}">-->
@@ -43,6 +44,7 @@
                 <button type="submit" class="btn btn-primary" onclick="selectAllDestination()">Request</button>
             </form>
         <script type="text/javascript" th:src="@{/plugin/Dual-List-Box-Plugin-listSwap/jquery.listswap.js}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                $('#source, #destination').listswap({
@@ -75,11 +77,19 @@
                     success: function(data){
                         console.log("Success send ajax");
                         window.location.reload();
-                        $('#request-result').append("<p class='text-success'>" + data.data + "</p>");
+                        toastr.success(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        })
+                        // $('#request-result').append("<p class='text-success'>" + data.data + "</p>");
                     },
                     error: function(data){
                         console.log("error send ajax");
-                        $('#request-result').append("<p class='text-danger'>Error in Request Item</p>");
+                        toastr.error("Error in request item", "Error", {
+                            closeButton: true,
+                            progressBar: true
+                        })
+                        // $('#request-result').append("<p class='text-danger'>Error in Request Item</p>");
                     }
                 });
 

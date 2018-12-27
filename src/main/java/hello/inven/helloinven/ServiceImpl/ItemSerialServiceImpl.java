@@ -1,5 +1,6 @@
 package hello.inven.helloinven.ServiceImpl;
 
+import hello.inven.helloinven.dto.ItemSerialOnly;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.model.MyUser;
@@ -10,6 +11,7 @@ import hello.inven.helloinven.service.ItemSerialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +35,12 @@ public class ItemSerialServiceImpl implements ItemSerialService {
     }
 
     @Override
+//    @Transactional
     public ResponseAjax getItemSerialByItemId(Long itemId){
-        List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemId(itemId);
-        return new ResponseAjax("Done", itemSerials);
+//        List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemId(itemId);
+//        return new ResponseAjax("Done", itemSerials);
+        List<ItemSerialOnly> serialOnly = itemSerialRepository.findItemSerialsOnlyByItemId(itemId);
+        return new ResponseAjax("Done", serialOnly);
     }
 
     @Override

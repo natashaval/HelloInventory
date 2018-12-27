@@ -1,12 +1,12 @@
 var tableSerial;
 $(document).ready(function(){
-    // getItemSerial(itemId);
+
     tableSerial = $('#item-serial-table').DataTable({
         ajax: "/clerk/item/" + itemId + "/serialJSON",
         // dataSrc: "data",
         columns: [
             {"data": "serialId"},
-            {"data" : "myUser.name"},
+            {"data" : "myUserName"},
             {"data": "clerkId"},
             {"data": null}
         ],
@@ -68,7 +68,7 @@ $('#serial-add-form').submit(function (e) {
                 closeButton: true,
                 progressBar: true
             });
-            // $('#item-serial-table').DataTable().ajax.reload();
+            $('#item-serial-table').DataTable().ajax.reload();
             $('#serial-add-form')[0].reset();
         },
         error: function (e){
@@ -81,7 +81,6 @@ $('#serial-add-form').submit(function (e) {
     });
 
 });
-
 
 function getItemSerial(itemId){
     var serialURL = "/clerk/item/" + itemId + "/serialJSON";

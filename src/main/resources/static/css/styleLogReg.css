@@ -6,11 +6,12 @@
 #pageContainer {
   width: 100%;
   height: 100%;
-  background: url("http://localhost:8080/img/back.jpg")fixed;
-  background-size: cover;
+  background: url("http://localhost:8080/img/Workplace-with-office-appliance-and-empty-place-in-centera.jpg") no-repeat center center fixed;
+  background-size: 100% 120%;
   display: flex;
   align-items: center;
   justify-content: center;
+    overflow: hidden;
 }
 
 #formContainer {

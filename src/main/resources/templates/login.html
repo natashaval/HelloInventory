@@ -8,6 +8,7 @@
     <!--<link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css" />-->
 
     <link rel="stylesheet" th:href="@{/css/styleLogReg.css}" />
+    <link rel="shortcut icon" href="https://peterhulce.design/wp-content/uploads/2017/04/letters-Hi-clear-3.png" />
 </head>
 <!--
 <body class="container" style="margin:50px">
@@ -39,9 +40,10 @@
 <!--<body>-->
 <body id="pageContainer">
     <!--<img th:src="@{/img/back.jpg}" id="imgContainer"/>-->
-    <img th:src="@{/img/letters-Hi.png}" alt="logo" width="20" height="20"/>
+    <!--<img th:src="@{/img/letters-Hi.png}" alt="logo" width="20" height="20"/>-->
+
     <div id="formContainer">
-        <div id="logo"></div>
+        <div id="logo"><img src="https://peterhulce.design/wp-content/uploads/2017/04/letters-Hi-clear-3.png" alt="logo" width="30" height="30" /></div>
         <div id="forms">
             <form id="login" th:action="@{/login}" method="post">
                 <div class="formHead">

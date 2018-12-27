@@ -5,12 +5,13 @@
 <head>
     <title>Item Requested</title>
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Clerk Approve Item Request by Employee</h3>
-    <div id="approval-result"></div>
-    <table id="item-request-table">
+    <!--<div id="approval-result"></div>-->
+    <table id="item-request-table" class="table table-hover">
         <thead>
             <th>Action Id</th>
             <th>Requester</th>
@@ -21,6 +22,7 @@
 
     <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript">
         var receiveTable;
         $(document).ready(function(){
@@ -37,10 +39,10 @@
                        targets: -1,
                        data: null,
                        defaultContent:
-                           "<button class='btn btn-outline-primary item-request-employee'>View Employee</button>" +
-                               " <button class='btn btn-outline-warning item-request-item-details'>View Item</button>" +
-                               " <button class='btn btn-outline-success item-request-accept'><span class='glyphicon glyphicon-ok-circle'></span> Accept</button>" +
-                               " <button class='btn btn-outline-danger item-request-reject'><span class='glyphicon glyphicon-remove-circle'></span> Reject</button>"
+                           "<button class='btn btn-outline-primary item-request-employee'><i class='fas fa-user'></i> View Employee</button>" +
+                               " <button class='btn btn-outline-warning item-request-item-details'><i class='fas fa-bars'></i> View Item</button>" +
+                               " <button class='btn btn-outline-success item-request-accept'><i class='fas fa-check-circle'></i> Accept</button>" +
+                               " <button class='btn btn-outline-danger item-request-reject'><i class='fas fa-times-circle'></i> Reject</button>"
                    }
                ]
            });
@@ -129,11 +131,19 @@
                             success: function(data){
                                console.log(data.data);
                                 $('#item-request-table').DataTable().ajax.reload();
-                               $('#approval-result').append("<p class='text-success'>" + data.data + "</p>");
+                               // $('#approval-result').append("<p class='text-success'>" + data.data + "</p>");
+                                toastr.success(data.data, data.status, {
+                                    closeButton: true,
+                                    progressBar: true
+                                });
                             },
                             error: function(e){
                                console.log(e.messageerror);
-                               $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
+                               toastr.error(e, "Error", {
+                                   closeButton: true,
+                                   progressBar: true
+                               });
+                               // $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
                             }
                         });
                     },
