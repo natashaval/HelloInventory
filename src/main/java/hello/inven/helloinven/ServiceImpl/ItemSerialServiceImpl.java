@@ -63,6 +63,11 @@ public class ItemSerialServiceImpl implements ItemSerialService {
         List<ItemSerial> itemSerialList = new ArrayList<>();
         for (Long itemSerial : itemSerialValues ){
             System.out.println(itemSerial);
+            if (itemSerial == null || itemSerial.toString().isEmpty()) {
+                System.out.println("iniKosong: " + itemSerial);
+                continue;
+            };
+
             ItemSerial newItemSerial = new ItemSerial();
             newItemSerial.setSerialId(itemSerial);
             newItemSerial.setItem(item);
@@ -70,8 +75,9 @@ public class ItemSerialServiceImpl implements ItemSerialService {
             newItemSerial.setClerkId(clerk.getId());
 
             itemSerialList.add(newItemSerial);
-        }
 
+        }
+        System.out.println(itemSerialList);
         itemSerialRepository.saveAll(itemSerialList);
 
         return new ResponseAjax("Done", "Item Serials has been saved!");

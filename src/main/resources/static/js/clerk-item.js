@@ -103,7 +103,11 @@ $('#item-add-form').submit(function(e){
         contentType: false,
         success: function(response){
             console.info(response);
-            $('#itemResult').append("<p class='text text-success'>Success in Adding Item</p>");
+            // $('#itemResult').append("<p class='text text-success'>Success in Adding Item</p>");
+            toastr.success("Item has been saved successfully!", "Success",{
+                closeButton: true,
+                progressBar: true
+            })
             $('#item-add-form').each(function () {
                 // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
                 this.reset();
@@ -111,7 +115,11 @@ $('#item-add-form').submit(function(e){
 
         },
         error: function(e){
-            $('#itemResult').append("<p class='text text-danger'>Failed in Adding Item</p>");
+            // $('#itemResult').append("<p class='text text-danger'>Failed in Adding Item</p>");
+            toastr.error("Error in adding item", "Error", {
+                closeButton: true,
+                progressBar: true
+            })
         }
     });
 
@@ -138,9 +146,9 @@ function getItems() {
             items.push("<td>" + value.category.name + "</td>");
             items.push("<td>" + value.quantity + "</td>");
             items.push("<td>" +
-                "<a class='btn btn-info item-details' href='/clerk/item/"+ value.id + "'><span class='glyphicon glyphicon-th-list'> Details</span></a> " +
-                "<a class='btn btn-warning' href='/clerk/item/"+ value.id + "/serial'><span class='glyphicon glyphicon-plus-sign'> Serial</span></a> " +
-                "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><span class='glyphicon glyphicon-trash'> Delete</span></button> " +
+                "<a class='btn btn-info item-details' href='/clerk/item/"+ value.id + "'><i class='far fa-list-alt'></i> Details</span></a> " +
+                "<a class='btn btn-warning' href='/clerk/item/"+ value.id + "/serial'><i class=\"fas fa-barcode\"></i> Serial</span></a> " +
+                "<button type='button' class='btn btn-danger item-delete' data-item-id='" + value.id + "' onclick='itemDelete(" + value.id + ")'><i class='fas fa-trash-alt'></i> Delete</span></button> " +
                 // <button type="button" class="btn btn-danger category-delete" th:attr="data-category-id=${category.id}" ><span class="glyphicon glyphicon-trash"> Delete</span></button>
                 "</td>");
             // items.push("<td>" +
@@ -204,7 +212,7 @@ function itemDelete(itemId){
 
     bootbox.dialog({
         message: "Are you sure you want to Delete? ",
-        title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+        title: "<i class=\"fas fa-trash-alt\"></i> Delete Item",
         buttons: {
             success: {
                 label: "Cancel",

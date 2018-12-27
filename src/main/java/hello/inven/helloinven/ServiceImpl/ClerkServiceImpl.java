@@ -41,11 +41,11 @@ public class ClerkServiceImpl implements ClerkService {
                 itemSerialRepository.save(itemSerial);
             }
 
-            return new ResponseAjax("Done", "Assign Item Serial to Employee Finished");
+            return new ResponseAjax("Success", "Assign Item Serial to Employee Finished");
         }
 
         else {
-            return new ResponseAjax("Failed", "Assign Item Serial to Employee FAILED");
+            return new ResponseAjax("Failed", "Assign Item Serial to Employee Failed!");
         }
 
     }

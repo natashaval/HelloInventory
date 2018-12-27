@@ -52,7 +52,6 @@ public class ItemServiceImpl implements ItemService {
 //        newItem.setCategory(category);
         newItem.setCategory(item.getCategory());
 
-
         MultipartFile file = item.getImage();
 
         if(!file.isEmpty()){

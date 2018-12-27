@@ -14,7 +14,7 @@ $(document).ready(function(){
             {
                 targets: -1,
                 data: null,
-                defaultContent: "<button class='btn btn-danger serial-delete-button'>Delete</button>"
+                defaultContent: "<button class='btn btn-danger serial-delete-button'><i class='fas fa-trash-alt'></i> Delete</button>"
             }
         ]
     });
@@ -64,16 +64,16 @@ $('#serial-add-form').submit(function (e) {
         success: function(data){
             // window.location.reload();
             // $('.serialResult').append("<p style='color: green;'>Success</p>");
-            $('#item-serial-table').DataTable().ajax.reload();
             toastr.success(data.data, data.status, {
                 closeButton: true,
                 progressBar: true
             });
+            // $('#item-serial-table').DataTable().ajax.reload();
             $('#serial-add-form')[0].reset();
         },
         error: function (e){
             // $('.serialResult').append("<p style='color: red;'>Error</p>");
-            toastr.error(data.data, 'Error', {
+            toastr.error(e, 'Error', {
                 closeButton: true,
                 progressBar: true
             });
@@ -110,7 +110,7 @@ function buttonView() {
             serialId = deleteRow.serialId;
 
         bootbox.dialog({
-            title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+            title: "<i class='fas fa-trash-alt'></i> Delete Serial",
             message: "Are you sure you want to Delete? ",
             buttons: {
                 success: {
@@ -132,10 +132,12 @@ function buttonView() {
                             success: function (data) {
                                 console.log(data.data);
                                 // $('.serialResult').html("<p>"+ data.data + "</p>");
-                                toastr.success(data.data, data.status, {
-                                    closeButton: true,
-                                    progressBar: true
-                                })
+                                if (data.status == "Deleted" ) {
+                                    toastr.warning(data.data, data.status, {
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
+                                }
                                 $('#item-serial-table').DataTable().ajax.reload();
                             },
                             error: function (data) {
@@ -192,10 +194,18 @@ $('#serial-assign-form').submit(function(e){
         success: function(data){
             console.log(data.data);
             // $('.serial-assign-result').html("<p>"+ data.data + "</p>");
-            toastr.success(data.data, data.status, {
-                closeButton: true,
-                progressBar: true
-            });
+            if (data.status == "Success") {
+                toastr.success(data.data, data.status, {
+                    closeButton: true,
+                    progressBar: true
+                });
+            }
+            else if (data.status == "Failed"){
+                toastr.error(data.data, data.status, {
+                    closeButton: true,
+                    progressBar: true
+                })
+            }
             $('#item-serial-table').DataTable().ajax.reload();
         },
         error: function(data){

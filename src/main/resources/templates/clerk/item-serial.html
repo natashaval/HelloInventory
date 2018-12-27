@@ -17,7 +17,7 @@
 <div layout:fragment="content" th:remove="tag">
     <a href="/clerk/item" class="btn btn-primary">Back to Item List</a>
     <br /><br />
-    <h3>Item Id <span th:text="${itemId}" style="color: darkblue" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
+    <h3>Item Id <span th:text="${itemId}" class="text-info" id="serial-itemId" th:attr="item-id=${itemId}"></span> Serial Number</h3>
 
     <!--<div class="serialResult"></div>-->
 
@@ -40,23 +40,23 @@
         </div>
 
         <div class="col-lg-6">
-            <button class="btn btn-info" id="serial-add-button"><span class="glyphicon glyphicon-plus"></span> Add Serial Number</button>
+            <button class="btn btn-info" id="serial-add-button"><i class="fas fa-list-ol"></i> Add Serial Number</button>
             <br/>
             <br/>
             <div class="serial-add-div">
-                <button class="btn btn-dark" id="serial-input-add"><span class="glyphicon glyphicon-plus-sign"></span> Add Field</button>
+                <button class="btn btn-dark" id="serial-input-add"><i class="fas fa-plus-circle"></i> Add Field</button>
 
                 <form method="post" id="serial-add-form">
                     <div class="serial-add">
                         <!--<div><input type="text" name="assets[]"/></div>-->
                         <div><input type="number" name="serials[]"/></div>
                     </div>
-                    <input type="submit" class="btn btn-success"/>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
                 </form>
             </div>
             <hr />
 
-            <button class="btn btn-info" id="serial-assign-button"><span class="glyphicon glyphicon-user"></span> Assign to Employee</button>
+            <button class="btn btn-info" id="serial-assign-button"><i class="fas fa-user-friends"></i> Assign to Employee</button>
             <div class="serial-assign-result"></div>
             <div class="serial-assign-div">
                 <form id="serial-assign-form">

@@ -77,9 +77,9 @@ function categoryDataTable(){
                 targets: -1,
                 data: null,
                 defaultContent:
-                    "<button type='button' class='btn btn-info category-details' ><span class='glyphicon glyphicon-th-list'> Details</span></button>" +
-                    " <button type='button' class='btn btn-primary category-edit'><span class='glyphicon glyphicon-edit'> Edit</span></button>" +
-                    " <button type='button' class='btn btn-danger category-delete'><span class='glyphicon glyphicon-trash'> Delete</span></button>"
+                    "<button type='button' class='btn btn-info category-details' ><i class='far fa-list-alt'></i> Details</span></button>" +
+                    " <button type='button' class='btn btn-primary category-edit'><i class='fas fa-edit'></i> Edit</span></button>" +
+                    " <button type='button' class='btn btn-danger category-delete'><i class='fas fa-trash-alt'></i> Delete</span></button>"
             }
         ]
     });
@@ -183,7 +183,7 @@ function categoryButton() {
         categoryId = categoryRow.id;
 
         bootbox.dialog({
-            title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+            title: "<i class='fas fa-trash-alt'></i> Delete",
             message: "Are you sure you want to Delete? ",
             buttons: {
                 success: {

@@ -4,12 +4,12 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>Item Details</title>
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
         <a th:href="@{/clerk/item}" class="btn btn-primary">Back to Item List</a> <br />
-        <button class="btn btn-info" id="item-details-print" th:attr="item-id=${item.id}">Print</button> <br />
+        <button class="btn btn-info" id="item-details-print" th:attr="item-id=${item.id}"><i class="fas fa-print"></i> Print</button> <br />
         Item Id: <span th:text="${item.id}"></span> <br />
         Name: <span th:text="${item.name}"></span> <br />
         Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
