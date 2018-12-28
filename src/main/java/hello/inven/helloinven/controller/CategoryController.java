@@ -4,7 +4,9 @@ import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +34,6 @@ public class CategoryController {
         return new ResponseAjax("Done", categoryService.getAllCategories());
     }
 
-
     @PostMapping("/clerk/category2/add")
     public @ResponseBody ResponseAjax category2Add(@RequestBody Category category){
         return categoryService.createCategory(category);
@@ -47,6 +48,12 @@ public class CategoryController {
     @GetMapping(value="/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Details(@PathVariable Integer id){
         return new ResponseAjax("Done", categoryService.getOneCategory(id));
+    }
+
+    @GetMapping(value = "/clerk/category/{id}")
+    @ResponseBody
+    public ResponseEntity<Category> getOneCategory(@PathVariable Integer id){
+        return new ResponseEntity<>(categoryService.getOneCategory(id).get(), HttpStatus.OK);
     }
 
 //    @PutMapping(value = "/clerk/category2/{id}/edit")

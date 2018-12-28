@@ -1,8 +1,11 @@
 package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import javax.persistence.*;
+
+@Data
 
 @Entity
 @Table(name = "item_serial")
@@ -23,36 +26,4 @@ public class ItemSerial {
 
     @Column(name = "clerk_id")
     private Long clerkId; // clerk yang bertugas menghandle barang tersebut
-
-    public Long getSerialId() {
-        return serialId;
-    }
-
-    public void setSerialId(Long serialId) {
-        this.serialId = serialId;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public MyUser getMyUser() {
-        return myUser;
-    }
-
-    public void setMyUser(MyUser myUser) {
-        this.myUser = myUser;
-    }
-
-    public Long getClerkId() {
-        return clerkId;
-    }
-
-    public void setClerkId(Long clerkId) {
-        this.clerkId = clerkId;
-    }
 }

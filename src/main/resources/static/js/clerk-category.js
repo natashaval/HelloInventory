@@ -205,7 +205,7 @@ function categoryButton() {
                             contentType: 'application/json; charset=utf-8',
                             success: function(data){
                                 console.log(data);
-                                toastr.success(data.data, data.status, {
+                                toastr.warning(data.data, data.status, {
                                    closeButton: true,
                                    progressBar: true
                                 });
@@ -213,6 +213,10 @@ function categoryButton() {
                             },
                             error: function(e){
                                 bootbox.alert('Error in Delete!');
+                                toastr.error(e, "Error", {
+                                    closeButton: true,
+                                    progressBar: true
+                                });
                             }
                         });
 

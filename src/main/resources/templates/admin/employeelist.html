@@ -4,6 +4,7 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <title>Employee List</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 <body>
 <div layout:fragment="content">
@@ -32,8 +33,8 @@
                 <!--<td><img th:src="@{/uploads/employee/{photo}(photo=${emp.getPhoto()})}" alt="picture relative path"/></td>-->
                 <!--<td>ImageHandler: <img th:src="@{'/uploads/employee/' + ${emp.getPhoto()}}" /></td>-->
                 <td>
-                    <a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}">Details</a>
-                    <button class="btn btn-danger employee-delete" th:attr="data-employee-id=${emp.id}">Delete</button>
+                    <a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}"><i class='far fa-list-alt'></i> Details</a>
+                    <button class="btn btn-danger employee-delete" th:attr="data-employee-id=${emp.id}"><i class='fas fa-trash-alt'></i> Delete</button>
                 </td>
                 <!--<td><img th:src="@{${emp.photo}}" /></td>-->
             </tr>
@@ -41,6 +42,7 @@
     </table>
 
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript">
         $('.employee-delete').click(function(e) {
             e.preventDefault();
@@ -50,7 +52,7 @@
 
             bootbox.dialog({
                 message: "Are you sure you want to Delete? ",
-                title: "<span class='glyphicon glyphicon-trash'></span> Delete",
+                title: "<i class='fas fa-trash-alt'></i> Delete",
                 buttons: {
                     success: {
                         label: "Cancel",
@@ -66,17 +68,33 @@
                             console.log("delete has been clicked" + employeeId);
 
                             $.ajax({
-                                type: "GET",
+                                type: "DELETE",
                                 url: "/admin/employee/" + employeeId + "/delete",
                                 contentType: 'application/json; charset=utf-8',
-                                success: function(result){
-                                    console.log(result);
+                                success: function(data){
+                                    // console.log(result);
                                     window.location.reload();
+                                    if (data.status == "Deleted"){
+                                        toastr.warning(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
+                                    else if (data.status == "Error"){
+                                        toastr.error(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
 
                                     // fetchCategory();
                                 },
                                 error: function(e){
                                     bootbox.alert('Error in Delete!');
+                                    toastr.error(e, "Error", {
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
                                 }
                             });
 

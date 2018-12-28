@@ -1,13 +1,10 @@
 package hello.inven.helloinven.service;
 
 import hello.inven.helloinven.model.MyUser;
-import hello.inven.helloinven.model.UserPrincipal;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
-import java.util.Date;
 
 public class MyUserDetails extends User {
 

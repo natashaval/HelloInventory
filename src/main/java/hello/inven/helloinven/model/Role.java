@@ -1,10 +1,12 @@
 package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name="role")
 public class Role {
@@ -19,28 +21,4 @@ public class Role {
     @OneToMany(mappedBy = "role")
     @JsonIgnoreProperties(value = "role", allowSetters = true)
     private Set<MyUser> users;
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Set<MyUser> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<MyUser> users) {
-        this.users = users;
-    }
 }

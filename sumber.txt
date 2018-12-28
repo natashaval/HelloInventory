@@ -131,3 +131,8 @@ https://stackoverflow.com/questions/1817625/jpa-primary-key-auto-generate
 Custom Query with Custom Columns to mapped:
 https://stackoverflow.com/questions/36328063/how-to-return-a-custom-object-from-a-spring-data-jpa-group-by-query
 https://stackoverflow.com/questions/49682068/return-custom-object-using-custom-query-with-spring-data-jpa?rq=1
+
+Lazy Loading: -not working in JPA because
+"Ah. So the problem has nothing to do with Hibernate or lazy loading. It has to do with the fact that you're asking Spring/Jackson to serialize a Suggestion to JSON, and that it serializes the User with the Suggestion (and thus causes the lazy loading to happen, since, when transforming the suggestion to JSON, it gets the user, and calls the getters on the user). The solution is to use Jackson annotations to ignore the user, or to transform your entities to DTOs containing only the data you want to return. "
+https://stackoverflow.com/questions/51111220/spring-boot-jpa-lazy-fetch-is-not-working
+https://stackoverflow.com/questions/46883729/spring-data-jpa-onetomany-lazy-fetch-not-working-in-spring-boot

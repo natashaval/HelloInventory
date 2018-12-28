@@ -2,6 +2,7 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+@Data
 
 @Entity
 @Table(name = "item")
@@ -74,125 +77,4 @@ public class Item extends AuditModel {
 //    @JsonIgnoreProperties(value = "actionItemId")
     @JsonIgnore
     private List<ActionItem> actionItemList = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public MultipartFile getImage() {
-        return image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public ItemType getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(ItemType itemType) {
-        this.itemType = itemType;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getWidth() {
-        return width;
-    }
-
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
-    public Double getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Double depth) {
-        this.depth = depth;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-//    @OneToMany(mappedBy = "primaryKey.item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    public Set<Asset> getAssets() {
-//        return assets;
-//    }
-//
-//    public void setAssets(Set<Asset> assets) {
-//        this.assets = assets;
-//    }
-
-    public List<ItemSerial> getItemSerials() {
-        return itemSerials;
-    }
-
-    public void setItemSerials(List<ItemSerial> itemSerials) {
-        this.itemSerials = itemSerials;
-    }
-
-    public List<ActionItem> getActionItemList() {
-        return actionItemList;
-    }
-
-    public void setActionItemList(List<ActionItem> actionItemList) {
-        this.actionItemList = actionItemList;
-    }
 }

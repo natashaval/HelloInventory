@@ -1,35 +1,12 @@
 package hello.inven.helloinven.model;
 
+import lombok.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ResponseAjax {
     private String status;
     private Object data;
 
-    public ResponseAjax(String status, Object data) {
-        this.status = status;
-        this.data = data;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "ResponseAjax{" +
-                "status='" + status + '\'' +
-                ", data=" + data +
-                '}';
-    }
 }
