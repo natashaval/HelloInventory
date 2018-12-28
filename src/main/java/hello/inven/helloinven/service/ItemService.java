@@ -13,6 +13,6 @@ public interface ItemService {
     ResponseAjax deleteItem(Long id);
     ResponseAjax detailItem(Long id);
 
-    ResponseAjax getAllItems();
+    List<Item> getAllItems();
 
 }

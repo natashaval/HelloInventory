@@ -74,9 +74,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ResponseAjax getAllItems() {
+    public List<Item> getAllItems() {
         List<Item> itemList = itemRepository.findAll();
-        return new ResponseAjax("Read", itemList);
+        return itemList;
     }
 
     @Override

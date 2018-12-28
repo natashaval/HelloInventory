@@ -10,9 +10,39 @@
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
+        <h3>Return Items</h3>
+        <select id="source" data-text="My Item / Serial" data-search="Search for options">
+            <option th:each="serial: ${myItemSerial}" th:value="${serial.serialId}" th:text="|${serial.item.name} / ${serial.serialId}|"></option>
+        </select>
+        <form id="item-return-form" method="post">
+            <select multiple name="itemreturn[]" id="destination" data-text="Returned Items" data-search="Search for options">
+            </select>
+            <div class="form-group">
+                <label>Additional Comment</label>
+                <textarea class="form-control" id="returncomment"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" onclick="selectAllDestination()">Return</button>
+        </form>
+
         <script type="text/javascript" th:src="@{/plugin/Dual-List-Box-Plugin-listSwap/jquery.listswap.js}"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script type="text/javascript">
+            $(document).ready(function(){
+                $('#source, #destination').listswap({
+                    truncate: true,
+                    height: null,
+                    is_scroll: true,
+                    label_add: 'Add',
+                    label_remove: 'Remove',
+                    add_class: null,
+                    rtl: false
+                });
+            });
+
+            function selectAllDestination(){
+                $('#destination option').prop('selected', true);
+            }
 
         </script>
     </div>

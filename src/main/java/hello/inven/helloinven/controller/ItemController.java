@@ -48,8 +48,11 @@ public class ItemController {
     }
 
     @GetMapping(value = "/clerk/item/show")
-    public @ResponseBody ResponseAjax itemShow(){
-        return itemService.getAllItems();
+    @ResponseBody
+    public ResponseAjax itemShow(){
+        List<Item> itemList = itemService.getAllItems();
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", itemList);
+        return new ResponseAjax("Found", itemList);
     }
 
     @DeleteMapping(value = "/clerk/item/{id}")

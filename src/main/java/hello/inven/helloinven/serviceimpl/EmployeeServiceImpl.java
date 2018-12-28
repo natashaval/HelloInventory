@@ -31,11 +31,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     ActionItemRepository actionItemRepository;
 
     @Override
-    public ResponseAjax getAllItemAssets(){
+    public List<Item> getAllItemAssets(){
         List<Item> itemList = itemRepository.findItemByItemType(Item.ItemType.ASSET);
 //        List<Item> itemList = itemRepository.findItemIdAndNameByItemType(Item.ItemType.ASSET);
         // Jika menggunakan Query sendiri akan menghasilkan array, bukan Object
-        return new ResponseAjax("Done", itemList);
+        return itemList;
     }
 
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -182,5 +182,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         actionItem.setReceiveEmpTime(currentTime);
         actionItemRepository.save(actionItem);
         return new ResponseAjax("Success", "Item has been received! Check 'My Item'");
+    }
+
+    /* ============ Employee > Return Item =========== */
+    @Override
+    public List<ItemSerial> getMyItemSerial(MyUser myUser){
+        List<ItemSerial> serials = itemSerialRepository.findItemSerialsByMyUser(myUser);
+        return serials;
     }
 }

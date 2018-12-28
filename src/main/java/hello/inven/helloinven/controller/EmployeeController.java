@@ -18,24 +18,18 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     /* ========== EMPLOYEE REQUEST ITEM ===========*/
-    @GetMapping(value = {"/user/item/request", "/manager/item/request"})
-    public String userItemRequest(Model model){
-        ResponseAjax responseAjax = employeeService.getAllItemAssets();
-        model.addAttribute("itemAssets", responseAjax.getData()); // karena bentuknya listSwap
+    @GetMapping(value = "/user/item/request")
+    public String requestItem(Model model){
+        model.addAttribute("itemAssets", employeeService.getAllItemAssets()); // karena bentuknya listSwap
         return "user/item-request";
     }
 
     @PostMapping("/user/item/request")
     @ResponseBody
-    public ResponseAjax userItemRequestPost(@RequestParam("itemrequests[]") List<Long> requestValues,
+    public ResponseAjax requestItemPost(@RequestParam("itemrequests[]") List<Long> requestValues,
                                             @RequestParam("requestcomment") String comment){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-
-        for (Long requestId: requestValues) {
-            System.out.println(requestId);
-        }
-        System.out.println(comment);
         return employeeService.requestItemAssets(employee, requestValues, comment);
     }
 
@@ -117,4 +111,16 @@ public class EmployeeController {
     public ResponseAjax receiveItemAsset(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
         return employeeService.receiveItem(actionTransId, itemId);
     }
+
+    /* ========== EMPLOYEE RETURN ITEM ===========*/
+    /*
+    @GetMapping("/user/item/return")
+    public String returnItem(Model model){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        model.addAttribute("myItemSerial", employeeService.getMyItemSerial(employee));
+        return "user/item-return";
+    }
+    */
+
 }
