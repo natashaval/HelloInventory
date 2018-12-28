@@ -1,7 +1,5 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceimpl;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.repository.CategoryRepository;

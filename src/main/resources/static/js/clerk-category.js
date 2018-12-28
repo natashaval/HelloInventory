@@ -52,7 +52,7 @@ function addCategory() {
                 $('#category-name').val("");
                 $('#category-description').val("");
                 // fetchCategory();
-                toastr.success('Category has been saved!', data.status, {
+                toastr.success(data.data, data.status, {
                    closeButton: true,
                    progressBar: true,
                 });
@@ -163,10 +163,18 @@ function categoryButton() {
                     $('#modal-category-edit').modal('hide').data('bs.modal', null); // close modal
                     // fetchCategory();
                     // table.ajax.reload();
-                    toastr.success('Category has been updated!', data.status, {
-                        closeButton: true,
-                        progressBar: true
-                    });
+                    if (data.status == "Updated") {
+                        toastr.success(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    }
+                    else if (data.status == "Failed") {
+                        toastr.error(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    }
                     $('#category-table').DataTable().ajax.reload();
                 },
                 error: function (e) {
@@ -205,10 +213,18 @@ function categoryButton() {
                             contentType: 'application/json; charset=utf-8',
                             success: function(data){
                                 console.log(data);
-                                toastr.warning(data.data, data.status, {
-                                   closeButton: true,
-                                   progressBar: true
-                                });
+                                if (data.status == "Deleted"){
+                                    toastr.warning(data.data, data.status, {
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
+                                }
+                                else if (data.status == "Failed"){
+                                    toastr.error(data.data, data.status, {
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
+                                }
                                 $('#category-table').DataTable().ajax.reload();
                             },
                             error: function(e){

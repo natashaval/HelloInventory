@@ -1,8 +1,7 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.ResponseAjax;
-import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.MyUserRepository;
 import hello.inven.helloinven.repository.RoleRepository;
 import hello.inven.helloinven.service.AdminService;

@@ -1,4 +1,4 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
@@ -7,7 +7,6 @@ import hello.inven.helloinven.repository.MyUserRepository;
 import hello.inven.helloinven.service.ClerkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;

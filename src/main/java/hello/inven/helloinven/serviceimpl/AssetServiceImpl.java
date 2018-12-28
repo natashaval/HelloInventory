@@ -1,4 +1,4 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.Asset;
 import hello.inven.helloinven.model.Item;
@@ -10,7 +10,6 @@ import hello.inven.helloinven.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

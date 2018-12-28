@@ -1,7 +1,6 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.Category;
-import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ResponseAjax;
 import hello.inven.helloinven.repository.CategoryRepository;
 import hello.inven.helloinven.service.CategoryService;
@@ -22,8 +21,8 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAllCategories(){ return categoryRepository.findAll(); }
 
     @Override
-    public Optional<Category> getOneCategory(Integer id){
-        return categoryRepository.findById(id);
+    public Category getOneCategory(Integer id){
+        return categoryRepository.findById(id).get();
     }
 
     @Override
@@ -44,29 +43,17 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.save(category);
             return new ResponseAjax("Edited",category);
         }
-        return new ResponseAjax("Failed", "Category is failed to edit");
+        return new ResponseAjax("Failed", "Category edit failed!");
     }
 
     @Override
     public ResponseAjax deleteCategory(Integer id){
-        ResponseAjax responseAjax = new ResponseAjax(null, null);
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null) {
-//            List<Item> itemList = category.getItems();
-//            for (Item item : itemList){
-//                item.setCategory(null);
-//            }
-
             categoryRepository.deleteById(id);
-
-            responseAjax.setStatus("Deleted");
-            responseAjax.setData("Category has been successfully deleted");
+            return new ResponseAjax("Deleted", "Category has been successfully deleted");
         }
-        else {
-            responseAjax.setStatus("Failed");
-            responseAjax.setData("Category failed to be deleted!");
-        }
-        return responseAjax;
+        return new ResponseAjax("Failed", "Category failed to be deleted!");
     }
 
 }

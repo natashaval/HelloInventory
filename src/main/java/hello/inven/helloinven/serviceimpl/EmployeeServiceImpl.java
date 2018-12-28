@@ -1,4 +1,4 @@
-package hello.inven.helloinven.ServiceImpl;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.dto.ItemSerialCount;
 import hello.inven.helloinven.model.*;

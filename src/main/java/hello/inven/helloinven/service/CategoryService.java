@@ -13,6 +13,6 @@ public interface CategoryService {
     ResponseAjax deleteCategory(Integer id);
 
     List<Category> getAllCategories();
-    Optional<Category> getOneCategory(Integer id);
+    Category getOneCategory(Integer id);
 
 }

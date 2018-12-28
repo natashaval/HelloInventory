@@ -11,23 +11,6 @@
 <body>
     <div layout:fragment="content" th:remove="tag">
         <h3>Request Items</h3>
-        <!--<div id="request-result"></div>-->
-        <!--<form>-->
-            <!--<div class="custom-checkbox custom-control" th:each="item: ${itemAssets}">-->
-                <!--<input class="custom-control-input" type="checkbox" th:attr="data-item-request-id= ${item.id}">-->
-                <!--<img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="40" th:height="40" />-->
-                <!--<p th:if="${item.imagePath == null}" th:text="Image not available"></p>-->
-                <!--<label class="custom-control-label" th:text="${item.name}"></label>-->
-            <!--</div>-->
-            <!--<table>-->
-                <!--<tr th:each="item: ${itemAssets}">-->
-                    <!--<td><input type="checkbox" class="custom-checkbox"></td>-->
-                    <!--<td th:text="${item}"></td>-->
-                <!--</tr>-->
-            <!--</table>-->
-
-            <!--<input type="submit" class="btn btn-success"/>-->
-        <!--</form>-->
 
         <!--https://www.jqueryscript.net/form/Lightweight-jQuery-Dual-List-Box-Plugin-listSwap.html-->
             <select id="source" data-text="Item Available" data-search="Search for options">

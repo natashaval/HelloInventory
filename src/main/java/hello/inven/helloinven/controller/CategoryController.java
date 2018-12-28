@@ -50,12 +50,6 @@ public class CategoryController {
         return new ResponseAjax("Done", categoryService.getOneCategory(id));
     }
 
-    @GetMapping(value = "/clerk/category/{id}")
-    @ResponseBody
-    public ResponseEntity<Category> getOneCategory(@PathVariable Integer id){
-        return new ResponseEntity<>(categoryService.getOneCategory(id).get(), HttpStatus.OK);
-    }
-
 //    @PutMapping(value = "/clerk/category2/{id}/edit")
     @PutMapping(value = "/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Edit(@RequestBody Category category, @PathVariable Integer id){
