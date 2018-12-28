@@ -130,6 +130,8 @@
                             });
                         }
                         else if (data.status == "Success") {
+                            console.log(data.data[0]);
+                            statusData.itemSerial = data.data[0];
                             $.ajax({
                                 type: "POST",
                                 url: "/clerk/item/approve",
@@ -179,7 +181,7 @@
                 employee = receiveRow.actionTransaction.requestedBy;
                 requestData = {'serial_employee[]': [employee.id]};
                 statusData = {'actionTransId': receiveRow.actionTransaction.actionId,
-                    'itemId': receiveRow.item.id};
+                    'itemId': receiveRow.item.id, 'itemSerial': null};
                 $.ajax({
                     type: "POST",
                     url: "/clerk/item/reject",

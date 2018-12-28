@@ -77,7 +77,8 @@ public class MyUser { //extends User {
 //    private Set<Asset> assets = new HashSet<Asset>();
 
     @OneToMany(mappedBy = "myUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnoreProperties(value = "myUser")
+//    @JsonIgnoreProperties(value = "myUser")
+    @JsonIgnore
     private List<ItemSerial> userItemSerials;
 
 //    https://stackoverflow.com/questions/11718459/onetomany-mappedby-maps-to

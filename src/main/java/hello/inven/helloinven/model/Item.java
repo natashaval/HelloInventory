@@ -72,7 +72,8 @@ public class Item extends AuditModel {
 //    private Set<Asset> assets = new HashSet<Asset>();
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = {"item", "myUser"})
+//    @JsonIgnoreProperties(value = {"item", "myUser"})
+    @JsonIgnore
     private List<ItemSerial> itemSerials;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.item", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

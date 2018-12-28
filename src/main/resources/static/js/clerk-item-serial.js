@@ -159,6 +159,7 @@ function buttonView() {
 function getEmployee() {
     $.ajax({
         dataType: 'json',
+        type: "GET",
         url: '/clerk/employeelist',
         // data: data,
         success: function (data) {

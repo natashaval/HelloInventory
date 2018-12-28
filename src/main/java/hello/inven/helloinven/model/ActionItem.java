@@ -2,9 +2,13 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+
+@Getter @Setter
 
 @Entity
 @Table(name = "action_item")
@@ -42,54 +46,6 @@ public class ActionItem { // Result of Many to Many Table
 
     @Column
     private Long itemSerialId;
-
-    public ActionItemId getActionItemId() {
-        return actionItemId;
-    }
-
-    public void setActionItemId(ActionItemId actionItemId) {
-        this.actionItemId = actionItemId;
-    }
-
-    public ItemStatus getItemStatus() {
-        return itemStatus;
-    }
-
-    public void setItemStatus(ItemStatus itemStatus) {
-        this.itemStatus = itemStatus;
-    }
-
-    public Long getReceivedBy() {
-        return receivedBy;
-    }
-
-    public void setReceivedBy(Long receivedBy) {
-        this.receivedBy = receivedBy;
-    }
-
-    public Date getReceivedTime() {
-        return receivedTime;
-    }
-
-    public void setReceivedTime(Date receivedTime) {
-        this.receivedTime = receivedTime;
-    }
-
-    public Date getReceiveEmpTime() {
-        return receiveEmpTime;
-    }
-
-    public void setReceiveEmpTime(Date receiveEmpTime) {
-        this.receiveEmpTime = receiveEmpTime;
-    }
-
-    public Long getItemSerialId() {
-        return itemSerialId;
-    }
-
-    public void setItemSerialId(Long itemSerialId) {
-        this.itemSerialId = itemSerialId;
-    }
 
     @Transient
     public Item getItem(){

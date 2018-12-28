@@ -63,7 +63,7 @@ public class ClerkServiceImpl implements ClerkService {
     }
 
     @Override
-    public ResponseAjax itemRequestActions(Long actionTransactionId, Long itemId, Boolean action) {
+    public ResponseAjax itemRequestActions(Long actionTransactionId, Long itemId, Long itemSerial, Boolean action) {
 //        ActionItem actionItem = actionItemRepository.findActionItemByActionTransactionActionIdAndItemId(actionTransactionId, itemId);
 //        ActionItem actionItem = actionItemRepository.findActionItemForStatus(actionTransactionId, itemId, 0);
         ActionItem actionItem = actionItemRepository.findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus.Pending, actionTransactionId, itemId);
@@ -71,6 +71,7 @@ public class ClerkServiceImpl implements ClerkService {
             actionItem.setItemStatus(ActionItem.ItemStatus.Sent);
             Date currentTime = new Date();
             actionItem.setReceivedTime(currentTime);
+            actionItem.setItemSerialId(itemSerial);
             actionItemRepository.save(actionItem);
             return new ResponseAjax("Approved", "Item Sent to Employee");
         } else if (action == Boolean.FALSE) {
