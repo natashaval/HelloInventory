@@ -32,7 +32,7 @@ public class ItemSerialController {
     @GetMapping(value = "/clerk/item/{id}/serial")
     public String serialAdd(@PathVariable Long id, Model model){
         model.addAttribute("itemId", id);
-        return "/clerk/item-serial";
+        return "clerk/item-serial";
     }
 
     @PostMapping(value = "/clerk/item/{id}/serial")

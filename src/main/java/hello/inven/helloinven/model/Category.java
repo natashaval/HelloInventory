@@ -37,7 +37,7 @@ public class Category extends AuditModel {
 //    @JsonIgnoreProperties
 //    https://www.concretepage.com/jackson-api/jackson-jsonignore-jsonignoreproperties-and-jsonignoretype
 //    @JsonProperty("categoryItems")
-//    @JsonIgnore
+    @JsonIgnore
 //    https://softwareengineering.stackexchange.com/questions/300115/best-way-to-deal-with-hibernate-1-many-relationship-over-rest-json-service
 //    @JsonIgnoreProperties(value = "category", allowSetters = true)
     private List<Item> items;

@@ -21,7 +21,7 @@ public class ItemSerial {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "emp_id")
-    @JsonIgnoreProperties(value = "userItemSerials", allowSetters = true)
+    @JsonIgnoreProperties(value = {"userItemSerials", "actionTransactions"})
     private MyUser myUser;
 
     @Column(name = "clerk_id")

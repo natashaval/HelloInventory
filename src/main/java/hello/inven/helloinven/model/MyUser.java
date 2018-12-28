@@ -1,5 +1,6 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.JoinColumnOrFormula;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -79,8 +80,10 @@ public class MyUser { //extends User {
     @JsonIgnoreProperties(value = "myUser")
     private List<ItemSerial> userItemSerials;
 
-    //    https://stackoverflow.com/questions/11718459/onetomany-mappedby-maps-to
+//    https://stackoverflow.com/questions/11718459/onetomany-mappedby-maps-to
+//    https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
     @OneToMany(mappedBy = "requestedBy")
+    @JsonIgnore
     private List<ActionTransaction> actionTransactions;
 
 //    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269

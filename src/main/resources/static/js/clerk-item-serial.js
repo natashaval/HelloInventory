@@ -54,8 +54,6 @@ $('#serial-add-form').submit(function (e) {
     e.preventDefault();
     var serialFormData = $(this).serializeArray();
     console.log(serialFormData);
-    console.log("Item Id: " + itemId);
-
 
     $.ajax({
         method: "POST",
@@ -73,7 +71,7 @@ $('#serial-add-form').submit(function (e) {
         },
         error: function (e){
             // $('.serialResult').append("<p style='color: red;'>Error</p>");
-            toastr.error(e, 'Error', {
+            toastr.error(e.message, "Error", {
                 closeButton: true,
                 progressBar: true
             });
@@ -194,7 +192,8 @@ $('#serial-assign-form').submit(function(e){
             console.log(data.data);
             // $('.serial-assign-result').html("<p>"+ data.data + "</p>");
             if (data.status == "Success") {
-                toastr.success(data.data, data.status, {
+                console.log(data.data);
+                toastr.success("Assign Item Serial to Employee Finished!", data.status, {
                     closeButton: true,
                     progressBar: true
                 });

@@ -93,7 +93,7 @@ public class CategoryServiceUnitTest {
         when(mockCategoryRepository.findById(1)).thenReturn(Optional.of(dummyCategory));
 
         // When
-        Category result = categoryService.getOneCategory(1).get();
+        Category result = categoryService.getOneCategory(1);
 //        assertThat("result", result, isA(sameInstance(dummyCategory)));
 
     }

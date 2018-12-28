@@ -8,6 +8,7 @@ import hello.inven.helloinven.service.ClerkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,16 +32,21 @@ public class ClerkServiceImpl implements ClerkService {
     public ResponseAjax assignItemSerial(MyUser clerk, Long itemId, List<Long> employeeValues){
         Long clerkId = clerk.getId();
         List<ItemSerial> itemSerialNotAssigned = itemSerialRepository.findItemSerialNotAssigned(itemId, clerkId);
+        List<Long> serialSave = new ArrayList<>(); // save serial item that has been assigned
 
         if (itemSerialNotAssigned.size() >= employeeValues.size()){
             for (int i = 0; i < employeeValues.size(); i++){
                 ItemSerial itemSerial = itemSerialNotAssigned.get(i);
                 MyUser myUser = myUserRepository.findById(employeeValues.get(i)).orElse(null);
-                itemSerial.setMyUser(myUser);
-                itemSerialRepository.save(itemSerial);
+                if (myUser != null) {
+                    itemSerial.setMyUser(myUser);
+                    itemSerialRepository.save(itemSerial);
+
+                    serialSave.add(itemSerial.getSerialId());
+                }
             }
 
-            return new ResponseAjax("Success", "Assign Item Serial to Employee Finished");
+            return new ResponseAjax("Success", serialSave);
         }
 
         else {
