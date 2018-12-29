@@ -4,7 +4,7 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="UTF-8" />
-    <title>Require Approval</title>
+    <title>Request Approval</title>
     <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
@@ -49,9 +49,9 @@
                             targets: -1,
                             data: null,
                             defaultContent:
-                                "<button class='btn btn-warning approval-item'><span class='glyphicon glyphicon-info-sign'></span> Items</button>" +
-                                " <button class='btn btn-success approval-accepted'><span class='glyphicon glyphicon-ok-circle'></span> Approve</button>" +
-                                " <button class='btn btn-danger approval-rejected'><span class='glyphicon glyphicon-remove-circle'></span> Reject</button>"
+                                "<button class='btn btn-warning approval-item'><i class='fas fa-boxes'></i> Items</button>" +
+                                " <button class='btn btn-success approval-accepted'><i class='fas fa-check-circle'></i> Approve</button>" +
+                                " <button class='btn btn-danger approval-rejected'><i class='fas fa-times-circle'></i> Reject</button>"
                         }
                     ]
                 });
@@ -79,7 +79,7 @@
                     itemMessage += "</ol>";
 
                     bootbox.dialog({
-                       title: "<span class='glyphicon glyphicon-info-sign'></span> Requested Items",
+                       title: "<i class='fas fa-boxes'></i> Requested Items",
                        message: itemMessage,
                        buttons: {
                            ok: {
@@ -99,8 +99,8 @@
                     actionId = approvalRow.actionId;
 
                     bootbox.dialog({
-                       title: "<span class='glyphicon glyphicon-ok-circle'></span> Approve Request?",
-                        message: "Are you sure to accept this request?",
+                       title: "<i class='fas fa-check-circle'></i> Approve Request?",
+                        message: "Are you sure to approve this request?",
                         backdrop: true,
                         buttons: {
                            cancel: {
@@ -111,7 +111,7 @@
                                }
                            },
                             accept: {
-                                label: "<span class='glyphicon glyphicon-ok-sign'></span> Approve",
+                                label: "<i class='fas fa-check'></i> Approve",
                                 className: "btn-success",
                                 callback: function(){
                                     console.log("approve clicked");
@@ -128,9 +128,11 @@
                                                progressBar: true
                                            });
                                        },
-                                        error: function(e){
+                                        error: function(jqXHR, textStatus, errorThrown){
+                                            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                            alert(errorJSON.message);
                                             // $('#approval-result').append("<p class='text-danger'>"+ data.data +"</p>");
-                                            toastr.error(e, "Error", {
+                                            toastr.error(errorJSON.message, "Error", {
                                                 closeButton: true,
                                                 progressBar: true
                                             });
@@ -148,7 +150,7 @@
                     actionId = approvalRow.actionId;
 
                     bootbox.dialog({
-                        title: "<span class='glyphicon glyphicon-remove-circle'></span> Reject Request?",
+                        title: "<i class='fas fa-times-circle'></i> Reject Request?",
                         message: "Are you sure to reject this request?",
                         buttons: {
                             success: {
@@ -159,7 +161,7 @@
                                 }
                             },
                             danger: {
-                                label: "<span class='glyphicon glyphicon-remove-sign'></span> Reject",
+                                label: "<i class='fas fa-times'></i> Reject",
                                 className: "btn-danger",
                                 callback: function(){
                                     console.log("reject clicked");
@@ -176,9 +178,11 @@
                                                 progressBar: true
                                             });
                                         },
-                                        error: function(e){
+                                        error: function(jqXHR, textStatus, errorThrown){
+                                            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                            alert(errorJSON.message);
                                             // $('#approval-result').append("<p class='text-danger'>"+ data.data +"</p>");
-                                            toastr.error(e, "Error", {
+                                            toastr.error(errorJSON.message, "Error", {
                                                 closeButton: true,
                                                 progressBar: true
                                             });

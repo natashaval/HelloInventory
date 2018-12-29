@@ -3,7 +3,7 @@ $(document).ready(function (){
 // fetchCategory();
 addCategory();
 categoryButton();
-cobaError();
+// cobaError();
 });
 
 var categoryTable;

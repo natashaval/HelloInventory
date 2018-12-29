@@ -1,5 +1,6 @@
 package hello.inven.helloinven.serviceimpl;
 
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.ActionTransaction;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.response.ResponseAjax;
@@ -17,38 +18,45 @@ public class ManagerServiceImpl implements ManagerService {
     ActionTransactionRepository transactionRepository;
 
     @Override
-    public ResponseAjax requestApproval(MyUser manager){
-        List<ActionTransaction> transactionList = transactionRepository.findByActionTypeAndApprovedBy(ActionTransaction.ActionType.PendingApproval, manager.getId());
-        return new ResponseAjax("Done", transactionList);
+    public List<ActionTransaction> requestApproval(ActionTransaction.ActionType actionType, MyUser manager){
+        List<ActionTransaction> transactionList = transactionRepository.findByActionTypeAndApprovedBy(actionType, manager.getId());
+//        if (transactionList.isEmpty()) throw new NotFoundException("Transaction list not found!");
+        return transactionList;
     }
 
     @Override
-    public ResponseAjax approvedApproval(Long actionId){
+    public ActionTransaction approvedApproval(Long actionId, Boolean requestType){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
         if (transaction!= null){
             Date currentTime = new Date();
             transaction.setApprovedTime(currentTime);
-            transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
-            transactionRepository.save(transaction);
-            return new ResponseAjax("Done", "Request Approved and Sent to Inventory!");
+            if (requestType == true) transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
+            else if (requestType == false) transaction.setActionType(ActionTransaction.ActionType.ReturnInventory);
+            transaction = transactionRepository.saveAndFlush(transaction);
+//            return new ResponseAjax("Done", "Request Approved and Sent to Inventory!");
+            return transaction;
         }
         else {
-            return new ResponseAjax("Failed", "Request not found!");
+//            return new ResponseAjax("Failed", "Request not found!");
+            throw new NotFoundException("Request not found!");
+
         }
     }
 
     @Override
-    public ResponseAjax rejectedApproval(Long actionId){
+    public ActionTransaction rejectedApproval(Long actionId){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
         if (transaction!= null){
             Date currentTime = new Date();
 //            transaction.setApprovedTime(currentTime);
             transaction.setActionType(ActionTransaction.ActionType.RejectApproval);
-            transactionRepository.save(transaction);
-            return new ResponseAjax("Done", "Request Rejected!");
+            transaction = transactionRepository.saveAndFlush(transaction);
+//            return new ResponseAjax("Done", "Request Rejected!");
+            return  transaction;
         }
         else {
-            return new ResponseAjax("Failed", "Request not found!");
+//            return new ResponseAjax("Failed", "Request not found!");
+            throw new NotFoundException("Request not found!");
         }
     }
 }

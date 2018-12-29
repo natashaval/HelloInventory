@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8" />
+    <title>Return Approval</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <!--<div id="approval-result"></div>-->
+    <table id="item-approval-table" class="table table-hover">
+        <thead>
+        <th>Return ID</th>
+        <th>Return Time</th>
+        <th>Requester ID</th>
+        <th>Requester Name</th>
+        <th>Actions</th>
+        </thead>
+    </table>
+
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript">
+        var approvalTable;
+        $(document).ready(function(){
+            approvalTable = $('#item-approval-table').DataTable({
+                ajax: '/manager/action/return-approval',
+                columns: [
+                    {"data": "actionId"},
+                    {
+                        "data": "requestTime",
+                        render: function (data, type, row){
+                            // https://stackoverflow.com/questions/41514750/how-to-format-date-displayed-in-datatable
+                            if (type === "sort" || type === "type") return data;
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+                    {"data": "requestedBy.id"},
+                    {"data": "requestedBy.name"},
+                    {"data": null, "orderable": false}
+                ],
+                columnDefs: [
+                    {
+                        targets: -1,
+                        data: null,
+                        defaultContent:
+                            "<button class='btn btn-warning approval-item'><i class='fas fa-luggage-cart'></i> Items</button>" +
+                            " <button class='btn btn-success approval-accepted'><i class='fas fa-check-circle'></i> Approve</button>" +
+                            " <button class='btn btn-danger approval-rejected'><i class='fas fa-times-circle'></i> Reject</button>"
+                    }
+                ]
+            });
+
+            approvalButton();
+        });
+
+        function approvalButton(){
+            $('#item-approval-table tbody').on('click', '.approval-item', function (e) {
+                approvalRow = approvalTable.row($(this).parents('tr')).data();
+                console.log(approvalRow.actionItemList);
+                actionId = approvalRow.actionId;
+
+                itemList = approvalRow.actionItemList;
+                var itemMessage = "<ol>";
+                // for (var i = 0; i < itemList.length; i++){
+                //     console.log(itemList[i].name);
+                // }
+                for (var i in approvalRow.actionItemList){
+                    console.log(approvalRow.actionItemList[i].item.name);
+                    // itemMessage += "<input type='text' class='form-control' readonly placeholder='" + approvalRow.actionItemList[i].item.name +
+                    //         "' /><br />";
+                    itemMessage += "<li>" + approvalRow.actionItemList[i].item.name + "</li><br />";
+                }
+                itemMessage += "</ol>";
+
+                bootbox.dialog({
+                    title: "<i class='fas fa-luggage-cart'></i> Returned Items",
+                    message: itemMessage,
+                    buttons: {
+                        ok: {
+                            label: "Close",
+                            className: "btn-secondary",
+                            callback: function () {
+
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('#item-approval-table tbody').on('click', '.approval-accepted', function (e) {
+                approvalRow = approvalTable.row($(this).parents('tr')).data();
+                console.log(approvalRow);
+                actionId = approvalRow.actionId;
+
+                bootbox.dialog({
+                    title: "<i class='fas fa-check-circle'></i> Approve Request?",
+                    message: "Are you sure to approve this request?",
+                    backdrop: true,
+                    buttons: {
+                        cancel: {
+                            label: "Cancel",
+                            className: "btn-secondary",
+                            callback: function(){
+                                $('.bootbox').modal('hide');
+                            }
+                        },
+                        accept: {
+                            label: "<i class='fas fa-check'></i> Approve",
+                            className: "btn-success",
+                            callback: function(){
+                                console.log("approve clicked");
+
+                                // AJAX approve request to return item
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/manager/action/" + actionId + "/return-approved",
+                                    success: function(data){
+                                        $('#item-approval-table').DataTable().ajax.reload();
+                                        // $('#approval-result').append("<p class='text-success'>"+ data.data +"</p>");
+                                        toastr.success(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown){
+                                        errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                        alert(errorJSON.message);
+                                        // $('#approval-result').append("<p class='text-danger'>"+ data.data +"</p>");
+                                        toastr.error(errorJSON.message, "Error", {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('#item-approval-table tbody').on('click', '.approval-rejected', function (e) {
+                approvalRow = approvalTable.row($(this).parents('tr')).data();
+                console.log(approvalRow);
+                actionId = approvalRow.actionId;
+
+                bootbox.dialog({
+                    title: "<i class='fas fa-times-circle'></i> Reject Request?",
+                    message: "Are you sure to reject this request?",
+                    buttons: {
+                        success: {
+                            label: "Cancel",
+                            className: "btn-secondary",
+                            callback: function(){
+                                $('.bootbox').modal('hide');
+                            }
+                        },
+                        danger: {
+                            label: "<i class='fas fa-times'></i> Reject",
+                            className: "btn-danger",
+                            callback: function(){
+                                console.log("reject clicked");
+
+                                // AJAX reject request
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/manager/action/" + actionId + "/rejected",
+                                    success: function(data){
+                                        $('#item-approval-table').DataTable().ajax.reload();
+                                        // $('#approval-result').append("<p class='text-warning'>"+ data.data +"</p>");
+                                        toastr.warning(data.data, data.status, {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown){
+                                        errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                        alert(errorJSON.message);
+                                        // $('#approval-result').append("<p class='text-danger'>"+ data.data +"</p>");
+                                        toastr.error(errorJSON.message, "Error", {
+                                            closeButton: true,
+                                            progressBar: true
+                                        });
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</div>
+</body>
+</html>
