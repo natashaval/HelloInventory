@@ -3,6 +3,7 @@ $(document).ready(function (){
 // fetchCategory();
 addCategory();
 categoryButton();
+cobaError();
 });
 
 var categoryTable;
@@ -66,6 +67,7 @@ function addCategory() {
 function categoryDataTable(){
     categoryTable = $('#category-table').DataTable({
        ajax: '/clerk/category2/all',
+       //  ajax: "https://api.myjson.com/bins/wbhzw",
        columns: [
            {"data": "id"},
            {"data": "name"},
@@ -241,6 +243,26 @@ function categoryButton() {
             }
         });
 
+    });
+}
+
+function cobaError(){
+    $.ajax({
+        url: "/clerk/category2/8",
+        type: "GET",
+        success: function(data){
+            $('#coba-error').append("<small>jika success category name = " + data.data.name + "</small>");
+            alert(data.data.name);
+        },
+        // error: function(e){
+        //     $('#coba-error').append(e.getMessage());
+        // }
+        // https://stackoverflow.com/questions/377644/jquery-ajax-error-handling-show-custom-exception-messages/450540
+        // https://www.javacodegeeks.com/2012/11/spring-mvc-error-handling-example.html
+        error: function(jqXHR, textStatus, errorThrown){
+            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+            alert(errorJSON.message);
+        }
     });
 }
 

@@ -2,7 +2,7 @@ package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.ActionTransaction;
 import hello.inven.helloinven.model.MyUser;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.ActionTransactionRepository;
 import hello.inven.helloinven.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;

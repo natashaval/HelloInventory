@@ -1,20 +1,13 @@
 package hello.inven.helloinven.controller;
 
 import hello.inven.helloinven.model.Category;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class CategoryController {
@@ -46,7 +39,8 @@ public class CategoryController {
     }
 
     @GetMapping(value="/clerk/category2/{id}")
-    public @ResponseBody ResponseAjax category2Details(@PathVariable Integer id){
+    @ResponseBody
+    public ResponseAjax category2Details(@PathVariable Integer id){
         return new ResponseAjax("Done", categoryService.getOneCategory(id));
     }
 
@@ -56,6 +50,15 @@ public class CategoryController {
         return categoryService.editCategory(category, id);
     }
 
-
+    @GetMapping(value = "/clerk/category/{id}")
+    @ResponseBody
+    public ResponseEntity<ResponseAjax> categoryDetails(@PathVariable Integer id){
+        Category category = categoryService.getOneCategory(id);
+        if (category == null) {
+            ResponseAjax responseAjax = new ResponseAjax("Not Found", category);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseAjax);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAjax("Found", category));
+    }
 
 }

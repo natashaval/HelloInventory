@@ -1,5 +1,6 @@
 package hello.inven.helloinven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Role {
 
 //    https://www.baeldung.com/hibernate-one-to-many
     @OneToMany(mappedBy = "role")
-    @JsonIgnoreProperties(value = "role", allowSetters = true)
+//    @JsonIgnoreProperties(value = "role", allowSetters = true)
+    @JsonIgnore
     private Set<MyUser> users;
 }

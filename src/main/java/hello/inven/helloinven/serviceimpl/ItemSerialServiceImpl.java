@@ -4,7 +4,7 @@ import hello.inven.helloinven.dto.ItemSerialOnly;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.model.MyUser;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.ItemRepository;
 import hello.inven.helloinven.repository.ItemSerialRepository;
 import hello.inven.helloinven.service.ItemSerialService;

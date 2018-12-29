@@ -1,11 +1,9 @@
 package hello.inven.helloinven.service;
 
 import hello.inven.helloinven.model.Category;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 
-import javax.xml.ws.Response;
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryService {
     ResponseAjax createCategory(Category category);

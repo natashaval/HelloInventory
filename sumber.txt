@@ -138,6 +138,16 @@ Lazy Loading: -not working in JPA because
 "Ah. So the problem has nothing to do with Hibernate or lazy loading. It has to do with the fact that you're asking Spring/Jackson to serialize a Suggestion to JSON, and that it serializes the User with the Suggestion (and thus causes the lazy loading to happen, since, when transforming the suggestion to JSON, it gets the user, and calls the getters on the user). The solution is to use Jackson annotations to ignore the user, or to transform your entities to DTOs containing only the data you want to return. "
 https://stackoverflow.com/questions/51111220/spring-boot-jpa-lazy-fetch-is-not-working
 https://stackoverflow.com/questions/46883729/spring-data-jpa-onetomany-lazy-fetch-not-working-in-spring-boot
+-- overcome with JsonIgnore agar tidak rekursif / memanggil join One To Many yang banyak
+https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
 
 Convert to DTO:
 https://stackoverflow.com/questions/34084203/spring-entities-should-convert-to-dto-in-service
+
+Error Handling in Controller Advice:
+https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
+https://www.baeldung.com/exception-handling-for-rest-with-spring#controlleradvice
+http://www.springboottutorial.com/spring-boot-exception-handling-for-rest-services
+https://www.toptal.com/java/spring-boot-rest-api-error-handling
+
+

@@ -1,7 +1,7 @@
 package hello.inven.helloinven.controller;
 
 import hello.inven.helloinven.model.MyUser;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.service.EmployeeService;
 import hello.inven.helloinven.service.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;

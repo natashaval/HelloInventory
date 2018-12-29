@@ -1,14 +1,14 @@
 package hello.inven.helloinven.serviceimpl;
 
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Category;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.CategoryRepository;
 import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 //https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
 
@@ -22,7 +22,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getOneCategory(Integer id){
-        return categoryRepository.findById(id).get();
+
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category != null) return category;
+        else throw new NotFoundException("Entity not found!");
     }
 
     @Override

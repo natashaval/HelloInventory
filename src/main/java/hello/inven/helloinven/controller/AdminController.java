@@ -1,19 +1,13 @@
 package hello.inven.helloinven.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import hello.inven.helloinven.model.MyUser;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.model.Role;
-import hello.inven.helloinven.repository.RoleRepository;
 import hello.inven.helloinven.service.AdminService;
-import hello.inven.helloinven.service.MyUserDetailsService;
 import hello.inven.helloinven.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,10 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Controller

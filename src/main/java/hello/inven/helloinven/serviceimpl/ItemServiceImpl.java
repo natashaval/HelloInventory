@@ -1,7 +1,7 @@
 package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.Item;
-import hello.inven.helloinven.model.ResponseAjax;
+import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.CategoryRepository;
 import hello.inven.helloinven.repository.ItemRepository;
 import hello.inven.helloinven.service.ItemService;
