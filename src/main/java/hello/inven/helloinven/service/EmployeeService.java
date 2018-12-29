@@ -10,7 +10,9 @@ import java.util.List;
 public interface EmployeeService {
     /* =========== Employee > Request Item ==========*/
     List<Item> getAllItemAssets();
-    ResponseAjax requestItemAssets(MyUser requester, List<Long> requestValues, String comment);
+    ResponseAjax requestItemAssets(
+            MyUser requester, List<Long> requestValues, String comment, Boolean requestType); // requestType = Request / Return Item
+
 
     /* =========== Employee > MyItem ==========*/
     ResponseAjax countMyItem(MyUser myUser);
@@ -28,4 +30,5 @@ public interface EmployeeService {
 
     /* ============ Employee > Return Item =========== */
     List<ItemSerial> getMyItemSerial(MyUser myUser);
+    void fillActionItemWithReturn(List<Object> itemAndSerial);
 }

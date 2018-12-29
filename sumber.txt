@@ -148,6 +148,7 @@ Error Handling in Controller Advice:
 https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
 https://www.baeldung.com/exception-handling-for-rest-with-spring#controlleradvice
 http://www.springboottutorial.com/spring-boot-exception-handling-for-rest-services
+https://www.javadevjournal.com/spring/exception-handling-for-rest-with-spring/
 https://www.toptal.com/java/spring-boot-rest-api-error-handling
 
 

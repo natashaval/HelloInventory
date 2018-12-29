@@ -13,6 +13,7 @@
         <h3>Return Items</h3>
         <select id="source" data-text="My Item / Serial" data-search="Search for options">
             <option th:each="serial: ${myItemSerial}" th:value="${serial.serialId}" th:text="|${serial.item.name} / ${serial.serialId}|"></option>
+            <!--tidak perlu itemId & itemSerial karena itemSerial primary key (unique)-->
         </select>
         <form id="item-return-form" method="post">
             <select multiple name="itemreturn[]" id="destination" data-text="Returned Items" data-search="Search for options">
@@ -43,6 +44,37 @@
             function selectAllDestination(){
                 $('#destination option').prop('selected', true);
             }
+
+            $('#item-return-form').submit(function(e){
+                e.preventDefault();
+                var values = $('#destination').val();
+                var comment = $('#returncomment').val();
+                console.log(values);
+
+                $.ajax({
+                    method: 'POST',
+                    url: '/user/item/return',
+                    data: {
+                        'itemreturns': values,
+                        'returncomment': comment
+                    },
+                    success: function(data){
+                        console.log("Success send ajax");
+                        window.location.reload();
+                        toastr.success(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    },
+                    error: function(data){
+                        console.log("error send ajax");
+                        toastr.error("Error in request item", "Error", {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    }
+                });
+            });
 
         </script>
     </div>

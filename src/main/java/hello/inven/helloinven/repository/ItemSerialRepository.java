@@ -20,6 +20,7 @@ public interface ItemSerialRepository extends JpaRepository<ItemSerial, Long> {
     List<ItemSerial> findItemSerialsByItemId(Long itemId);
     List<ItemSerial> findItemSerialsByItemIdAndMyUser(Long itemId, MyUser myUser);
     List<ItemSerial> findItemSerialsByMyUser(MyUser myUser);
+    List<ItemSerial> findItemSerialBySerialIdAndItemId(Long serialId, Long itemId);
 
     @Query(value = "SELECT new hello.inven.helloinven.dto.ItemSerialOnly(s.serialId, s.clerkId, s.item.id, s.item.name, s.myUser.id, s.myUser.name)" +
     "FROM ItemSerial s WHERE s.item.id = :itemId")

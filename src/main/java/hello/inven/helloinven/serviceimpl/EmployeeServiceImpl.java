@@ -1,6 +1,7 @@
 package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.dto.ItemSerialCount;
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ActionTransactionRepository;
@@ -42,42 +43,65 @@ public class EmployeeServiceImpl implements EmployeeService {
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     @Override
-    public ResponseAjax requestItemAssets(MyUser requester, List<Long> requestValues, String comment){
+    public ResponseAjax requestItemAssets(MyUser requester, List<Long> requestValues, String comment, Boolean requestType){
+        // ------ Simpan transaksi
         ActionTransaction transaction = new ActionTransaction();
         Date currenttime = new Date();
         transaction.setRequestedBy(requester);
         transaction.setRequestTime(currenttime);
         if (requester.getManagerId() != null) {
-            transaction.setActionType(ActionTransaction.ActionType.PendingApproval);
+            if(requestType == true) transaction.setActionType(ActionTransaction.ActionType.PendingApproval);
+            else if (requestType == false) transaction.setActionType(ActionTransaction.ActionType.ReturnApproval);
             transaction.setApprovedBy(requester.getManagerId());
         }
         else if (requester.getManagerId() == null){
-            transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
+            if (requestType == true) transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
+            else if (requestType == false) transaction.setActionType(ActionTransaction.ActionType.ReturnInventory);
             transaction.setApprovedTime(currenttime); // Jika sudah manager akan ter-approve dengan sendirinya
         }
         transaction.setActionRemarks(comment);
-        transaction = transactionRepository.save(transaction);
-
-        transactionRepository.flush();
+        transaction = transactionRepository.saveAndFlush(transaction);
 
         System.out.println("\nget transaction ID: " + transaction.getActionId());
 
-        List<ActionItem> actionItemList = new ArrayList<>();
-        for (Long requestId: requestValues) {
-            Item item = itemRepository.findById(requestId).orElse(null);
-            Long clerkIdOne = itemSerialRepository.findClerkIdByItem(requestId);
-            ActionItem actionItem = new ActionItem();
-            if (item != null) {
-                actionItem.setActionTransaction(transaction);
-                actionItem.setItem(item);
-                actionItem.setItemStatus(ActionItem.ItemStatus.Pending);
-                actionItem.setReceivedBy(clerkIdOne);
-                actionItemList.add(actionItem);
+        // ------ Masukkan barang transaksi
+        if (requestType == true) {
+            List<ActionItem> actionItemList = new ArrayList<>();
+            for (Long requestId : requestValues) {
+                Item item = itemRepository.findById(requestId).orElse(null);
+                Long clerkIdOne = itemSerialRepository.findClerkIdByItem(requestId);
+                ActionItem actionItem = new ActionItem();
+                if (item != null) {
+                    actionItem.setActionTransaction(transaction);
+                    actionItem.setItem(item);
+                    actionItem.setItemStatus(ActionItem.ItemStatus.Pending);
+                    actionItem.setReceivedBy(clerkIdOne);
+                    actionItemList.add(actionItem);
+                }
             }
+            actionItemRepository.saveAll(actionItemList);
+            return new ResponseAjax("Done", "Items have been requested!");
         }
-        actionItemRepository.saveAll(actionItemList);
 
-        return new ResponseAjax("Done", "Items have been requested!");
+        else if (requestType == false){
+            List<ActionItem> actionItemList = new ArrayList<>();
+            for (Long returnId : requestValues){ // berisi serialId
+                ActionItem actionItem = new ActionItem();
+                ItemSerial itemSerial = itemSerialRepository.findById(returnId).orElse(null);
+                if (itemSerial != null){
+                    actionItem.setActionTransaction(transaction);
+                    actionItem.setItem(itemSerial.getItem());
+                    actionItem.setItemStatus(ActionItem.ItemStatus.Pending);
+                    actionItem.setReceivedBy(itemSerial.getClerkId());
+                    actionItem.setItemSerialId(itemSerial.getSerialId());
+                    actionItemList.add(actionItem);
+                }
+            }
+            actionItemRepository.saveAll(actionItemList);
+            return new ResponseAjax("Done", "Items are asked to be returned!");
+        }
+
+        return new ResponseAjax("Wrong", "Something wrong happened!");
     }
 
     @Override
@@ -190,5 +214,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<ItemSerial> getMyItemSerial(MyUser myUser){
         List<ItemSerial> serials = itemSerialRepository.findItemSerialsByMyUser(myUser);
         return serials;
+    }
+
+    @Override
+    public void fillActionItemWithReturn(List<Object> itemAndSerial){
+
     }
 }

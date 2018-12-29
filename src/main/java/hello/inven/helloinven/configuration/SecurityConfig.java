@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/css/**", "/js/**", "/img/**").permitAll();
 
-        /*
+
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**")
@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .clearAuthentication(true)
                     //https://memorynotfound.com/spring-boot-spring-security-thymeleaf-form-login-example/
                     .permitAll();
-        */
+
         http.exceptionHandling().accessDeniedPage("/403");
 
     }

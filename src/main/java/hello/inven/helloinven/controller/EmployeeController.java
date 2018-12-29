@@ -30,7 +30,7 @@ public class EmployeeController {
                                             @RequestParam("requestcomment") String comment){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.requestItemAssets(employee, requestValues, comment);
+        return employeeService.requestItemAssets(employee, requestValues, comment, Boolean.TRUE); // Boolean.TRUE = sedang request item
     }
 
     /* ============ EMPLOYEE VIEW ITEM LIST ==========*/
@@ -113,7 +113,7 @@ public class EmployeeController {
     }
 
     /* ========== EMPLOYEE RETURN ITEM ===========*/
-    /*
+
     @GetMapping("/user/item/return")
     public String returnItem(Model model){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -121,6 +121,13 @@ public class EmployeeController {
         model.addAttribute("myItemSerial", employeeService.getMyItemSerial(employee));
         return "user/item-return";
     }
-    */
 
+    @PostMapping("/user/item/return")
+    @ResponseBody
+    public ResponseAjax returnItemPost(@RequestParam("itemreturns[]") List<Long> returnValues,
+                                        @RequestParam("returncomment") String comment){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser employee = myUserDetails.getUser();
+        return employeeService.requestItemAssets(employee, returnValues, comment, Boolean.FALSE); // Boolean.FALSE = sedang mengembalikan barang
+    }
 }
