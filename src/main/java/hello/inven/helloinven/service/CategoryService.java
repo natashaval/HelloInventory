@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategoryService {
     ResponseAjax createCategory(Category category);
-    ResponseAjax editCategory(Category category, Integer id);
+    Category editCategory(Category category, Integer id);
     ResponseAjax deleteCategory(Integer id);
 
     List<Category> getAllCategories();

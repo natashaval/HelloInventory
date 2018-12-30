@@ -53,7 +53,7 @@ function addCategory() {
                 $('#category-name').val("");
                 $('#category-description').val("");
                 // fetchCategory();
-                toastr.success(data.data, data.status, {
+                toastr.success("Category has been saved!", data.status, {
                    closeButton: true,
                    progressBar: true,
                 });
@@ -166,7 +166,7 @@ function categoryButton() {
                     // fetchCategory();
                     // table.ajax.reload();
                     if (data.status == "Updated") {
-                        toastr.success(data.data, data.status, {
+                        toastr.success("Category has been updated!", data.status, {
                             closeButton: true,
                             progressBar: true
                         });
@@ -179,8 +179,14 @@ function categoryButton() {
                     }
                     $('#category-table').DataTable().ajax.reload();
                 },
-                error: function (e) {
+                error: function(jqXHR, textStatus, errorThrown){
                     $('.modal-category-edit-title').html("<strong>Error</strong>");
+                    errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                    alert(errorJSON.message);
+                    toastr.error(errorJSON.message, "Failed", {
+                        closeButton: true,
+                        progressBar: true
+                    });
                 }
             });
         });
@@ -229,9 +235,10 @@ function categoryButton() {
                                 }
                                 $('#category-table').DataTable().ajax.reload();
                             },
-                            error: function(e){
-                                bootbox.alert('Error in Delete!');
-                                toastr.error(e, "Error", {
+                            error: function(jqXHR, textStatus, errorThrown){
+                                errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                alert(errorJSON.message);
+                                toastr.error(errorJSON.message, "Error", {
                                     closeButton: true,
                                     progressBar: true
                                 });

@@ -119,7 +119,7 @@ $('#item-add-form').submit(function(e){
             toastr.error("Error in adding item", "Error", {
                 closeButton: true,
                 progressBar: true
-            })
+            });
         }
     });
 
@@ -212,7 +212,7 @@ function itemDelete(itemId){
 
     bootbox.dialog({
         message: "Are you sure you want to Delete? ",
-        title: "<i class=\"fas fa-trash-alt\"></i> Delete Item",
+        title: "<i class='fas fa-trash-alt'></i> Delete Item",
         buttons: {
             success: {
                 label: "Cancel",
@@ -225,7 +225,7 @@ function itemDelete(itemId){
                 label: "Delete",
                 className: "btn-danger",
                 callback: function () {
-                    console.log("delete has been clicked" + itemId);
+                    console.log("delete has been clicked " + itemId);
 
 
                     $.ajax({
@@ -239,8 +239,13 @@ function itemDelete(itemId){
                             // getItems();
                             window.location.reload();
                         },
-                        error: function(e){
-                            bootbox.alert('Error in Delete!');
+                        error: function(jqXHR, textStatus, errorThrown){
+                            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                            alert(errorJSON.message);
+                            toastr.error(errorJSON.message, "Error", {
+                                closeButton: true,
+                                progressBar: true
+                            });
                         }
                     });
 

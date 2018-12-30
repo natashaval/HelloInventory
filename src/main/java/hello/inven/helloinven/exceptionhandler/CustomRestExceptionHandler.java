@@ -51,11 +51,11 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 responseError, new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request){
-        ResponseError responseError = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured!");
-        return new ResponseEntity<Object>(responseError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler({Exception.class})
+//    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request){
+//        ResponseError responseError = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured!");
+//        return new ResponseEntity<Object>(responseError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     /* ============ EXCEPTION HANDLER FOR SERVICE HELLOINVEN ==========*/
     @ExceptionHandler({NotFoundException.class})

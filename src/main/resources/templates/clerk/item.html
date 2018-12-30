@@ -5,6 +5,7 @@
 
 <head>
     <title>Item List</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
@@ -30,16 +31,9 @@
     </div>
 
     <div id="item-details">
-
     </div>
-
-    <!--<button class="btn btn-primary item-primary">Coba Class</button>-->
-    <!--<button class="btn btn-warning item-primary">Coba Class2</button>-->
-
-
-    <!--<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>-->
-    <!--<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>-->
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript" th:src="@{/js/clerk-item.js}"></script>
 </div>
 </body>

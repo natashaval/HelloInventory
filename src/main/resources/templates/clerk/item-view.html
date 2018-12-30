@@ -8,19 +8,57 @@
 </head>
 <body>
     <div layout:fragment="content" th:remove="tag">
-        <a th:href="@{/clerk/item}" class="btn btn-primary">Back to Item List</a> <br />
+        <a th:href="@{/clerk/item/list}" class="btn btn-primary">Back to Item List</a>
         <button class="btn btn-info" id="item-details-print" th:attr="item-id=${item.id}"><i class="fas fa-print"></i> Print</button> <br />
-        Item Id: <span th:text="${item.id}"></span> <br />
-        Name: <span th:text="${item.name}"></span> <br />
-        Image: <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}" th:width="400" th:height="400" /><br />
-        Type: <span th:text="${item.itemType}"></span><br />
-        Category: <span th:text="${item.category.name}"></span> <br />
-        Quantity: <span th:text="${item.quantity}"></span> <br />
-        Price: <span th:text="${item.price}"></span> <br />
-        Weight: <span th:text="${item.weight}"></span> <br />
-        Height: <span th:text="${item.height}"></span> <br />
-        Width: <span th:text="${item.width}"></span> <br />
-        Depth: <span th:text="${item.depth}"></span> <br />
+
+        <br />
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Identification Number (UPC): </label>
+                    <div class="col-sm-8"><input type="number" readonly class="form-control" name="id" th:placeholder="${item.id}"></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Name: </label>
+                    <div class="col-sm-8"><input type="text" readonly class="form-control" name="name" th:placeholder="${item.name}"></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Type:</label>
+                    <div class="col-sm-8"><input type="text" readonly class="form-control" name="category" th:placeholder="${item.itemType}"></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Category:</label>
+                    <div class="col-sm-8"><input type="text" readonly class="form-control" name="category" th:placeholder="${item.category.name}"></div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Quantity: </label>
+                    <div class="col-sm-3"><input type="number" readonly class="form-control" name="quantity" th:placeholder="${item.quantity}"></div>
+
+                    <label class="col-sm-1 col-form-label">Price: </label>
+                    <div class="col-sm-3"><input type="number" readonly class="form-control" name="price" step="0.01" th:placeholder="${item.price}"></div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Weight: </label>
+                    <div class="col-sm-3"><input type="number" readonly class="form-control" name="weight" step="0.01" th:placeholder="${item.weight}"></div>
+                    <label class="col-sm-1 col-form-label">Height: </label>
+                    <div class="col-sm-3"><input type="number" readonly class="form-control" name="height" step="0.01" th:placeholder="${item.height}"> </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Width: </label>
+                    <div class="col-sm-3"><input type="number" readonly class="form-control" name="width" step="0.01" th:placeholder="${item.width}"></div>
+                    <label class="col-sm-1 col-form-label">Depth: </label>
+                    <div class="col-sm-3"><input type="number" readonly class="form-control" name="depth" step="0.01" th:placeholder="${item.depth}"> </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <img th:if="${item.imagePath != null}" th:attr="src=@{|/uploads/item/${item.imagePath}|}, title=${item.imagePath}, alt=${item.imagePath}"  class="img-thumbnail img-responsive"/>
+                <small th:if="${item.imagePath == null}">Image Not Available</small>
+                <!--th:width="350" th:height="350"-->
+            </div>
+        </div>
 
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -38,8 +76,6 @@
             var printURL = "http://localhost:8080/clerk/item/" + itemId + "/print";
             // newWin = window.open(printURL);
             newWin = window.open(printURL);
-            // newWin.print();
-            // newWin.close();
 
         }
 

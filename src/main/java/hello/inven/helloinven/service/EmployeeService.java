@@ -30,5 +30,4 @@ public interface EmployeeService {
 
     /* ============ Employee > Return Item =========== */
     List<ItemSerial> getMyItemSerial(MyUser myUser);
-    void fillActionItemWithReturn(List<Object> itemAndSerial);
 }

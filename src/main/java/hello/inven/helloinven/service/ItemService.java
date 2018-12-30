@@ -10,7 +10,7 @@ public interface ItemService {
 //    ResponseAjax createItem(Item item, MultipartFile file) throws IOException;
     ResponseAjax createItem(Item item) throws IOException;
     ResponseAjax deleteItem(Long id);
-    ResponseAjax detailItem(Long id);
+    Item detailItem(Long id);
 
     List<Item> getAllItems();
 

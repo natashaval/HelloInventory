@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null) return category;
-        else throw new NotFoundException("Entity not found!");
+        else throw new NotFoundException("Category not found!");
     }
 
     @Override
@@ -37,16 +37,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseAjax editCategory(Category categoryRequest, Integer id){
+    public Category editCategory(Category categoryRequest, Integer id){
         // https://stackoverflow.com/questions/49316751/spring-data-jpa-findone-change-to-optional-how-to-use-this
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null){
             category.setName(categoryRequest.getName());
             category.setDescription(categoryRequest.getDescription());
-            categoryRepository.save(category);
-            return new ResponseAjax("Edited",category);
+            category = categoryRepository.saveAndFlush(category);
+            return category;
         }
-        return new ResponseAjax("Failed", "Category edit failed!");
+        else throw new NotFoundException("Category edit Failed!");
     }
 
     @Override
@@ -56,7 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.deleteById(id);
             return new ResponseAjax("Deleted", "Category has been successfully deleted");
         }
-        return new ResponseAjax("Failed", "Category failed to be deleted!");
+//        return new ResponseAjax("Failed", "Category failed to be deleted!");
+        else throw new NotFoundException("Category not found and failed to be deleted!");
     }
 
 }

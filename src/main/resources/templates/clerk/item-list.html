@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Item List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <a class="btn btn-primary item-add-button" href="/clerk/item/add" role="button"><i class="fas fa-plus-circle"></i> Add Item</a>
+    <table id="item-table" class="table table-hover">
+        <thead class="thead-dark">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </thead>
+    </table>
+
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        var itemTable;
+        $(document).ready(function(){
+            itemTable = $('#item-table').DataTable({
+                ajax: "/clerk/item/show",
+                columns: [
+                    {"data": "id"},
+                    {"data" : "name"},
+                    {"data": "category.name"},
+                    {"data": "quantity"},
+                    {
+                        "data": "id",
+                        "orderable": false,
+                        render: function (data, type, row){
+                            return "<a class='btn btn-info item-details' href='/clerk/item/"+ data + "'><i class='far fa-list-alt'></i> Details</span></a> " +
+                            "<a class='btn btn-warning' href='/clerk/item/"+ data + "/serial'><i class='fas fa-barcode'></i> Serial</span></a> " +
+                            "<button type='button' class='btn btn-danger item-delete-button'><i class='fas fa-trash-alt'></i> Delete</span></button> "
+                        }
+                    }
+                ]
+
+            });
+
+            itemButton();
+        });
+
+        function itemButton(){
+            $('#item-table tbody').on('click', '.item-delete-button', function (e) {
+                itemRow = itemTable.row($(this).parents('tr')).data();
+                console.log(itemRow);
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/clerk/item/" + itemRow.id,
+                    success: function(data){
+                        $('#item-table').DataTable().ajax.reload();
+                        toastr.success(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                        alert(errorJSON.message);
+                        toastr.error(errorJSON.message, "Error", {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    }
+                })
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

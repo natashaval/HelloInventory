@@ -47,7 +47,8 @@ public class CategoryController {
 //    @PutMapping(value = "/clerk/category2/{id}/edit")
     @PutMapping(value = "/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Edit(@RequestBody Category category, @PathVariable Integer id){
-        return categoryService.editCategory(category, id);
+        Category category1 = categoryService.editCategory(category, id);
+        return new ResponseAjax("Updated",category);
     }
 
     @GetMapping(value = "/clerk/category/{id}")

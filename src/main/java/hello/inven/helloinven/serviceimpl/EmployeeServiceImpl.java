@@ -169,12 +169,13 @@ public class EmployeeServiceImpl implements EmployeeService {
                     transaction.setActionType(ActionTransaction.ActionType.RejectInventory);
                     transactionRepository.save(transaction);
                 }
-                else {
+                else if (sentCount + rejectCount == itemSize){
                     transaction.setActionType(ActionTransaction.ActionType.HandedOver);
                     transactionRepository.save(transaction);
                 }
             }
-            else if (transaction.getActionType().toString() == "HandedOver"){
+            else if (transaction.getActionType().toString() == "HandedOver" || transaction.getActionType().toString() == "ReturnInventory"){
+                // Check if request has done (item has sent / rejected)
                 Integer itemSize = transaction.getActionItemList().size();
                 Integer receiveCount = 0, rejectCount = 0;
                 for (ActionItem actionItem: transaction.getActionItemList()) {
@@ -183,7 +184,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 }
 
                 if (receiveCount + rejectCount == itemSize) {
-                    transaction.setActionType(ActionTransaction.ActionType.RequestDone);
+                    if (transaction.getActionType().toString() == "HandedOver") transaction.setActionType(ActionTransaction.ActionType.RequestDone);
+                    else if (transaction.getActionType().toString() == "ReturnInventory") transaction.setActionType(ActionTransaction.ActionType.ReturnDone);
                     transactionRepository.save(transaction);
                 }
             }
@@ -214,10 +216,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<ItemSerial> getMyItemSerial(MyUser myUser){
         List<ItemSerial> serials = itemSerialRepository.findItemSerialsByMyUser(myUser);
         return serials;
-    }
-
-    @Override
-    public void fillActionItemWithReturn(List<Object> itemAndSerial){
-
     }
 }

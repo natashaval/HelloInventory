@@ -1,5 +1,6 @@
 package hello.inven.helloinven.serviceimpl;
 
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.CategoryRepository;
@@ -103,23 +104,20 @@ public class ItemServiceImpl implements ItemService {
             return new ResponseAjax("Deleted", "Item has been deleted!");
         }
         else {
-            return new ResponseAjax("Failed", "Item is failed to be deleted!");
+//            return new ResponseAjax("Failed", "Item is failed to be deleted!");
+            throw new NotFoundException("Item not found and failed to be deleted!");
         }
 
     }
 
     @Override
-    public ResponseAjax detailItem(Long id){
+    public Item detailItem(Long id){
 //            public Item detailItem(Long id){
         Item item = itemRepository.findById(id).orElse(null);
-        /*
         if (item != null){
-            return new ResponseAjax("Done", item);
+            return item;
         }
-        else {
-            return new ResponseAjax("Failed", "Item not found!");
-        }
-        */
-        return new ResponseAjax("Done", item);
+        else throw new NotFoundException("Item not found!");
+
     }
 }
