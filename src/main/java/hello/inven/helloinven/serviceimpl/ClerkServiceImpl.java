@@ -1,5 +1,7 @@
 package hello.inven.helloinven.serviceimpl;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ItemSerialRepository;
@@ -57,9 +59,16 @@ public class ClerkServiceImpl implements ClerkService {
     }
 
     @Override
-    public ResponseAjax receiveItemRequest(MyUser clerk){
+    public ResponseAjax receiveItemRequest(MyUser clerk, Boolean requestType){
 //        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatus(clerk.getId(), ActionItem.ItemStatus.Pending);
-        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending);
+//        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending);
+        List<ActionItem> items = new ArrayList<>();
+        if (requestType == true) {
+            items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionActionTypeAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending, ActionTransaction.ActionType.PendingInventory);
+        }
+        else if (requestType == false){
+            items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionActionTypeAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending, ActionTransaction.ActionType.ReturnInventory);
+        }
         return new ResponseAjax("Done", items);
     }
 
@@ -82,6 +91,20 @@ public class ClerkServiceImpl implements ClerkService {
             actionItemRepository.save(actionItem);
             return new ResponseAjax("Rejected", "Item Request has been rejected!");
         }
-        return null;
+        else throw new NotFoundException("Requested item Not Found!");
+    }
+
+    @Override
+    public ResponseAjax itemReturnActions(Long actionTransactionId, Long itemId){
+        ActionItem actionItem = actionItemRepository.findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus.Pending, actionTransactionId, itemId);
+        if (actionItem != null) {
+            actionItem.setItemStatus(ActionItem.ItemStatus.Received);
+            Date currentTime = new Date();
+            actionItem.setReceivedTime(currentTime);
+            actionItemRepository.save(actionItem);
+            return new ResponseAjax("Received", "Item has arrived back in inventory!");
+        }
+        else throw new NotFoundException("Returned item Not Found!");
+
     }
 }

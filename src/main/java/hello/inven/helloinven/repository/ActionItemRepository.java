@@ -2,6 +2,7 @@ package hello.inven.helloinven.repository;
 
 import hello.inven.helloinven.model.ActionItem;
 import hello.inven.helloinven.model.ActionItemId;
+import hello.inven.helloinven.model.ActionTransaction;
 import hello.inven.helloinven.model.MyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ import java.util.List;
 public interface ActionItemRepository extends JpaRepository<ActionItem, ActionItemId> {
     // Get action item FOR clerk which has been approved by manager
     List<ActionItem> findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionApprovedTimeNotNull(Long clerkId, ActionItem.ItemStatus itemStatus);
+    List<ActionItem> findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionActionTypeAndActionItemIdActionTransactionApprovedTimeNotNull(Long clerkId, ActionItem.ItemStatus itemStatus, ActionTransaction.ActionType actionType);
 
     // Get action item FOR employee to see status
     List<ActionItem> findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(Long actionId, MyUser myUser);

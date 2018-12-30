@@ -17,6 +17,8 @@ public class ClerkController {
     @Autowired
     ClerkService clerkService;
 
+    /* =========== CLERK DO BULK ASSIGNMENT OF ITEM SERIAL TO EMPLOYEE =========== */
+
     @GetMapping(value = "/clerk/employeelist") // hanya menampilkan employee yang termasuk Role Manager / Employee
     @ResponseBody
     public ResponseAjax managerAndEmployeeList(){
@@ -31,12 +33,14 @@ public class ClerkController {
         return clerkService.assignItemSerial(clerk, id, employeeValues);
     }
 
+    /* =========== CLERK APPROVE (SENT) / REJECT ITEM FROM EMPLOYEE REQUEST ========== */
+
     @GetMapping(value = "/clerk/item/receive")
     @ResponseBody
     public ResponseAjax receiveItem(){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser clerk = myUserDetails.getUser();
-        return clerkService.receiveItemRequest(clerk);
+        return clerkService.receiveItemRequest(clerk, Boolean.TRUE);
     }
 
     @GetMapping(value = "/clerk/item/approval")
@@ -60,6 +64,25 @@ public class ClerkController {
             @RequestParam(value = "itemId")Long itemId,
             @RequestParam(value = "itemSerial") Long itemSerial){
         return clerkService.itemRequestActions(actionTransId, itemId, itemSerial, Boolean.FALSE);
+    }
+
+    /* =========== CLERK APPROVE (GET RETURNED BACK) / REJECT ITEM FROM EMPLOYEE RETURN ========== */
+    @GetMapping(value = "/clerk/item/return-approval")
+    public String clerkItemReturnApproval(){return "clerk/item-return-approval";}
+
+    @GetMapping("/clerk/item/return")
+    @ResponseBody
+    public ResponseAjax returnItem(){
+        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUser clerk = myUserDetails.getUser();
+        return clerkService.receiveItemRequest(clerk, Boolean.FALSE);
+    }
+
+    @PutMapping(value = "/clerk/item/return-approve")
+    @ResponseBody
+    public ResponseAjax approveItemReturn(
+            @RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
+        return clerkService.itemReturnActions(actionTransId, itemId);
     }
 
 

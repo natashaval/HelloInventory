@@ -67,11 +67,8 @@ public class ActionTransaction {
     private String actionRemarks;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.actionTransaction", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JsonIgnoreProperties(value = {"item", "actionTransaction"})
-//    @JsonIgnoreProperties(value = {"actionItemId", "item", "actionTransaction"})
-    @JsonIgnoreProperties(value = {"actionItemId", "actionTransaction"})
-//    @JsonIgnoreProperties(value = {"actionItemId.item.category", "actionItemId.item.item"})
-//    @JsonIgnore
+//    @JsonIgnoreProperties(value = {"actionItemId", "actionTransaction"})
+    @JsonIgnore
 
     private List<ActionItem> actionItemList = new ArrayList<>();
 }

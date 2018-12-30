@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Item Receive</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h3>Clerk Receive Back Returned Item</h3>
+    <table id="item-receive-table" class="table table-hover">
+        <thead>
+        <th>Action Id</th>
+        <th>Returned Time</th>
+        <th>Returned By</th>
+        <th>Item Id</th>
+        <th>Item Name</th>
+        <th>Item Serial</th>
+        <th>Received?</th>
+        </thead>
+    </table>
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
+    <script type="text/javascript">
+        var receiveTable;
+        $(document).ready(function(){
+
+            receiveTable = $('#item-receive-table').DataTable({
+                ajax: "/clerk/item/return",
+                columns: [
+                    {"data": "actionTransaction.actionId"},
+                    {
+                        "data": "actionTransaction.requestTime",
+                        render: function(data, type, row){
+                            if (type === "sort" || type === "type") return data;
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+                    {
+                        "data": "actionTransaction.requestedBy",
+                        render: function(data, type, row){
+                            return "" + data.id + " / " + data.name;
+                        }
+                    },
+                    {"data": "item.id"},
+                    {"data": "item.name"},
+                    {"data": "itemSerialId"},
+                    {"data": null, "orderable": false}
+                ],
+                columnDefs: [
+                    {
+                        targets: -1,
+                        data: null,
+                        defaultContent:
+                            "<button class='btn btn-success receive-ok-button'><i class='far fa-check-circle'></i> Yes</button>"
+                    }
+                ]
+            });
+
+            buttonReceive();
+
+        });
+
+        function buttonReceive(){
+            $('#item-receive-table tbody').on('click', '.receive-ok-button', function (e) {
+                receiveRow = receiveTable.row($(this).parents('tr')).data();
+                console.log(receiveRow);
+                statusData = {'actionTransId': receiveRow.actionTransaction.actionId,
+                    'itemId': receiveRow.item.id};
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/clerk/item/return-approve",
+                    data: statusData,
+                    success: function(data){
+                        $("#item-receive-table").DataTable().ajax.reload();
+                        toastr.success(data.data, data.status, {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                        toastr.error(errorJSON.message, "Error", {
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    }
+                });
+            });
+        }
+
+    </script>
+</div>
+</body>
+</html>

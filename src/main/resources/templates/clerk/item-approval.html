@@ -14,6 +14,7 @@
     <table id="item-request-table" class="table table-hover">
         <thead>
             <th>Action Id</th>
+            <th>Request Time</th>
             <th>Requester</th>
             <th>Item</th>
             <th>Actions</th>
@@ -23,6 +24,7 @@
     <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript" th:src="@{/plugin/MomentJs/moment.min.js}"></script>
     <script type="text/javascript">
         var receiveTable;
         $(document).ready(function(){
@@ -30,9 +32,16 @@
              ajax: "/clerk/item/receive",
                columns: [
                    {"data": "actionTransaction.actionId"},
+                   {
+                       "data": "actionTransaction.requestTime",
+                       render: function (data, type, row) {
+                           if (type === "sort" || type === "type") return data;
+                           return moment(data).format("DD-MM-YYYY HH:mm");
+                       }
+                   },
                    {"data" : "actionTransaction.requestedBy.id"},
                    {"data": "item.id"},
-                   {"data": null}
+                   {"data": null, "orderable": false}
                ],
                columnDefs: [
                    {
@@ -153,13 +162,12 @@
                                         });
                                     }
                                 },
-                                error: function (e) {
-                                    console.log(e.messageerror);
-                                    toastr.error(e, "Error", {
+                                error: function(jqXHR, textStatus, errorThrown){
+                                    errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                    toastr.error(errorJSON.message, "Error", {
                                         closeButton: true,
                                         progressBar: true
                                     });
-                                    // $('#approval-result').append("<p class='text-danger'>" + data.data + "</p>");
                                 }
                             });
                         }
@@ -197,13 +205,12 @@
 
 
                     },
-                    error: function(e){
-                        e.statusMessage();
-                        toastr.error(e, "Error", {
+                    error: function(jqXHR, textStatus, errorThrown){
+                        errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                        toastr.error(errorJSON.message, "Error", {
                             closeButton: true,
                             progressBar: true
                         });
-                        // $('#approval-result').append("<p class='text-danger'>" +  data.data);
                     }
                 })
             });
