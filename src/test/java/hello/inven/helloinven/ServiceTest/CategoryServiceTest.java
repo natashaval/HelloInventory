@@ -50,7 +50,7 @@ public class CategoryServiceTest {
 
 //    https://www.baeldung.com/spring-boot-testing
     @Test
-    public void testFindById_Found(){
+    public void getOneCategory_Found(){
         when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
         Category categoryFound = categoryServiceMock.getOneCategory(1);
 //        Assert.assertEquals("Kategori", categoryServiceMock.getOneCategory(1).getName());
@@ -58,14 +58,15 @@ public class CategoryServiceTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void testFindById_NotFound(){
+    public void getOneCategory_NotFound(){
         when(categoryRepositoryMock.findById(1)).thenReturn(categoryOpt);
         Category categoryNotFound = categoryServiceMock.getOneCategory(2);
+//        Assert.assertNotEquals(categoryNotFound, categoryOpt.get());
     }
 
 //    https://github.com/pkainulainen/spring-data-jpa-examples/blob/master/tutorial-part-seven/src/test/java/net/petrikainulainen/spring/datajpa/service/RepositoryPersonServiceTest.java
     @Test
-    public void testGetAllCategories_Found(){
+    public void getAllCategories_Found(){
         Category category = new Category("Category Test", "category for test all categories");
         List<Category> categoryList = Collections.singletonList(category);
         when(categoryRepositoryMock.findAll()).thenReturn(categoryList);
@@ -77,7 +78,7 @@ public class CategoryServiceTest {
 
 //    https://www.developer.com/java/other/article.php/10936_3882311_2/Mockito-Java-Unit-Testing-with-Mock-Objects.htm
     @Test
-    public void testGetAllCategories_NotFound(){
+    public void getAllCategories_NotFound(){
         List<Category> categoryList = new ArrayList<>();
         when(categoryRepositoryMock.findAll()).thenReturn(categoryList);
         List<Category> returned = categoryServiceMock.getAllCategories();
@@ -85,7 +86,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void create(){
+    public void createCategory(){
         when(categoryRepositoryMock.save(any(Category.class))).thenReturn(categoryOpt.get());
         Category persisted = new Category(CATEGORY_NAME, CATEGORY_DESCRIPTION);
         Category returned = categoryServiceMock.createCategory(persisted);
@@ -94,7 +95,7 @@ public class CategoryServiceTest {
 
 //    https://github.com/kmb385/ToThoughtDataLayer/blob/master/src/test/java/org/tothought/repositories/PostRepositoryTest.java
     @Test
-    public void update(){
+    public void editCategory(){
         /*
         Category updated = new Category(CATEGORY_NAME_UPDATED, CATEGORY_DESCRIPTION_UPDATED);
         when(categoryRepositoryMock.findById(anyInt())).thenReturn(categoryOpt);
@@ -121,7 +122,7 @@ public class CategoryServiceTest {
 
 //    https://github.com/pkainulainen/spring-data-jpa-examples/blob/master/tutorial-part-seven/src/test/java/net/petrikainulainen/spring/datajpa/service/RepositoryPersonServiceTest.java
     @Test
-    public void delete(){
+    public void deleteCategory_Found(){
         when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
         Category categoryAfter = categoryServiceMock.deleteCategory(CATEGORY_ID);
         verify(categoryRepositoryMock, times(1)).findById(CATEGORY_ID);

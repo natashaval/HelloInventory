@@ -43,7 +43,7 @@ public class ItemSerialServiceImpl implements ItemSerialService {
         for (Long itemSerial : itemSerialValues ){
             System.out.println(itemSerial);
             if (itemSerial == null || itemSerial.toString().isEmpty()) {
-                System.out.println("iniKosong: " + itemSerial);
+//                System.out.println("iniKosong: " + itemSerial);
                 continue;
             };
 
@@ -56,7 +56,7 @@ public class ItemSerialServiceImpl implements ItemSerialService {
             itemSerialList.add(newItemSerial);
 
         }
-        System.out.println(itemSerialList);
+//        System.out.println(itemSerialList);
         itemSerialRepository.saveAll(itemSerialList);
         return itemSerialList;
 

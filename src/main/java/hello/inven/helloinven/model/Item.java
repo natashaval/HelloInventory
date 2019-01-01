@@ -2,9 +2,7 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -16,6 +14,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 
 @Entity
 @Table(name = "item")
@@ -81,4 +80,18 @@ public class Item extends AuditModel {
 //    @JsonIgnoreProperties(value = "actionItemId")
     @JsonIgnore
     private List<ActionItem> actionItemList = new ArrayList<>();
+
+    public Item(Long id, String name, String imagePath, ItemType itemType, Integer quantity, Double price, Double weight, Double height, Double width, Double depth, Category category) {
+        this.id = id;
+        this.name = name;
+        this.imagePath = imagePath;
+        this.itemType = itemType;
+        this.quantity = quantity;
+        this.price = price;
+        this.weight = weight;
+        this.height = height;
+        this.width = width;
+        this.depth = depth;
+        this.category = category;
+    }
 }
