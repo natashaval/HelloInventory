@@ -268,7 +268,11 @@ function cobaError(){
         // https://www.javacodegeeks.com/2012/11/spring-mvc-error-handling-example.html
         error: function(jqXHR, textStatus, errorThrown){
             errorJSON = jQuery.parseJSON(jqXHR.responseText);
-            alert(errorJSON.message);
+            console.log(errorJSON.message);
+            toastr.error(errorJSON.message, "Error", {
+                closeButton: true,
+                progressBar: true
+            });
         }
     });
 }

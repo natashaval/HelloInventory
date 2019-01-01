@@ -20,19 +20,9 @@ public class UserController {
 //    https://www.baeldung.com/spring-mvc-model-model-map-model-view
 
     @GetMapping(value = "/")
-//    public String home() {
-//        return "home";
-//    }
-    public ModelAndView home() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("home");
-        return modelAndView;
-    }
+    public String home() { return "home"; }
 
     @RequestMapping(value = "/user/dashboard")
-//    public String user() {
-//        return "user";
-//    }
     public ModelAndView user(){
         ModelAndView modelAndView = new ModelAndView();
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -51,25 +41,12 @@ public class UserController {
 
 
     @RequestMapping(value = "/login")
-//    public String login() {
-//        return "login";
-//    }
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
-    }
+    public String login() {return "login";}
 
     @RequestMapping(value = "/403")
     public String Error403(){
         return "403";
     }
-
-//    bisa diganti menjadi dibawah pada MvcConfig.java
-//        registry.addViewController("/home").setViewName("home");
-//        registry.addViewController("/").setViewName("home");
-//        registry.addViewController("/hello").setViewName("hello");
-//        registry.addViewController("/login").setViewName("login");
 
     @GetMapping("/profile")
     public String userProfile(ModelMap modelMap){
@@ -80,21 +57,6 @@ public class UserController {
         modelMap.put("user", user);
         return "profile";
     }
-
-    // LEBIH RAPI YANG /user/userprofile
-    /*
-    @GetMapping("/user/profile")
-    public String profileJelek(Model model, Authentication authentication){
-        MyUser employee = ((MyUserDetails)authentication.getPrincipal()).getUser();
-        System.out.print(employee);
-        model.addAttribute("empemail", employee.getEmail());
-        model.addAttribute("empphone", employee.getPhone());
-        model.addAttribute("empimage", employee.getPhoto());
-//        model.addAttribute(orang);
-        System.out.print("EmAIL: " + employee.getEmail() + "PHONE: " + employee.getPhone());
-        return "user/profile";
-    }
-    */
 
     @GetMapping("/clerk/dashboard")
     public String clerkDashboard(){

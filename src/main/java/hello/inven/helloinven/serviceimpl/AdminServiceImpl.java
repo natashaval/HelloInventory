@@ -1,5 +1,6 @@
 package hello.inven.helloinven.serviceimpl;
 
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.MyUserRepository;
@@ -103,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ResponseAjax deleteEmployee(Long employeeId){
+    public MyUser deleteEmployee(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
         if (myUser != null) {
             if (!myUser.getPhoto().isEmpty()){
@@ -122,10 +123,12 @@ public class AdminServiceImpl implements AdminService {
             }
 
             myUserRepository.deleteById(employeeId);
-            return new ResponseAjax("Deleted", "Employee has been deleted!");
+//            return new ResponseAjax("Deleted", "Employee has been deleted!");
+            return myUser;
         }
         else
-            return new ResponseAjax("Error", "Error in deleting employee!");
+//            return new ResponseAjax("Error", "Error in deleting employee!");
+        throw new NotFoundException("Employee not found and failed in delete employee!");
     }
 
 }

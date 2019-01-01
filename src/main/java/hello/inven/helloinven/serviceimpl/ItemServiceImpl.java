@@ -28,7 +28,7 @@ public class ItemServiceImpl implements ItemService {
     CategoryRepository categoryRepository;
 
     @Override
-    public ResponseAjax createItem(Item item) throws IOException {
+    public Item createItem(Item item) throws IOException {
 //    public ResponseAjax createItem(Item item, MultipartFile file) throws IOException {
         Item newItem = new Item();
         System.out.println("item ID: " + item.getId() + "item Name: " + item.getName());
@@ -71,7 +71,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
          itemRepository.save(newItem);
-        return new ResponseAjax("Created", newItem);
+        return item;
     }
 
     @Override
@@ -81,9 +81,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ResponseAjax deleteItem(Long id){
+    public Item deleteItem(Long id){
         Item item = itemRepository.findById(id).orElse(null);
-        System.out.println(item);
         if (item != null) {
             if (!item.getImagePath().isEmpty()){
                 String photoDirectory = System.getProperty("user.dir") + "/uploads/item/";
@@ -101,7 +100,8 @@ public class ItemServiceImpl implements ItemService {
             }
 
             itemRepository.delete(item);
-            return new ResponseAjax("Deleted", "Item has been deleted!");
+            return item;
+//            return new ResponseAjax("Deleted", "Item has been deleted!");
         }
         else {
 //            return new ResponseAjax("Failed", "Item is failed to be deleted!");
@@ -112,7 +112,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item detailItem(Long id){
-//            public Item detailItem(Long id){
         Item item = itemRepository.findById(id).orElse(null);
         if (item != null){
             return item;

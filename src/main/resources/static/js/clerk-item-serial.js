@@ -137,10 +137,10 @@ function buttonView() {
                                 }
                                 $('#item-serial-table').DataTable().ajax.reload();
                             },
-                            error: function (data) {
-                                console.log(data.data);
-                                // $('.serialResult').html("<p>"+ data.data + "</p>");
-                                toastr.error(data.data, 'Error', {
+                            error: function(jqXHR, textStatus, errorThrown){
+                                errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                console.log(errorJSON.message);
+                                toastr.error(errorJSON.message, "Error", {
                                     closeButton: true,
                                     progressBar: true
                                 });
@@ -163,9 +163,6 @@ function getEmployee() {
         url: '/clerk/employeelist',
         // data: data,
         success: function (data) {
-            // console.log(data.data);
-            // managerAndEmployee = data.data;
-
             // https://stackoverflow.com/questions/733314/jquery-loop-over-json-result-from-ajax-success
             $.each(data.data, function(key, value){
                 $('#serial-assign').append(
@@ -207,10 +204,10 @@ $('#serial-assign-form').submit(function(e){
             }
             $('#item-serial-table').DataTable().ajax.reload();
         },
-        error: function(data){
-            console.log(data.data);
-            // $('.serial-assign-result').html("<p>"+ data.data + "</p>");
-            toastr.error(data.data, 'Error', {
+        error: function(jqXHR, textStatus, errorThrown){
+            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+            console.log(errorJSON.message);
+            toastr.error(errorJSON.message, "Error", {
                 closeButton: true,
                 progressBar: true
             });

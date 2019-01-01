@@ -1,5 +1,9 @@
 package hello.inven.helloinven.controller;
 
+import hello.inven.helloinven.dto.ItemSerialCount;
+import hello.inven.helloinven.model.ActionItem;
+import hello.inven.helloinven.model.ActionTransaction;
+import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.service.EmployeeService;
@@ -33,7 +37,8 @@ public class EmployeeController {
                                             @RequestParam("requestcomment") String comment){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.requestItemAssets(employee, requestValues, comment, Boolean.TRUE); // Boolean.TRUE = sedang request item
+        List<ActionItem> actionItemList = employeeService.requestItemAssets(employee, requestValues, comment, Boolean.TRUE); // Boolean.TRUE = sedang request item
+        return new ResponseAjax("Done", "Items have been requested!");
     }
 
     /* ============ EMPLOYEE VIEW ITEM LIST ==========*/
@@ -42,7 +47,9 @@ public class EmployeeController {
     public ResponseAjax countMyItem(){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.countMyItem(employee);
+        List<ItemSerialCount> myItemCount = employeeService.countMyItem(employee);
+        if (myItemCount == null) return new ResponseAjax("None", "No item found!");
+        return new ResponseAjax("Count Done", myItemCount);
     }
 
     @GetMapping("/user/myitem")
@@ -56,7 +63,9 @@ public class EmployeeController {
     public ResponseAjax findMyItemSerial(@PathVariable Long id){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.findMyItemSerials(id, employee);
+        List<ItemSerial> itemSerials = employeeService.findMyItemSerials(id, employee);
+        if (itemSerials.isEmpty()) return new ResponseAjax("Not Found", "item serial not found!");
+        return new ResponseAjax("Found", itemSerials);
     }
 
     /* ============ EMPLOYEE VIEW ACTION TRANSACTION ===========*/
@@ -68,7 +77,9 @@ public class EmployeeController {
     public ResponseAjax getRequestStatus(){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.getActionTransactions(employee);
+        List<ActionTransaction> transactionList = employeeService.getActionTransactions(employee);
+        if (transactionList.isEmpty()) return new ResponseAjax("Not Found", "Transaction list not found!");
+        return new ResponseAjax("Found", transactionList);
     }
 
     @GetMapping("/user/item/actions/{id}")
@@ -76,7 +87,9 @@ public class EmployeeController {
     public ResponseAjax getRequestActionItemStatus(@PathVariable Long id){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.getActionItemStatus(id, employee);
+        List<ActionItem> itemList = employeeService.getActionItemStatus(id, employee);
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "Item status not found!");
+        return new ResponseAjax("Found", itemList);
     }
 
     @PostMapping("/user/item/actions/{id}/cancel")
@@ -84,7 +97,8 @@ public class EmployeeController {
     public ResponseAjax cancelRequest(@PathVariable Long id){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.cancelRequest(id, employee);
+        ActionTransaction transaction = employeeService.cancelRequest(id, employee);
+        return new ResponseAjax("Cancelled", "Request has been cancelled!");
     }
 
     @GetMapping("/user/item/refresh")
@@ -106,13 +120,16 @@ public class EmployeeController {
     public ResponseAjax getItemSent(){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.getItemAssetsSent(employee);
+        List<ActionItem> itemList = employeeService.getItemAssetsSent(employee);
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "No Item Available!");
+        return new ResponseAjax("Found", itemList);
     }
 
     @PutMapping("/user/item/receive/ok")
     @ResponseBody
     public ResponseAjax receiveItemAsset(@RequestParam(value = "actionTransId")Long actionTransId, @RequestParam(value = "itemId")Long itemId){
-        return employeeService.receiveItem(actionTransId, itemId);
+        ActionItem actionItem = employeeService.receiveItem(actionTransId, itemId);
+        return new ResponseAjax("Success", "Item has been received! Check 'My Item'");
     }
 
     /* ========== EMPLOYEE RETURN ITEM ===========*/
@@ -131,6 +148,8 @@ public class EmployeeController {
                                         @RequestParam("returncomment") String comment){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
-        return employeeService.requestItemAssets(employee, returnValues, comment, Boolean.FALSE); // Boolean.FALSE = sedang mengembalikan barang
+        List<ActionItem> actionItemList = employeeService.requestItemAssets(employee, returnValues, comment, Boolean.FALSE); // Boolean.FALSE = sedang mengembalikan barang
+        return new ResponseAjax("Done", "Items are asked to be returned!");
+
     }
 }

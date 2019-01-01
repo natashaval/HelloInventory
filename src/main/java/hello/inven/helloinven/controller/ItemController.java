@@ -39,10 +39,10 @@ public class ItemController {
     }
 
     @PostMapping(value = "/clerk/item/add")
-    public @ResponseBody ResponseAjax itemAddPost(@ModelAttribute("newItem") Item item) throws IOException {
-
-//        return itemService.createItem(item, file);
-        return itemService.createItem(item);
+    @ResponseBody
+    public ResponseAjax itemAddPost(@ModelAttribute("newItem") Item item) throws IOException {
+        Item item1 = itemService.createItem(item);
+        return new ResponseAjax("Created", item1);
     }
 
     @GetMapping(value = "/clerk/item/show")
@@ -56,7 +56,8 @@ public class ItemController {
     @DeleteMapping(value = "/clerk/item/{id}")
     @ResponseBody
     public ResponseAjax itemDelete(@PathVariable Long id){
-        return itemService.deleteItem(id);
+        itemService.deleteItem(id);
+        return new ResponseAjax("Deleted", "Item has been deleted!");
     }
 
 //    @GetMapping(value = "/clerk/item/{id}")

@@ -150,6 +150,7 @@ public class AdminController {
 
     @DeleteMapping(value = "/admin/employee/{id}/delete")
     public @ResponseBody ResponseAjax employeeDelete(@PathVariable Long id){
-        return adminService.deleteEmployee(id);
+        adminService.deleteEmployee(id);
+        return new ResponseAjax("Deleted", "Employee has been deleted!");
     }
 }

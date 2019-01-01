@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface ItemService {
 //    ResponseAjax createItem(Item item, MultipartFile file) throws IOException;
-    ResponseAjax createItem(Item item) throws IOException;
-    ResponseAjax deleteItem(Long id);
+    Item createItem(Item item) throws IOException;
+    List<Item> getAllItems();
+    Item deleteItem(Long id);
     Item detailItem(Long id);
 
-    List<Item> getAllItems();
+
 
 }
