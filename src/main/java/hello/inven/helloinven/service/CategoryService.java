@@ -6,7 +6,7 @@ import hello.inven.helloinven.response.ResponseAjax;
 import java.util.List;
 
 public interface CategoryService {
-    ResponseAjax createCategory(Category category);
+    Category createCategory(Category category);
     Category editCategory(Category category, Integer id);
     ResponseAjax deleteCategory(Integer id);
 

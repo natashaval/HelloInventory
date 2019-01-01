@@ -2,6 +2,7 @@ package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.dto.ItemSerialCount;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
+import hello.inven.helloinven.exceptionhandler.RequestException;
 import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
 import hello.inven.helloinven.repository.ActionTransactionRepository;
@@ -136,7 +137,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ResponseAjax cancelRequest(Long actionId, MyUser myUser){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
-        if (transaction == null) return new ResponseAjax("Not Found", "Action Transaction not found!");
+        if (transaction == null) throw new NotFoundException("Action Transaction not found!");
+        if (transaction.getActionType().toString() != "PendingApproval"
+                || transaction.getActionType().toString() != "PendingInventory"
+                || transaction.getActionType().toString() != "ReturnApproval")
+            throw new RequestException("Not allowed to POST cancel request!");
 
         transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
          List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);

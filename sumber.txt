@@ -154,7 +154,7 @@ https://www.toptal.com/java/spring-boot-rest-api-error-handling
 Swagger:
 -- access in:
 -- http://localhost:8080/v2/api-docs
--- httpL//localhost:8080/swagger-ui.html (disable login config first)
+-- httpL//localhost:8080/swagger-ui.html (login first in login page then open the swagger ui, don't disable login config)
 https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
 http://www.springboottutorial.com/spring-boot-swagger-documentation-for-rest-services
 https://dzone.com/articles/spring-boot-restful-api-documentation-with-swagger

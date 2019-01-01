@@ -51,6 +51,10 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 responseError, new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
+//    http://www.springboottutorial.com/spring-boot-validation-for-rest-services
+//    Method not @Valid ex @NotNull, @Min, @Size
+
+
 //    @ExceptionHandler({Exception.class})
 //    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request){
 //        ResponseError responseError = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured!");
@@ -63,6 +67,13 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(responseError, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler({RequestException.class})
+    public ResponseEntity<Object> handleBadRequestException(RequestException ex, WebRequest request){
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), request.getDescription(false));
+        return new ResponseEntity<>(responseError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
 
 
 

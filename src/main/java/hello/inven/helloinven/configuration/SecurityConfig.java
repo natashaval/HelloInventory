@@ -109,9 +109,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        https://stackoverflow.com/questions/49312301/encrypting-inmemoryauthentication-passwords-with-bcrypt
-        auth.inMemoryAuthentication().withUser("helloadmin").password(passwordEncoder().encode("helloadmin")).authorities("ADMIN");
-        auth.inMemoryAuthentication().withUser("helloclerk").password(passwordEncoder().encode("helloclerk")).authorities("CLERK");
-        auth.inMemoryAuthentication().withUser("helloemp").password(passwordEncoder().encode("helloemp")).authorities("EMPLOYEE");
+//        auth.inMemoryAuthentication().withUser("helloadmin").password(passwordEncoder().encode("helloadmin")).authorities("ADMIN");
+//        auth.inMemoryAuthentication().withUser("helloclerk").password(passwordEncoder().encode("helloclerk")).authorities("CLERK");
+//        auth.inMemoryAuthentication().withUser("helloemp").password(passwordEncoder().encode("helloemp")).authorities("EMPLOYEE");
 
 
 

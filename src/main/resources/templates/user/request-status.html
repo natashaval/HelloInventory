@@ -140,7 +140,7 @@
                 actionId = itemRow.actionId;
 
                 console.log(itemRow);
-                if (itemRow.actionType == "PendingApproval" || itemRow.actionId == "PendingInventory") {
+                if (itemRow.actionType == "PendingApproval" || itemRow.actionId == "PendingInventory" || itemRow.actionId == "ReturnApproval") {
                     bootbox.dialog({
                         title: "<i class=\"fas fa-times-circle\"></i> Cancel Request",
                         message: "Are you sure you want to cancel this request? ",
@@ -168,8 +168,10 @@
                                             });
                                             $('#request-status-table').DataTable().ajax.reload();
                                         },
-                                        error: function (e) {
-                                            toastr.error("Error in cancel request", "Error", {
+                                        error: function(jqXHR, textStatus, errorThrown){
+                                            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                            alert(errorJSON.message);
+                                            toastr.error(errorJSON.message, "Error", {
                                                 closeButton: true,
                                                 progressBar: true
                                             });
@@ -185,7 +187,6 @@
                     toastr.error("Not allowed to cancel request!", "Error", {
                         closeButton: true,
                         progressBar: true
-
                     });
                 }
             });

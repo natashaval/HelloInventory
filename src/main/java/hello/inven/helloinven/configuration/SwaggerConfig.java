@@ -33,8 +33,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo())
-                .pathMapping("/");
+                .apiInfo(apiInfo());
 //                .produces(DEFAULT_PRODUCES_AND_CONSUMES)
 //                .consumes(DEFAULT_PRODUCES_AND_CONSUMES);
     }
@@ -47,9 +46,6 @@ public class SwaggerConfig {
                 .title("HelloInven REST API")
                 .description("Hello Inventory Management System REST API")
                 .version("1.0.0")
-                .license("License")
-                .licenseUrl("License URL")
-                .termsOfServiceUrl("Terms of Service")
                 .contact(new Contact("Hello Inventory", "http://www.helloinven.com", "helloinven@helloinven.com"))
                 .build();
     }

@@ -50,4 +50,10 @@ public class Category extends AuditModel {
         this.items = items;
     }
 
+    public Category(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+
+
 }

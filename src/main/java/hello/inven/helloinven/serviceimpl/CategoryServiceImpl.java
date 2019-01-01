@@ -22,18 +22,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getOneCategory(Integer id){
-
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null) return category;
         else throw new NotFoundException("Category not found!");
     }
 
     @Override
-    public ResponseAjax createCategory(Category category){
+    public Category createCategory(Category category){
         Category newCategory = new Category();
         newCategory.setName(category.getName());
         newCategory.setDescription(category.getDescription());
-        return new ResponseAjax("Saved", categoryRepository.save(newCategory));
+        newCategory = categoryRepository.save(newCategory);
+        return newCategory;
     }
 
     @Override

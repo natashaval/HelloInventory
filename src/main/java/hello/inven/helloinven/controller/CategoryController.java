@@ -33,7 +33,7 @@ public class CategoryController {
 
     @PostMapping("/clerk/category2/add")
     public @ResponseBody ResponseAjax category2Add(@Valid @RequestBody Category category){
-        return categoryService.createCategory(category);
+        return new ResponseAjax("Saved", categoryService.createCategory(category));
     }
 
 //    @DeleteMapping(value = "/clerk/category2/{id}/delete")
