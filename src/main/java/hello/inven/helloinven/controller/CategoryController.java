@@ -39,7 +39,8 @@ public class CategoryController {
 //    @DeleteMapping(value = "/clerk/category2/{id}/delete")
     @DeleteMapping(value = "/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Delete(@PathVariable Integer id){
-        return categoryService.deleteCategory(id);
+        categoryService.deleteCategory(id);
+        return new ResponseAjax("Deleted", "Category has been successfully deleted");
     }
 
     @GetMapping(value="/clerk/category2/{id}")
@@ -54,16 +55,16 @@ public class CategoryController {
         Category category1 = categoryService.editCategory(category, id);
         return new ResponseAjax("Updated",category);
     }
-
-    @GetMapping(value = "/clerk/category/{id}")
-    @ResponseBody
-    public ResponseEntity<ResponseAjax> categoryDetails(@PathVariable Integer id){
-        Category category = categoryService.getOneCategory(id);
-        if (category == null) {
-            ResponseAjax responseAjax = new ResponseAjax("Not Found", category);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseAjax);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAjax("Found", category));
-    }
+//
+//    @GetMapping(value = "/clerk/category/{id}")
+//    @ResponseBody
+//    public ResponseEntity<ResponseAjax> categoryDetails(@PathVariable Integer id){
+//        Category category = categoryService.getOneCategory(id);
+//        if (category == null) {
+//            ResponseAjax responseAjax = new ResponseAjax("Not Found", category);
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseAjax);
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAjax("Found", category));
+//    }
 
 }

@@ -43,18 +43,20 @@ public class CategoryServiceImpl implements CategoryService {
         if (category != null){
             category.setName(categoryRequest.getName());
             category.setDescription(categoryRequest.getDescription());
-            category = categoryRepository.saveAndFlush(category);
+            category = categoryRepository.save(category);
             return category;
         }
         else throw new NotFoundException("Category edit Failed!");
     }
 
     @Override
-    public ResponseAjax deleteCategory(Integer id){
+    public Category deleteCategory(Integer id){
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null) {
             categoryRepository.deleteById(id);
-            return new ResponseAjax("Deleted", "Category has been successfully deleted");
+            System.out.println("Deleted Category Returned: " + category.getName());
+            return category;
+//            return new ResponseAjax("Deleted", "Category has been successfully deleted");
         }
 //        return new ResponseAjax("Failed", "Category failed to be deleted!");
         else throw new NotFoundException("Category not found and failed to be deleted!");

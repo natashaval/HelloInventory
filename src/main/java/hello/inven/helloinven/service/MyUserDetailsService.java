@@ -31,7 +31,7 @@ public class MyUserDetailsService  implements UserDetailsService {
     public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MyUser user = userRepository.findByUsername(username);
         if (user == null) {
-            System.out.print("USER GA KETEMUUUUU");
+//            System.out.print("USER GA KETEMUUUUU");
             throw new UsernameNotFoundException("Unknown user");
         }
         boolean enabled = true;
@@ -39,8 +39,8 @@ public class MyUserDetailsService  implements UserDetailsService {
         boolean credentialsNotExpired = true;
         boolean accountNonLocked = true;
 
-        System.out.print("USER NUT NUT" + user);
-        System.out.print("USER: " + user.getName() + "PASSWORD: " + user.getPassword());
+//        System.out.print("USER NUT NUT" + user);
+//        System.out.print("USER: " + user.getName() + "PASSWORD: " + user.getPassword());
 
         MyUserDetails myUserDetails = new MyUserDetails(user,
                 enabled, accountNonExpired, credentialsNotExpired, accountNonLocked,
@@ -54,15 +54,9 @@ public class MyUserDetailsService  implements UserDetailsService {
         setAuths.add(new SimpleGrantedAuthority(userRoles.getRole()));
 
         List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-        System.out.print("RESULTapakahsudahsampaisini: " + Result);
+//        System.out.print("RESULTapakahsudahsampaisini: " + Result);
         return Result;
     }
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
 //    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
     /*

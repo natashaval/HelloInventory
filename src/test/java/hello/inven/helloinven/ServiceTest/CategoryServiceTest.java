@@ -3,6 +3,7 @@ package hello.inven.helloinven.ServiceTest;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.repository.CategoryRepository;
+import hello.inven.helloinven.service.CategoryService;
 import hello.inven.helloinven.serviceimpl.CategoryServiceImpl;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class CategoryServiceTest {
     CategoryRepository categoryRepositoryMock;
 
     @InjectMocks
-    CategoryServiceImpl categoryServiceMock;
+    CategoryService categoryServiceMock = new CategoryServiceImpl();
 
     private static final String CATEGORY_NAME = "Category Test";
     private static final String CATEGORY_NAME_UPDATED = "Category Test Updated";
@@ -91,16 +92,41 @@ public class CategoryServiceTest {
         Assert.assertEquals(categoryOpt.get(), returned);
     }
 
+//    https://github.com/kmb385/ToThoughtDataLayer/blob/master/src/test/java/org/tothought/repositories/PostRepositoryTest.java
     @Test
     public void update(){
+        /*
         Category updated = new Category(CATEGORY_NAME_UPDATED, CATEGORY_DESCRIPTION_UPDATED);
-        when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
+        when(categoryRepositoryMock.findById(anyInt())).thenReturn(categoryOpt);
 
         Category returned = categoryServiceMock.editCategory(updated, CATEGORY_ID);
-//        Assert.assertEquals(updated, returned);
-        verify(categoryRepositoryMock, times(1)).findById(CATEGORY_ID);
-        Assert.assertEquals(updated.getName(), returned.getName());
+        System.out.println(categoryRepositoryMock.findById(CATEGORY_ID));
+        System.out.println(returned);
+        */
 
+//        Assert.assertEquals(updated, returned);
+//        verify(categoryRepositoryMock, times(1)).findById(CATEGORY_ID);
+//        Assert.assertEquals(updated.getName(), returned.getName());
+        when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
+
+        Category categoryBefore = categoryRepositoryMock.findById(CATEGORY_ID).get();
+        categoryBefore.setName(CATEGORY_NAME_UPDATED);
+        categoryBefore.setDescription(CATEGORY_DESCRIPTION_UPDATED);
+        categoryRepositoryMock.save(categoryBefore);
+
+        Category categoryAfter = categoryRepositoryMock.findById(CATEGORY_ID).get();
+        Assert.assertNotNull(categoryAfter);
+        Assert.assertEquals(CATEGORY_NAME_UPDATED, categoryAfter.getName());
+    }
+
+//    https://github.com/pkainulainen/spring-data-jpa-examples/blob/master/tutorial-part-seven/src/test/java/net/petrikainulainen/spring/datajpa/service/RepositoryPersonServiceTest.java
+    @Test
+    public void delete(){
+        when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
+        Category categoryAfter = categoryServiceMock.deleteCategory(CATEGORY_ID);
+        verify(categoryRepositoryMock, times(1)).findById(CATEGORY_ID);
+        verify(categoryRepositoryMock, times(1)).deleteById(CATEGORY_ID);
+        Assert.assertEquals(categoryOpt.get(), categoryAfter);
     }
 
 
