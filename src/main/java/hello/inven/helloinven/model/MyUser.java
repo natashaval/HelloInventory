@@ -58,6 +58,7 @@ public class MyUser { //extends User {
 
     @Column(name = "password", nullable = false)
     @NotBlank
+    @JsonIgnore
     private String password;
 
 //     LOGIN pakai username & password dari table user_role

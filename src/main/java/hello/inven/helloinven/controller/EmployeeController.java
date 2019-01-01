@@ -5,6 +5,7 @@ import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.service.EmployeeService;
 import hello.inven.helloinven.service.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+//https://stackoverflow.com/questions/3087548/can-spring-security-use-preauthorize-on-spring-controllers-methods
+@PreAuthorize("hasAuthority('EMPLOYEE') or hasAuthority('MANAGER')")
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;

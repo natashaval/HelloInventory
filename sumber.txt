@@ -151,4 +151,15 @@ http://www.springboottutorial.com/spring-boot-exception-handling-for-rest-servic
 https://www.javadevjournal.com/spring/exception-handling-for-rest-with-spring/
 https://www.toptal.com/java/spring-boot-rest-api-error-handling
 
+Swagger:
+-- access in:
+-- http://localhost:8080/v2/api-docs
+-- httpL//localhost:8080/swagger-ui.html (disable login config first)
+https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+http://www.springboottutorial.com/spring-boot-swagger-documentation-for-rest-services
+https://dzone.com/articles/spring-boot-restful-api-documentation-with-swagger
+https://dzone.com/articles/spring-boot-2-restful-api-documentation-with-swagg
+https://www.vojtechruzicka.com/documenting-spring-boot-rest-api-swagger-springfox/
+
+
 

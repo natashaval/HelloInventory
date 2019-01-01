@@ -6,10 +6,14 @@ import hello.inven.helloinven.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
+@PreAuthorize("hasAuthority('CLERK')")
 public class CategoryController {
 
     @Autowired
@@ -28,7 +32,7 @@ public class CategoryController {
     }
 
     @PostMapping("/clerk/category2/add")
-    public @ResponseBody ResponseAjax category2Add(@RequestBody Category category){
+    public @ResponseBody ResponseAjax category2Add(@Valid @RequestBody Category category){
         return categoryService.createCategory(category);
     }
 

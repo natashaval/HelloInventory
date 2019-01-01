@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class Category extends AuditModel {
     private Integer id;
 
     @Column(name = "category_name", nullable = false)
+    @NotNull
     private String name;
 
     @Column(name = "category_description")

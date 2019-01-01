@@ -60,7 +60,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     /* ============ EXCEPTION HANDLER FOR SERVICE HELLOINVEN ==========*/
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request){
-        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(true));
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(responseError, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
