@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 
 @Entity
 @Table(name = "action_transaction")
@@ -70,4 +72,14 @@ public class ActionTransaction {
     @JsonIgnoreProperties(value = {"actionItemId", "actionTransaction"})
 //    @JsonIgnore
     private List<ActionItem> actionItemList = new ArrayList<>();
+
+    public ActionTransaction(ActionType actionType, MyUser requestedBy, Date requestTime, Long approvedBy, Date approvedTime, String actionRemarks, List<ActionItem> actionItemList) {
+        this.actionType = actionType;
+        this.requestedBy = requestedBy;
+        this.requestTime = requestTime;
+        this.approvedBy = approvedBy;
+        this.approvedTime = approvedTime;
+        this.actionRemarks = actionRemarks;
+        this.actionItemList = actionItemList;
+    }
 }

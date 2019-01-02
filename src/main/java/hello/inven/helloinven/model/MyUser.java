@@ -2,6 +2,8 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JoinColumnOrFormula;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +16,9 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "user")
@@ -204,14 +209,6 @@ public class MyUser { //extends User {
         this.managerId = managerId;
     }
 
-//    public boolean isEmp_active() {
-//        return emp_active;
-//    }
-//
-//    public void setEmp_active(boolean emp_active) {
-//        this.emp_active = emp_active;
-//    }
-
     public Role getRole() {
         return role;
     }
@@ -219,56 +216,6 @@ public class MyUser { //extends User {
     public void setRole(Role role) {
         this.role = role;
     }
-//
-//    @Column(name = "enabled", nullable = false)
-//    public boolean isEnabled() {
-//        return this.enabled;
-//    }
-//
-//    public void setEnabled(boolean enabled) {
-////        this.enabled = enabled;
-//        this.enabled = true;
-//    }
-//
-//    @Column(name = "account_non_expired", nullable = false)
-//    public boolean isAccountNonExpired() {
-//        return accountNonExpired;
-//    }
-//
-//    public void setAccountNonExpired(boolean accountNonExpired) {
-//        // this.accountNonExpired = accountNonExpired;
-//        this.accountNonExpired = true;
-//    }
-//
-//    @Column(name = "account_non_locked", nullable = false)
-//    public boolean isAccountNonLocked() {
-//        return accountNonLocked;
-//    }
-//
-//    public void setAccountNonLocked(boolean accountNonLocked) {
-////        this.accountNonLocked = accountNonLocked;
-//        this.accountNonLocked = true;
-//    }
-//
-//    @Column(name = "credentials_non_expired", nullable = false)
-//    public boolean isCredentialsNonExpired() {
-//        return credentialsNonExpired;
-//    }
-//
-//    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-////        this.credentialsNonExpired = credentialsNonExpired;
-//        this.credentialsNonExpired = true;
-//    }
-
-//    @OneToMany(mappedBy = "primaryKey.myUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    public Set<Asset> getAssets() {
-//        return assets;
-//    }
-//
-//    public void setAssets(Set<Asset> assets) {
-//        this.assets = assets;
-//    }
-
 
     public List<ItemSerial> getUserItemSerials() {
         return userItemSerials;

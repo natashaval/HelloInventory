@@ -111,10 +111,8 @@ public class CategoryServiceTest {
         when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
 
         Category categoryBefore = categoryRepositoryMock.findById(CATEGORY_ID).get();
-        categoryBefore.setName(CATEGORY_NAME_UPDATED);
-        categoryBefore.setDescription(CATEGORY_DESCRIPTION_UPDATED);
-        categoryRepositoryMock.save(categoryBefore);
-
+        Category updated = new Category(CATEGORY_NAME_UPDATED, CATEGORY_DESCRIPTION_UPDATED);
+        categoryServiceMock.editCategory(updated, CATEGORY_ID);
         Category categoryAfter = categoryRepositoryMock.findById(CATEGORY_ID).get();
         Assert.assertNotNull(categoryAfter);
         Assert.assertEquals(CATEGORY_NAME_UPDATED, categoryAfter.getName());

@@ -23,4 +23,9 @@ public class Role {
 //    @JsonIgnoreProperties(value = "role", allowSetters = true)
     @JsonIgnore
     private Set<MyUser> users;
+
+    public Role(Integer roleId, String role) {
+        this.roleId = roleId;
+        this.role = role;
+    }
 }

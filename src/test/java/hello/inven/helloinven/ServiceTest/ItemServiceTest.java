@@ -82,7 +82,6 @@ public class ItemServiceTest {
     public void detailItem_NotFound(){
         when(itemRepositoryMock.findById(ITEM_ID)).thenReturn(itemOpt);
         Item itemNotFound = itemServiceMock.detailItem(2L);
-        Assert.assertNotEquals(itemNotFound, itemOpt.get());
     }
 
     @Test
@@ -91,14 +90,12 @@ public class ItemServiceTest {
         Item itemAfter = itemServiceMock.deleteItem(ITEM_ID);
         verify(itemRepositoryMock, times(1)).findById(ITEM_ID);
         verify(itemRepositoryMock, times(1)).delete(itemAfter);
-        Assert.assertEquals(itemAfter, itemOpt.get());
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteItem_NotFound(){
         when(itemRepositoryMock.findById(ITEM_ID)).thenReturn(itemOpt);
         Item itemDelete = itemServiceMock.deleteItem(2L);
-        Assert.assertNotEquals(itemDelete, itemOpt.get());
     }
 
 }
