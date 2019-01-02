@@ -140,19 +140,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ActionTransaction cancelRequest(Long actionId, MyUser myUser){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
         if (transaction == null) throw new NotFoundException("Action Transaction not found!");
-        if (transaction.getActionType().toString() != "PendingApproval"
-                || transaction.getActionType().toString() != "PendingInventory"
-                || transaction.getActionType().toString() != "ReturnApproval")
-            throw new BadRequestException("Not allowed to POST cancel request!");
-
-        transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
-         List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
-        for (ActionItem item: actionItemList) {
-            item.setItemStatus(ActionItem.ItemStatus.Cancelled);
-            actionItemRepository.save(item);
+//        if (transaction.getActionType().toString() != "PendingApproval"
+//                || transaction.getActionType().toString() != "PendingInventory"
+//                || transaction.getActionType().toString() != "ReturnApproval")
+//            throw new BadRequestException("Not allowed to POST cancel request!");
+        if (transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval.toString()) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingInventory.toString()) || transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval.toString()) ) {
+            transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
+            List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
+            for (ActionItem item : actionItemList) {
+                item.setItemStatus(ActionItem.ItemStatus.Cancelled);
+                actionItemRepository.save(item);
+            }
+            transactionRepository.save(transaction);
+            return transaction;
         }
-        transactionRepository.save(transaction);
-        return transaction;
+        else throw new BadRequestException("Request are not allowed to be cancelled!");
 //        return new ResponseAjax("Cancelled", "Request has been cancelled!");
     }
 

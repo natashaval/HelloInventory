@@ -1,5 +1,6 @@
 package hello.inven.helloinven.ServiceTest;
 
+import hello.inven.helloinven.exceptionhandler.BadRequestException;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.ActionTransaction;
 import hello.inven.helloinven.model.MyUser;
@@ -106,5 +107,14 @@ public class ManagerServiceTest {
         ActionTransaction transactionAfter = transactionRepositoryMock.findById(TRANSACTION_RETURN_ID).get();
         Assert.assertNotNull(transactionAfter.getApprovedTime());
         Assert.assertEquals("ReturnInventory", transactionAfter.getActionType().toString());
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void approvedApproval_NotRequestOrReturn(){
+        Optional<ActionTransaction> transactionOpt = Optional.of(new ActionTransaction(ActionTransaction.ActionType.CancelRequest, null, null, 2L, null, null, null));
+        when(transactionRepositoryMock.findById(10L)).thenReturn(transactionOpt);
+        ActionTransaction transactionBefore = transactionRepositoryMock.findById(10L).get();
+        managerServiceMock.approvedApproval(10L, Boolean.FALSE);
+        ActionTransaction transactionAfter = transactionRepositoryMock.findById(10L).get();
     }
 }

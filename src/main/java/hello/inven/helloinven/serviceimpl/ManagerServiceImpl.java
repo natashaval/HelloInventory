@@ -28,39 +28,45 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ActionTransaction approvedApproval(Long actionId, Boolean requestType){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElseThrow(null);
-        if (transaction.getActionType().toString()!= "PendingApproval" || transaction.getActionType().toString()!="ReturnApproval") throw new BadRequestException("Action Transaction not allowed!");
-        if (transaction != null){
-            Date currentTime = new Date();
-            transaction.setApprovedTime(currentTime);
-            if (requestType == true) transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
-            else if (requestType == false) transaction.setActionType(ActionTransaction.ActionType.ReturnInventory);
-            transaction = transactionRepository.save(transaction);
-//            return new ResponseAjax("Done", "Request Approved and Sent to Inventory!");
-            return transaction;
-        }
-        else {
-//            return new ResponseAjax("Failed", "Request not found!");
-            System.out.println("Not Found");
-            throw new NotFoundException("Request not found!");
+//        if(transaction.getActionType() instanceof ActionTransaction.ActionType && transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval)) System.out.println("Action Type: " + transaction.getActionType());
+//        else System.out.println("getActionType bukan DataType ActionType");
+//        if (!transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval)  || !transaction.getActionType().toString().equals(ActionTransaction.ActionType.ReturnApproval)) throw new BadRequestException("Action Transaction not allowed!");
+        if(transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval)){
+            if (transaction != null){
+                Date currentTime = new Date();
+                transaction.setApprovedTime(currentTime);
+                if (requestType == true) transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
+                else if (requestType == false) transaction.setActionType(ActionTransaction.ActionType.ReturnInventory);
+                transaction = transactionRepository.save(transaction);
+    //            return new ResponseAjax("Done", "Request Approved and Sent to Inventory!");
+                return transaction;
+            }
+            else {
+    //            return new ResponseAjax("Failed", "Request not found!");
+                System.out.println("Not Found");
+                throw new NotFoundException("Request not found!");
 
+            }
         }
+        else throw new BadRequestException("Action Transaction Not Allowed!");
     }
 
     @Override
     public ActionTransaction rejectedApproval(Long actionId){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
-        if (transaction.getActionType().toString()!= "PendingApproval" || transaction.getActionType().toString()!= "ReturnApproval") throw new BadRequestException("Action Transaction not allowed!");
-        if (transaction!= null){
-            Date currentTime = new Date();
+        if(transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval)) {
+            if (transaction != null) {
+                Date currentTime = new Date();
 //            transaction.setApprovedTime(currentTime);
-            transaction.setActionType(ActionTransaction.ActionType.RejectApproval);
-            transaction = transactionRepository.saveAndFlush(transaction);
+                transaction.setActionType(ActionTransaction.ActionType.RejectApproval);
+                transaction = transactionRepository.saveAndFlush(transaction);
 //            return new ResponseAjax("Done", "Request Rejected!");
-            return  transaction;
-        }
-        else {
+                return transaction;
+            } else {
 //            return new ResponseAjax("Failed", "Request not found!");
-            throw new NotFoundException("Request not found!");
+                throw new NotFoundException("Request not found!");
+            }
         }
+        else throw new BadRequestException("Action Transaction Not Allowed!");
     }
 }
