@@ -32,8 +32,12 @@ public class CategoryController {
     }
 
     @PostMapping("/clerk/category2/add")
-    public @ResponseBody ResponseAjax category2Add(@Valid @RequestBody Category category){
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseAjax category2Add(@Valid @RequestBody Category category){
         return new ResponseAjax("Saved", categoryService.createCategory(category));
+//        Category category1 = categoryService.createCategory(category);
+//        return new ResponseEntity<>(new ResponseAjax("Saved", category1), HttpStatus.CREATED);
     }
 
 //    @DeleteMapping(value = "/clerk/category2/{id}/delete")
