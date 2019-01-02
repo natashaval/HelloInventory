@@ -1,4 +1,4 @@
-LOGIN:
+﻿LOGIN:
 https://medium.com/@gustavo.ponce.ch/spring-boot-spring-mvc-spring-security-mysql-a5d8545d837d
 https://www.jackrutorial.com/2018/04/spring-boot-user-registration-login.html
 https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot
@@ -167,5 +167,9 @@ Mockito Difference @Mock and @MockBean:
 --          Often @WebMvcTest will be limited to a single controller and used in combination with @MockBean to provide mock implementations for required collaborators.
 https://stackoverflow.com/questions/44200720/difference-between-mock-mockbean-and-mockito-mock
 
-
-
+Unit Test for Controller with Mockito (Not WebMvcTest karena sudah termasuk integration test):
+https://www.petrikainulainen.net/programming/spring-framework/unit-testing-of-spring-mvc-controllers-rest-api/
+https://blog.trifork.com/2012/12/11/properly-testing-spring-mvc-controllers/
+https://memorynotfound.com/unit-test-spring-mvc-rest-service-junit-mockito/
+https://thepracticaldeveloper.com/2017/07/31/guide-spring-boot-controller-tests/
+https://www.baeldung.com/spring-boot-testing
