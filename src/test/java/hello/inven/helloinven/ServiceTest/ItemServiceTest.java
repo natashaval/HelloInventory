@@ -80,7 +80,7 @@ public class ItemServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void detailItem_NotFound(){
-        when(itemRepositoryMock.findById(ITEM_ID)).thenReturn(itemOpt);
+//        when(itemRepositoryMock.findById(ITEM_ID)).thenReturn(itemOpt);
         Item itemNotFound = itemServiceMock.detailItem(2L);
     }
 
@@ -94,7 +94,7 @@ public class ItemServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void deleteItem_NotFound(){
-        when(itemRepositoryMock.findById(ITEM_ID)).thenReturn(itemOpt);
+//        when(itemRepositoryMock.findById(ITEM_ID)).thenReturn(itemOpt);
         Item itemDelete = itemServiceMock.deleteItem(2L);
     }
 

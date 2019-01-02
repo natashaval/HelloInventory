@@ -45,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MyUser save(MyUser user, MultipartFile file) throws IOException {
         MyUser newUser = new MyUser();
-        System.out.print("Bikin NEW User");
+//        System.out.print("Bikin NEW User");
         newUser.setId(user.getId());
         newUser.setName(user.getName());
         newUser.setEmail(user.getEmail());
@@ -83,10 +83,10 @@ public class AdminServiceImpl implements AdminService {
                 e.printStackTrace();
             }
             newUser.setPhoto(fileName);
-            System.out.println("namafileName: " + uploadDirectory + fileName);
-            System.out.println("\ngetNamaFile " + file.getName() + ";apaFile " + file.getContentType());
-            System.out.println("\ngetFileAbsolutePath: " + Paths.get(fileName).toAbsolutePath().normalize());
-            System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
+//            System.out.println("namafileName: " + uploadDirectory + fileName);
+//            System.out.println("\ngetNamaFile " + file.getName() + ";apaFile " + file.getContentType());
+//            System.out.println("\ngetFileAbsolutePath: " + Paths.get(fileName).toAbsolutePath().normalize());
+//            System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
         }
         return myUserRepository.save(newUser);
 
@@ -100,7 +100,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MyUser findByEmployeeId(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
-        return myUser;
+        if (myUser != null) return myUser;
+        else throw new NotFoundException("Employee Not Found!");
     }
 
     @Override

@@ -161,5 +161,11 @@ https://dzone.com/articles/spring-boot-restful-api-documentation-with-swagger
 https://dzone.com/articles/spring-boot-2-restful-api-documentation-with-swagg
 https://www.vojtechruzicka.com/documenting-spring-boot-rest-api-swagger-springfox/
 
+Mockito Difference @Mock and @MockBean:
+-- Mock =  doesn't need any dependencies from the Spring Boot container, the classic/plain Mockito is the way to follow : it is fast and favors the isolation of the tested component.
+-- MockBean = rely on the Spring Boot container and you want also to add or mock one of the container beans
+--          Often @WebMvcTest will be limited to a single controller and used in combination with @MockBean to provide mock implementations for required collaborators.
+https://stackoverflow.com/questions/44200720/difference-between-mock-mockbean-and-mockito-mock
+
 
 

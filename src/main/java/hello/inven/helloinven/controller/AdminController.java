@@ -143,9 +143,9 @@ public class AdminController {
     @GetMapping(value = "/admin/employee/{id}")
     public String employeeList(@PathVariable Long id, Model model) {
         MyUser myUser = adminService.findByEmployeeId(id);
+        if (myUser != null)
         model.addAttribute("employee", myUser);
         return "admin/employeedetails";
-//        return "profile";
     }
 
     @DeleteMapping(value = "/admin/employee/{id}/delete")

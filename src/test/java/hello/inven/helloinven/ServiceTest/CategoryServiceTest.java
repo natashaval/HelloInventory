@@ -11,10 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -59,7 +56,7 @@ public class CategoryServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void getOneCategory_NotFound(){
-        when(categoryRepositoryMock.findById(1)).thenReturn(categoryOpt);
+//        when(categoryRepositoryMock.findById(1)).thenReturn(categoryOpt);
         Category categoryNotFound = categoryServiceMock.getOneCategory(2);
 //        Assert.assertNotEquals(categoryNotFound, categoryOpt.get());
     }
@@ -68,12 +65,12 @@ public class CategoryServiceTest {
     @Test
     public void getAllCategories_Found(){
         Category category = new Category("Category Test", "category for test all categories");
-        List<Category> categoryList = Collections.singletonList(category);
+        Category category1 = new Category("Category Test2", "category for test all categories2");
+        List<Category> categoryList = Arrays.asList(category, category1);
         when(categoryRepositoryMock.findAll()).thenReturn(categoryList);
-
         List<Category> returned = categoryServiceMock.getAllCategories();
-        Assert.assertEquals(returned, categoryList);
-        Assert.assertEquals(returned.size(), 1);
+        Assert.assertEquals(categoryList, returned);
+        Assert.assertEquals(2, returned.size());
     }
 
 //    https://www.developer.com/java/other/article.php/10936_3882311_2/Mockito-Java-Unit-Testing-with-Mock-Objects.htm
@@ -127,6 +124,13 @@ public class CategoryServiceTest {
         verify(categoryRepositoryMock, times(1)).deleteById(CATEGORY_ID);
         Assert.assertEquals(categoryOpt.get(), categoryAfter);
     }
+
+    @Test(expected = NotFoundException.class)
+    public void deleteCategory_NotFound(){
+        when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
+        Category categoryAfter = categoryServiceMock.deleteCategory(2);
+    }
+
 
 
 
