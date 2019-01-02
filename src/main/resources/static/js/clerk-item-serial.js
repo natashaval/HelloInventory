@@ -69,9 +69,10 @@ $('#serial-add-form').submit(function (e) {
             $('#item-serial-table').DataTable().ajax.reload();
             $('#serial-add-form')[0].reset();
         },
-        error: function (e){
-            // $('.serialResult').append("<p style='color: red;'>Error</p>");
-            toastr.error(e.message, "Error", {
+        error: function(jqXHR, textStatus, errorThrown){
+            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+            console.log(errorJSON.message);
+            toastr.error(errorJSON.message, "Error", {
                 closeButton: true,
                 progressBar: true
             });
@@ -79,15 +80,6 @@ $('#serial-add-form').submit(function (e) {
     });
 
 });
-
-function getItemSerial(itemId){
-    var serialURL = "/clerk/item/" + itemId + "/serialJSON";
-    $.getJSON(serialURL, function(data){
-        $.each(data.data, function(i, value){
-            $('#item-serial-list').append("<p>" + value.serialId + "</p>");
-        });
-    });
-}
 
 function buttonView() {
 // https://www.w3schools.com/jquery/jquery_slide.asp

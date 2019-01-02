@@ -1,5 +1,6 @@
 package hello.inven.helloinven.serviceimpl;
 
+import hello.inven.helloinven.exceptionhandler.BadRequestException;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.response.ResponseAjax;
@@ -30,48 +31,51 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item createItem(Item item) throws IOException {
 //    public ResponseAjax createItem(Item item, MultipartFile file) throws IOException {
-        Item newItem = new Item();
-        System.out.println("item ID: " + item.getId() + "item Name: " + item.getName());
-        newItem.setId(item.getId());
-        newItem.setName(item.getName());
-        newItem.setItemType(Item.ItemType.ITEM);
-        newItem.setQuantity(item.getQuantity());
-        newItem.setPrice(item.getPrice());
-        newItem.setWeight(item.getWeight());
-        newItem.setHeight(item.getHeight());
-        newItem.setWidth(item.getWidth());
-        newItem.setDepth(item.getDepth());
+        Item existingItem = itemRepository.findById(item.getId()).orElse(null);
+        if (existingItem == null) {
+            Item newItem = new Item();
+            System.out.println("item ID: " + item.getId() + "item Name: " + item.getName());
+            newItem.setId(item.getId());
+            newItem.setName(item.getName());
+            newItem.setItemType(Item.ItemType.ITEM);
+            newItem.setQuantity(item.getQuantity());
+            newItem.setPrice(item.getPrice());
+            newItem.setWeight(item.getWeight());
+            newItem.setHeight(item.getHeight());
+            newItem.setWidth(item.getWidth());
+            newItem.setDepth(item.getDepth());
 
 //        Integer categoryId = item.getCategory().getId();
-        System.out.println("Category ID apakah dapat: " + item.getCategory().getId());
-        System.out.println("Ini cuma category: "+ item.getCategory());
+            System.out.println("Category ID apakah dapat: " + item.getCategory().getId());
+            System.out.println("Ini cuma category: " + item.getCategory());
 //        Category category = categoryRepository.findById(categoryId).get();
 
 
 //        newItem.setCategory(category);
-        newItem.setCategory(item.getCategory());
+            newItem.setCategory(item.getCategory());
 
-        MultipartFile file = item.getImage();
+            MultipartFile file = item.getImage();
 
-        if(!file.isEmpty()){
-            String fileName = file.getOriginalFilename();
-            InputStream is = file.getInputStream();
+            if (!file.isEmpty()) {
+                String fileName = file.getOriginalFilename();
+                InputStream is = file.getInputStream();
 //            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/item/";
-            String uploadDirectory = System.getProperty("user.dir") + "/uploads/item/";
+                String uploadDirectory = System.getProperty("user.dir") + "/uploads/item/";
 
-            try {
-                Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
-            }
-            catch (IOException e){
-                e.printStackTrace();
+                try {
+                    Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                newItem.setImagePath(fileName);
+                System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
             }
 
-            newItem.setImagePath(fileName);
-            System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
+            itemRepository.save(newItem);
+            return item;
         }
-
-         itemRepository.save(newItem);
-        return item;
+        else throw new BadRequestException("Item ID is already exists!");
     }
 
     @Override

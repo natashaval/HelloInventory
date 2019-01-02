@@ -101,10 +101,10 @@ $('#item-add-form').submit(function(e){
         cache: false,
         processData: false,
         contentType: false,
-        success: function(response){
-            console.info(response);
+        success: function(data){
+            // console.info(data);
             // $('#itemResult').append("<p class='text text-success'>Success in Adding Item</p>");
-            toastr.success("Item has been saved successfully!", "Success",{
+            toastr.success(data.data, data.status,{
                 closeButton: true,
                 progressBar: true
             })
@@ -114,9 +114,9 @@ $('#item-add-form').submit(function(e){
             });
 
         },
-        error: function(e){
-            // $('#itemResult').append("<p class='text text-danger'>Failed in Adding Item</p>");
-            toastr.error("Error in adding item", "Error", {
+        error: function(jqXHR, textStatus, errorThrown){
+            errorJSON = jQuery.parseJSON(jqXHR.responseText);
+            toastr.error(errorJSON.message, "Error", {
                 closeButton: true,
                 progressBar: true
             });

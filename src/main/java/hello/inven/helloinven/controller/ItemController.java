@@ -42,7 +42,7 @@ public class ItemController {
     @ResponseBody
     public ResponseAjax itemAddPost(@ModelAttribute("newItem") Item item) throws IOException {
         Item item1 = itemService.createItem(item);
-        return new ResponseAjax("Created", item1);
+        return new ResponseAjax("Created", "Item has been saved successfully!");
     }
 
     @GetMapping(value = "/clerk/item/show")

@@ -28,7 +28,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ActionTransaction approvedApproval(Long actionId, Boolean requestType){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElseThrow(null);
-//        if (transaction.getActionType().toString()!= "PendingApproval" || transaction.getActionType().toString()!="ReturnApproval") throw new BadRequestException("Action Transaction not allowed!");
+        if (transaction.getActionType().toString()!= "PendingApproval" || transaction.getActionType().toString()!="ReturnApproval") throw new BadRequestException("Action Transaction not allowed!");
         if (transaction != null){
             Date currentTime = new Date();
             transaction.setApprovedTime(currentTime);

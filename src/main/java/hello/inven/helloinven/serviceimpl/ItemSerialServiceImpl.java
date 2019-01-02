@@ -1,6 +1,7 @@
 package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.dto.ItemSerialOnly;
+import hello.inven.helloinven.exceptionhandler.BadRequestException;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.model.ItemSerial;
@@ -41,18 +42,19 @@ public class ItemSerialServiceImpl implements ItemSerialService {
 
         List<ItemSerial> itemSerialList = new ArrayList<>();
         for (Long itemSerial : itemSerialValues ){
-            System.out.println(itemSerial);
+//            System.out.println(itemSerial);
             if (itemSerial == null || itemSerial.toString().isEmpty()) {
 //                System.out.println("iniKosong: " + itemSerial);
                 continue;
             };
+            ItemSerial itemSerialExists = itemSerialRepository.findById(itemSerial).orElse(null);
+            if (itemSerialExists!= null) throw new BadRequestException("One of item serial inputted has already exists");
 
             ItemSerial newItemSerial = new ItemSerial();
             newItemSerial.setSerialId(itemSerial);
             newItemSerial.setItem(item);
             newItemSerial.setMyUser(clerk);
             newItemSerial.setClerkId(clerk.getId());
-
             itemSerialList.add(newItemSerial);
 
         }
