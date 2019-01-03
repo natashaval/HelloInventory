@@ -28,15 +28,10 @@
                 <td th:text="${emp.role.role}" />
                 <td th:text="${emp.managerId}" />
                 <td th:text="${emp.username}" />
-
-
-                <!--<td><img th:src="@{/uploads/employee/{photo}(photo=${emp.getPhoto()})}" alt="picture relative path"/></td>-->
-                <!--<td>ImageHandler: <img th:src="@{'/uploads/employee/' + ${emp.getPhoto()}}" /></td>-->
                 <td>
                     <a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}"><i class='far fa-list-alt'></i> Details</a>
                     <button class="btn btn-danger employee-delete" th:attr="data-employee-id=${emp.id}"><i class='fas fa-trash-alt'></i> Delete</button>
                 </td>
-                <!--<td><img th:src="@{${emp.photo}}" /></td>-->
             </tr>
         </tbody>
     </table>
@@ -48,7 +43,6 @@
             e.preventDefault();
 
             var employeeId = $(this).attr('data-employee-id');
-            console.log('category DELETE klik, id = ' + employeeId);
 
             bootbox.dialog({
                 message: "Are you sure you want to Delete? ",
@@ -72,7 +66,6 @@
                                 url: "/admin/employee/" + employeeId + "/delete",
                                 contentType: 'application/json; charset=utf-8',
                                 success: function(data){
-                                    // console.log(result);
                                     window.location.reload();
                                     if (data.status == "Deleted"){
                                         toastr.warning(data.data, data.status, {
@@ -86,8 +79,6 @@
                                             progressBar: true
                                         });
                                     }
-
-                                    // fetchCategory();
                                 },
                                 error: function(e){
                                     bootbox.alert('Error in Delete!');
