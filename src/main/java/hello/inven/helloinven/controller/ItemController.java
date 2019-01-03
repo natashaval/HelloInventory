@@ -6,6 +6,7 @@ import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.service.CategoryService;
 import hello.inven.helloinven.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @GetMapping(value = "/clerk/item")
-    public String item(){return "clerk/item"; }
+//    @GetMapping(value = "/clerk/item")
+//    public String item(){return "clerk/item"; }
 
     @GetMapping(value = "/clerk/item/list")
     public String itemList(){return "clerk/item-list";}
@@ -40,6 +41,7 @@ public class ItemController {
 
     @PostMapping(value = "/clerk/item/add")
     @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseAjax itemAddPost(@ModelAttribute("newItem") Item item) throws IOException {
         Item item1 = itemService.createItem(item);
         return new ResponseAjax("Created", "Item has been saved successfully!");
@@ -69,13 +71,13 @@ public class ItemController {
     public String itemDetails(@PathVariable Long id, Model model){
         Item item = itemService.detailItem(id);
         model.addAttribute("item", item);
-        return "/clerk/item-view";
+        return "clerk/item-view";
     }
 
     @GetMapping(value = "/clerk/item/{id}/print")
     public String itemPrint(@PathVariable Long id, Model model){
         Item item = itemService.detailItem(id);
         model.addAttribute("item", item);
-        return "/clerk/item-print";
+        return "clerk/item-print";
     }
 }

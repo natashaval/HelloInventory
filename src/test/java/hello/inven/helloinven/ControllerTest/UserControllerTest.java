@@ -1,19 +1,59 @@
 package hello.inven.helloinven.ControllerTest;
 
+import hello.inven.helloinven.controller.UserController;
+import hello.inven.helloinven.exceptionhandler.CustomRestExceptionHandler;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
-//    @InjectMocks dari controller yang dituju
+    private MockMvc mockMvc;
 
-     // @Setup MvcBuilder dengan stand alone controller dari inject mock
+    @InjectMocks
+    UserController userController;
 
-    // mvc perform (post, delete, get). contentType. content
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(CustomRestExceptionHandler.class)
+                .build();
+    }
 
-    // pakai HashMap untuk mengakses key, value dari JSON (?) dan harus di ObjectMapper String
+    @Test
+    public void home() throws Exception{
+        this.mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("home"))
+                .andExpect(forwardedUrl("home"));
+    }
 
-    // mvc ANDEXPECT (seperti Assert Equals) check JSON / status Bad Request
+    @Test
+    public void clerkDashboard() throws Exception{
+        this.mockMvc.perform(get("/clerk/dashboard"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("clerk/dashboard"))
+                .andExpect(forwardedUrl("clerk/dashboard"));
+    }
 
-    // verify categoryservice dipanggil berapa kali
-//   verify(categoryService, times(1).createCategory(any())
+    @Test
+    public void managerDashboard() throws Exception{
+        this.mockMvc.perform(get("/manager/dashboard"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("manager/dashboard"))
+                .andExpect(forwardedUrl("manager/dashboard"));
+    }
 }

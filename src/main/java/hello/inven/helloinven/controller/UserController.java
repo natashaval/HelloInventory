@@ -49,12 +49,11 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String userProfile(ModelMap modelMap){
+    public String userProfile(Model model){
 //        https://stackoverflow.com/questions/18975077/how-to-add-object-in-using-model-addattributes-in-spring-mvc
         MyUserDetails myUserDetails = (MyUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser user = myUserDetails.getUser();
-        System.out.print(user);
-        modelMap.put("user", user);
+        model.addAttribute("user", user);
         return "profile";
     }
 

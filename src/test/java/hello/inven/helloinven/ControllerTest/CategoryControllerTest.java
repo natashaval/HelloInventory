@@ -51,7 +51,7 @@ public class CategoryControllerTest {
     private JacksonTester<Category> jsonCategory;
 //    https://memorynotfound.com/unit-test-spring-mvc-rest-service-junit-mockito/
     @Before
-    public void init() {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(categoryController)
                 .setControllerAdvice(CustomRestExceptionHandler.class)
@@ -76,7 +76,6 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.data[1].name", is("Category Test1")))
                 .andExpect(jsonPath("$.data[1].description", is("category1 for unit test")));
         verify(categoryServiceMock, times(1)).getAllCategories();
-        verifyNoMoreInteractions(categoryServiceMock);
     }
 
     @Test
@@ -89,7 +88,6 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.status", is("Done")))
                 .andExpect(jsonPath("$.data", hasSize(0)));
         verify(categoryServiceMock, times(1)).getAllCategories();
-        verifyNoMoreInteractions(categoryServiceMock);
     }
 
     @Test
@@ -125,7 +123,6 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.data.name", is("Category Test")))
                 .andExpect(jsonPath("$.data.description", is("category for unit test")));
         verify(categoryServiceMock, times(1)).getOneCategory(1);
-        verifyNoMoreInteractions(categoryServiceMock);
     }
 
 //    https://www.petrikainulainen.net/programming/spring-framework/unit-testing-of-spring-mvc-controllers-rest-api/
@@ -136,7 +133,6 @@ public class CategoryControllerTest {
                 .andExpect(status().isNotFound());
 //                .andExpect(jsonPath("$.message",is("Category not found!")));
         verify(categoryServiceMock, times(1)).getOneCategory(1);
-        verifyNoMoreInteractions(categoryServiceMock);
     }
 
 //    https://memorynotfound.com/unit-test-spring-mvc-rest-service-junit-mockito/
@@ -169,7 +165,6 @@ public class CategoryControllerTest {
         .andExpect(jsonPath("$.data", is("Category has been successfully deleted")));
 
         verify(categoryServiceMock, times(1)).deleteCategory(1);
-        verifyNoMoreInteractions(categoryServiceMock);
     }
 
     @Test
