@@ -20,7 +20,6 @@ import java.util.Set;
 @Table(name = "item")
 public class Item extends AuditModel {
 
-//    https://www.codejava.net/frameworks/hibernate/hibernate-enum-type-mapping-example
     public enum ItemType {
         ITEM, ASSET
     }
@@ -33,7 +32,6 @@ public class Item extends AuditModel {
     private String name;
 
     @Transient
-//    https://www.quora.com/What-is-Transient-in-Hibernate-What-is-use-of-this
     private MultipartFile image;
 
     @Column
@@ -59,25 +57,14 @@ public class Item extends AuditModel {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
-    // nullable = true, karena jika category nya dihapus item masih ada
-
-//    https://grokonez.com/json/resolve-json-infinite-recursion-problems-working-jackson
-//    @JsonIgnore
     @JsonIgnoreProperties(value = "items", allowSetters = true)
     private Category category;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "primaryKey.item", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private Set<Asset> assets = new HashSet<Asset>();
-
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties(value = {"item", "myUser"})
     @JsonIgnore
     private List<ItemSerial> itemSerials;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.item", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JsonIgnoreProperties(value = {"item", "actionTransaction"})
-//    @JsonIgnoreProperties(value = "actionItemId")
     @JsonIgnore
     private List<ActionItem> actionItemList = new ArrayList<>();
 

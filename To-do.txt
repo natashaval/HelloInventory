@@ -1,3 +1,0 @@
-1. Mengganti UserController menjadi ModelAndView
-2. TyhmeLeaf fragment header and footer
-3. Findbyusername (?)

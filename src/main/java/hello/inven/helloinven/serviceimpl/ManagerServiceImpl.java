@@ -21,16 +21,13 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public List<ActionTransaction> requestApproval(ActionTransaction.ActionType actionType, MyUser manager){
         List<ActionTransaction> transactionList = transactionRepository.findByActionTypeAndApprovedBy(actionType, manager.getId());
-//        if (transactionList.isEmpty()) throw new NotFoundException("Transaction list not found!");
         return transactionList;
     }
 
     @Override
     public ActionTransaction approvedApproval(Long actionId, Boolean requestType){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElseThrow(null);
-//        if(transaction.getActionType() instanceof ActionTransaction.ActionType && transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval)) System.out.println("Action Type: " + transaction.getActionType());
-//        else System.out.println("getActionType bukan DataType ActionType");
-//        if (!transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval)  || !transaction.getActionType().toString().equals(ActionTransaction.ActionType.ReturnApproval)) throw new BadRequestException("Action Transaction not allowed!");
+
         if(transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval)){
             if (transaction != null){
                 Date currentTime = new Date();
@@ -38,12 +35,9 @@ public class ManagerServiceImpl implements ManagerService {
                 if (requestType == true) transaction.setActionType(ActionTransaction.ActionType.PendingInventory);
                 else if (requestType == false) transaction.setActionType(ActionTransaction.ActionType.ReturnInventory);
                 transaction = transactionRepository.save(transaction);
-    //            return new ResponseAjax("Done", "Request Approved and Sent to Inventory!");
                 return transaction;
             }
             else {
-    //            return new ResponseAjax("Failed", "Request not found!");
-                System.out.println("Not Found");
                 throw new NotFoundException("Request not found!");
 
             }
@@ -57,13 +51,10 @@ public class ManagerServiceImpl implements ManagerService {
         if(transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval)) {
             if (transaction != null) {
                 Date currentTime = new Date();
-//            transaction.setApprovedTime(currentTime);
                 transaction.setActionType(ActionTransaction.ActionType.RejectApproval);
                 transaction = transactionRepository.saveAndFlush(transaction);
-//            return new ResponseAjax("Done", "Request Rejected!");
                 return transaction;
             } else {
-//            return new ResponseAjax("Failed", "Request not found!");
                 throw new NotFoundException("Request not found!");
             }
         }

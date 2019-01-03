@@ -23,14 +23,8 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-//    @GetMapping(value = "/clerk/item")
-//    public String item(){return "clerk/item"; }
-
     @GetMapping(value = "/clerk/item/list")
     public String itemList(){return "clerk/item-list";}
-
-//    @GetMapping(value = "/clerk/item/{id}/details")
-//    public String itemDetails() {return "clerk/item-view"; }
 
     @GetMapping(value = "/clerk/item/add")
     public String itemAdd(Model model){
@@ -61,11 +55,6 @@ public class ItemController {
         itemService.deleteItem(id);
         return new ResponseAjax("Deleted", "Item has been deleted!");
     }
-
-//    @GetMapping(value = "/clerk/item/{id}")
-//    public @ResponseBody ResponseAjax itemDetails(@PathVariable Long id){
-//        return itemService.detailItem(id);
-//    }
 
     @GetMapping(value = "/clerk/item/{id}")
     public String itemDetails(@PathVariable Long id, Model model){

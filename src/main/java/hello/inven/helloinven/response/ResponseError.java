@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter @Setter
 
-//https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
 // Custom Error Message
 public class ResponseError {
     private HttpStatus status;

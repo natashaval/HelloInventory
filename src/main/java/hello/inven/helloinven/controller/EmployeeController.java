@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-//https://stackoverflow.com/questions/3087548/can-spring-security-use-preauthorize-on-spring-controllers-methods
 @PreAuthorize("hasAuthority('EMPLOYEE') or hasAuthority('MANAGER')")
 public class EmployeeController {
     @Autowired

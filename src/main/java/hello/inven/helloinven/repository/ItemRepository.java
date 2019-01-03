@@ -12,8 +12,6 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAll();
 
+    // Mencari Item yang termasuk Asset sehingga dapat di request oleh Employee
     List<Item> findItemByItemType(Item.ItemType itemType);
-
-    @Query(value = "SELECT id, name, imagePath from Item where itemType = :itemType")
-    List<Item> findItemIdAndNameByItemType(@Param("itemType")Item.ItemType itemType);
 }

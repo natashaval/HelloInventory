@@ -36,7 +36,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Item> getAllItemAssets(){
         List<Item> itemList = itemRepository.findItemByItemType(Item.ItemType.ASSET);
-//        List<Item> itemList = itemRepository.findItemIdAndNameByItemType(Item.ItemType.ASSET);
         // Jika menggunakan Query sendiri akan menghasilkan array, bukan Object
         return itemList;
     }
@@ -63,8 +62,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         transaction.setActionRemarks(comment);
         transaction = transactionRepository.saveAndFlush(transaction);
 
-        System.out.println("\nget transaction ID: " + transaction.getActionId());
-
         // ------ Masukkan barang transaksi
         if (requestType == true) {
             List<ActionItem> actionItemList = new ArrayList<>();
@@ -82,7 +79,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             actionItemRepository.saveAll(actionItemList);
             return  actionItemList;
-//            return new ResponseAjax("Done", "Items have been requested!");
         }
 
         else if (requestType == false){
@@ -101,10 +97,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             actionItemRepository.saveAll(actionItemList);
             return actionItemList;
-//            return new ResponseAjax("Done", "Items are asked to be returned!");
         }
 
-//        return new ResponseAjax("Wrong", "Something wrong happened!");
         throw new BadRequestException("Request / Return Error happened!");
     }
 
@@ -132,18 +126,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<ActionItem> getActionItemStatus(Long actionId, MyUser myUser){
         List<ActionItem> itemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
         return itemList;
-//        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "Item status not found!");
-//        return new ResponseAjax("Found", itemList);
     }
 
     @Override
     public ActionTransaction cancelRequest(Long actionId, MyUser myUser){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
         if (transaction == null) throw new NotFoundException("Action Transaction not found!");
-//        if (transaction.getActionType().toString() != "PendingApproval"
-//                || transaction.getActionType().toString() != "PendingInventory"
-//                || transaction.getActionType().toString() != "ReturnApproval")
-//            throw new BadRequestException("Not allowed to POST cancel request!");
+
         if (transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval.toString()) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingInventory.toString()) || transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval.toString()) ) {
             transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
             List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
@@ -155,7 +144,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             return transaction;
         }
         else throw new BadRequestException("Request are not allowed to be cancelled!");
-//        return new ResponseAjax("Cancelled", "Request has been cancelled!");
     }
 
     @Override
@@ -218,7 +206,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         actionItem.setReceiveEmpTime(currentTime);
         actionItemRepository.save(actionItem);
         return actionItem;
-//        return new ResponseAjax("Success", "Item has been received! Check 'My Item'");
     }
 
     /* ============ Employee > Return Item =========== */

@@ -48,20 +48,15 @@ public class ClerkServiceImpl implements ClerkService {
                 }
             }
             return serialSave;
-//            return new ResponseAjax("Success", serialSave);
         }
 
         else {
-//            return new ResponseAjax("Failed", "Assign Item Serial to Employee Failed!");
             throw new BadRequestException("Assign Item Serial to Employee Failed!");
         }
-
     }
 
     @Override
     public List<ActionItem> receiveItemRequest(MyUser clerk, Boolean requestType){
-//        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatus(clerk.getId(), ActionItem.ItemStatus.Pending);
-//        List<ActionItem> items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending);
         List<ActionItem> items = new ArrayList<>();
         if (requestType == true) {
             items = actionItemRepository.findActionItemsByReceivedByAndItemStatusAndActionItemIdActionTransactionActionTypeAndActionItemIdActionTransactionApprovedTimeNotNull(clerk.getId(), ActionItem.ItemStatus.Pending, ActionTransaction.ActionType.PendingInventory);
@@ -74,8 +69,6 @@ public class ClerkServiceImpl implements ClerkService {
 
     @Override
     public ActionItem itemRequestActions(Long actionTransactionId, Long itemId, Long itemSerial, Boolean action) {
-//        ActionItem actionItem = actionItemRepository.findActionItemByActionTransactionActionIdAndItemId(actionTransactionId, itemId);
-//        ActionItem actionItem = actionItemRepository.findActionItemForStatus(actionTransactionId, itemId, 0);
         ActionItem actionItem = actionItemRepository.findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus.Pending, actionTransactionId, itemId);
         if (action == Boolean.TRUE) { //Inventory Item Request Accepted
             actionItem.setItemStatus(ActionItem.ItemStatus.Sent);
@@ -83,14 +76,13 @@ public class ClerkServiceImpl implements ClerkService {
             actionItem.setReceivedTime(currentTime);
             actionItem.setItemSerialId(itemSerial);
             actionItemRepository.save(actionItem);
-//            return new ResponseAjax("Approved", "Item Sent to Employee");
             return actionItem;
+
         } else if (action == Boolean.FALSE) {
             actionItem.setItemStatus(ActionItem.ItemStatus.Rejected);
             Date currentTime = new Date();
             actionItem.setReceivedTime(currentTime);
             actionItemRepository.save(actionItem);
-//            return new ResponseAjax("Rejected", "Item Request has been rejected!");
             return actionItem;
         }
         else throw new NotFoundException("Requested item Not Found!");
@@ -104,7 +96,6 @@ public class ClerkServiceImpl implements ClerkService {
             Date currentTime = new Date();
             actionItem.setReceivedTime(currentTime);
             actionItemRepository.save(actionItem);
-//            return new ResponseAjax("Received", "Item has arrived back in inventory!");
             return actionItem;
         }
         else throw new NotFoundException("Returned item Not Found!");

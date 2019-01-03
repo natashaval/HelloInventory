@@ -10,18 +10,12 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
-//https://www.codejava.net/frameworks/hibernate/hibernate-many-to-many-association-with-extra-columns-in-join-table-example
-
-@Embeddable
+@Embeddable // so this class can be embedded in other entities, to hold composite entity identifier
 public class ActionItemId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties(value = {"category", "actionItemList"})
-//    @JsonIgnore
     private Item item;
 
     @ManyToOne
-//    @JsonIgnoreProperties(value = "actionItemList")
-//    @JsonIgnore
     private ActionTransaction actionTransaction;
 
     public Item getItem() {

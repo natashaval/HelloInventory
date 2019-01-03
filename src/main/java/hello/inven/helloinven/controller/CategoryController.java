@@ -19,10 +19,6 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-//    https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
-//    https://www.baeldung.com/spring-boot-start
-//    https://progressive-code.com/post/10/Simple-Spring-Boot-CRUD-application-with-Thymeleaf,-JPA-and-Bootstrap
-
     @GetMapping("/clerk/category")
     public String category() { return "clerk/category";}
 
@@ -36,13 +32,11 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseAjax category2Add(@Valid @RequestBody Category category){
         return new ResponseAjax("Saved", categoryService.createCategory(category));
-//        Category category1 = categoryService.createCategory(category);
-//        return new ResponseEntity<>(new ResponseAjax("Saved", category1), HttpStatus.CREATED);
     }
 
-//    @DeleteMapping(value = "/clerk/category2/{id}/delete")
     @DeleteMapping(value = "/clerk/category2/{id}")
-    public @ResponseBody ResponseAjax category2Delete(@PathVariable Integer id){
+    @ResponseBody
+    public ResponseAjax category2Delete(@PathVariable Integer id){
         categoryService.deleteCategory(id);
         return new ResponseAjax("Deleted", "Category has been successfully deleted");
     }
@@ -53,22 +47,10 @@ public class CategoryController {
         return new ResponseAjax("Done", categoryService.getOneCategory(id));
     }
 
-//    @PutMapping(value = "/clerk/category2/{id}/edit")
     @PutMapping(value = "/clerk/category2/{id}")
     public @ResponseBody ResponseAjax category2Edit(@RequestBody Category category, @PathVariable Integer id){
         Category category1 = categoryService.editCategory(category, id);
-        return new ResponseAjax("Updated",category);
+        return new ResponseAjax("Updated",category1);
     }
-//
-//    @GetMapping(value = "/clerk/category/{id}")
-//    @ResponseBody
-//    public ResponseEntity<ResponseAjax> categoryDetails(@PathVariable Integer id){
-//        Category category = categoryService.getOneCategory(id);
-//        if (category == null) {
-//            ResponseAjax responseAjax = new ResponseAjax("Not Found", category);
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseAjax);
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAjax("Found", category));
-//    }
 
 }

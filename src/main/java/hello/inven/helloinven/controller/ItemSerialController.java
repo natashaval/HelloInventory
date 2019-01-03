@@ -37,12 +37,6 @@ public class ItemSerialController {
     public ResponseAjax serialAddPost(@PathVariable Long id, @RequestParam(value = "serials[]") List<Long> itemSerialValues){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser clerk = myUserDetails.getUser();
-//
-//        System.out.println("Item Id: " + id);
-//        for (Long itemSerial: itemSerialValues) {
-//            System.out.println(itemSerial);
-//        }
-
         itemSerialService.createItemSerial(clerk, id, itemSerialValues);
         return new ResponseAjax("Done", "Item Serials has been saved!");
 

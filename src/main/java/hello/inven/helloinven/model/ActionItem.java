@@ -11,16 +11,15 @@ import java.util.Date;
 @Getter @Setter
 
 @Entity
-@Table(name = "action_item")
+@Table(name = "action_item") // ActionTransaction many-to-many Item
+// mapping the join table using composite-ID class (ActionItemId)
 @AssociationOverrides({ // override the mapping for MyUser and Item for composite key
         @AssociationOverride(name = "actionItemId.actionTransaction", joinColumns = @JoinColumn(name = "action_id")),
         @AssociationOverride(name = "actionItemId.item", joinColumns = @JoinColumn(name = "item_id"))
-        // AssociationOverride namanya harus sama dengan yang private AssetId primaryKey
+        // AssociationOverride namanya harus sama dengan yang private ActionItemId primaryKey
 })
 public class ActionItem { // Result of Many to Many Table
-    @EmbeddedId
-//    @JsonIgnoreProperties(value = {"item.actionItemList", "item.category"})
-//    @JsonIgnoreProperties(value = {"item", "actionTransaction"})
+    @EmbeddedId // embedding composite-id as primary key
     @JsonIgnore
     private ActionItemId actionItemId = new ActionItemId();
 

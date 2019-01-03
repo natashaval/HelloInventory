@@ -22,8 +22,6 @@ import java.util.List;
 @Table(name = "action_transaction")
 public class ActionTransaction {
     public enum ActionType {
-//        Requested, AskApproval, Approved, AskInventory, HandedOver,
-//        Done, Rejected, Cancelled, Returned
         PendingApproval, // Waiting for Manager Approval
         PendingInventory, // Waiting for Clerk to accept it
         HandedOver, // (Several) item is being sent
@@ -38,8 +36,6 @@ public class ActionTransaction {
     }
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "action_generator")
-//    @SequenceGenerator(name = "action_generator", sequenceName = "action_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "action_id", unique = true, nullable = false, updatable = false)
     private Long actionId;
@@ -62,18 +58,11 @@ public class ActionTransaction {
     @Column
     private Date approvedTime;
 
-//    @Column
-//    private Long receivedBy; // Ask the item to clerk
-//
-//    @Column
-//    private Long receivedTime;
-
     @Column
     private String actionRemarks;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "actionItemId.actionTransaction", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnoreProperties(value = {"actionItemId", "actionTransaction"})
-//    @JsonIgnore
     private List<ActionItem> actionItemList = new ArrayList<>();
 
     public ActionTransaction(ActionType actionType, MyUser requestedBy, Date requestTime, Long approvedBy, Date approvedTime, String actionRemarks, List<ActionItem> actionItemList) {

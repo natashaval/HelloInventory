@@ -30,6 +30,7 @@ public class ManagerController {
         return "manager/item-approval";
     }
 
+    // Manager show list of requested item to be approved
     @GetMapping("/manager/action/approval")
     @ResponseBody
     public ResponseAjax managerActionApprovalJSON(){

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
+
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -38,7 +38,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category editCategory(Category categoryRequest, Integer id){
-        // https://stackoverflow.com/questions/49316751/spring-data-jpa-findone-change-to-optional-how-to-use-this
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null){
             category.setName(categoryRequest.getName());
@@ -56,9 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.deleteById(id);
             System.out.println("Deleted Category Returned: " + category.getName());
             return category;
-//            return new ResponseAjax("Deleted", "Category has been successfully deleted");
         }
-//        return new ResponseAjax("Failed", "Category failed to be deleted!");
         else throw new NotFoundException("Category not found and failed to be deleted!");
     }
 

@@ -12,7 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-//https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
+
 @ControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -49,16 +49,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(
                 responseError, new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
     }
-
-//    http://www.springboottutorial.com/spring-boot-validation-for-rest-services
-//    Method not @Valid ex @NotNull, @Min, @Size
-
-
-//    @ExceptionHandler({Exception.class})
-//    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request){
-//        ResponseError responseError = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured!");
-//        return new ResponseEntity<Object>(responseError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
 
     /* ============ EXCEPTION HANDLER FOR SERVICE HELLOINVEN ==========*/
     @ExceptionHandler({NotFoundException.class})

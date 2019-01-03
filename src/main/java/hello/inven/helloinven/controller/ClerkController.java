@@ -20,7 +20,8 @@ public class ClerkController {
 
     /* =========== CLERK DO BULK ASSIGNMENT OF ITEM SERIAL TO EMPLOYEE =========== */
 
-    @GetMapping(value = "/clerk/employeelist") // hanya menampilkan employee yang termasuk Role Manager / Employee
+    // hanya menampilkan employee yang termasuk Role Manager / Employee untuk memilih Assign Employee
+    @GetMapping(value = "/clerk/employeelist")
     @ResponseBody
     public ResponseAjax managerAndEmployeeList(){
 
@@ -29,6 +30,7 @@ public class ClerkController {
         else return new ResponseAjax("Not Found", managerAndEmployee);
     }
 
+    // Assign employee to item serial
     @PostMapping(value = "/clerk/item/{id}/assign")
     @ResponseBody
     public ResponseAjax itemAssignPost(@PathVariable Long id, @RequestParam(value = "serial_employee[]") List<Long> employeeValues){
@@ -40,6 +42,7 @@ public class ClerkController {
 
     /* =========== CLERK APPROVE (SENT) / REJECT ITEM FROM EMPLOYEE REQUEST ========== */
 
+    // Clerk get lsit of requested item under his name
     @GetMapping(value = "/clerk/item/receive")
     @ResponseBody
     public ResponseAjax receiveItem(){
@@ -54,6 +57,7 @@ public class ClerkController {
         return "clerk/item-approval";
     }
 
+    // Clerk approve request item form
     @PostMapping(value = "/clerk/item/approve")
     @ResponseBody
     public ResponseAjax approveItem(
@@ -64,6 +68,7 @@ public class ClerkController {
         return new ResponseAjax("Approved", "Item Sent to Employee");
     }
 
+    // Clerk reject request item form
     @PostMapping(value = "/clerk/item/reject")
     @ResponseBody
     public ResponseAjax rejectItem(
@@ -78,6 +83,7 @@ public class ClerkController {
     @GetMapping(value = "/clerk/item/return-approval")
     public String clerkItemReturnApproval(){return "clerk/item-return-approval";}
 
+    // Clerk get list of returned item under his name
     @GetMapping("/clerk/item/return")
     @ResponseBody
     public ResponseAjax returnItem(){
@@ -87,6 +93,7 @@ public class ClerkController {
         return new ResponseAjax("Found", items);
     }
 
+    // Clerk accept returned item
     @PutMapping(value = "/clerk/item/return-approve")
     @ResponseBody
     public ResponseAjax approveItemReturn(

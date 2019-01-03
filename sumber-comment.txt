@@ -1,0 +1,120 @@
+Configuration:
+ApplicationConfig.java -> Enable JPA Auditing
+//https://stackoverflow.com/questions/41250177/getting-at-least-one-jpa-metamodel-must-be-present-with-webmvctest
+
+CustomAuthenticationHandler.java -> Redirect after Login based on Role
+//https://www.javainuse.com/spring/boot_form_authentication_handler
+//https://www.devglan.com/spring-security/spring-boot-security-redirect-after-login
+//https://www.baeldung.com/spring_redirect_after_login
+
+SecurityConfig.java -> Auth User & antMatcher allowed page
+// https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot#4_Configure_Database
+-> configure swagger
+//https://stackoverflow.com/questions/37671125/how-to-configure-spring-security-to-allow-swagger-url-to-be-accessed-without-aut
+//https://stackoverflow.com/questions/47425048/why-does-springfox-swagger2-ui-tell-me-unable-to-infer-base-url
+//        https://stackoverflow.com/questions/43052745/how-to-fix-role-in-spring-security
+//        https://stackoverflow.com/questions/43591834/spring-security-hasauthority-is-ignored-when-configured-globally-for-httpsecuri
+//https://memorynotfound.com/spring-boot-spring-security-thymeleaf-form-login-example/
+//        https://stackoverflow.com/questions/49312301/encrypting-inmemoryauthentication-passwords-with-bcrypt
+//    https://www.jackrutorial.com/2018/04/spring-boot-security-rest-authentication.html
+//    https://medium.com/@ziatheonlyone/spring-rest-api-part-3-spring-security-basic-authentication-3fd20342745b
+
+SwaggerConfig.java
+//https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+//http://www.springboottutorial.com/spring-boot-swagger-documentation-for-rest-services
+//https://dzone.com/articles/spring-boot-2-restful-api-documentation-with-swagg
+
+WebMvcConfig.java
+// https://www.browserling.com/tools/bcrypt
+//    https://stackoverflow.com/questions/45651119/spring-boot-images-uploading-and-serving -> store and serve image in app directory
+https://stackoverflow.com/questions/24916894/serving-static-web-resources-in-spring-boot-spring-security-application
+
+Controller:
+AdminController.java
+https://o7planning.org/en/11659/thymeleaf-form-select-option-example
+https://www.javacodegeeks.com/2017/10/validation-thymeleaf-spring.html -> for validation
+https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
+
+CategoryController.java -> create CRUD in controller
+https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
+https://www.baeldung.com/spring-boot-start
+https://progressive-code.com/post/10/Simple-Spring-Boot-CRUD-application-with-Thymeleaf,-JPA-and-Bootstrap
+
+EmployeeController.java
+//https://stackoverflow.com/questions/3087548/can-spring-security-use-preauthorize-on-spring-controllers-methods
+
+UserController.java
+//    why use ModelAndView? This interface allows us to pass all the information required by Spring MVC in one return
+//    https://www.baeldung.com/spring-mvc-model-model-map-model-view
+// https://grokonez.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-mysql-spring-boot#4_Configure_Database
+https://www.baeldung.com/get-user-in-spring-security
+https://www.jackrutorial.com/2018/04/spring-boot-user-registration-login.html
+https://stackoverflow.com/questions/18975077/how-to-add-object-in-using-model-addattributes-in-spring-mvc
+
+exceptionhandler:
+CustomRestExceptionHandler.java
+//https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
+http://www.springboottutorial.com/spring-boot-validation-for-rest-services
+http://www.springboottutorial.com/spring-boot-exception-handling-for-rest-services
+
+model
+ActionItemId.java
+//https://www.codejava.net/frameworks/hibernate/hibernate-many-to-many-association-with-extra-columns-in-join-table-example
+ActionTransaction.java
+
+//https://www.mkyong.com/hibernate/hibernate-many-to-many-example-join-table-extra-column-annotation/
+//https://huongdanjava.com/many-many-relationship-extra-columns-jpa.html
+//https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
+//https://www.codejava.net/frameworks/hibernate/hibernate-many-to-many-association-with-extra-columns-in-join-table-example
+
+AuditModel.java
+//    https://stackoverflow.com/questions/25333711/what-is-the-use-of-the-temporal-annotation-in-hibernate
+
+Category.java -> agar tidak rekursif
+//    https://stackoverflow.com/questions/31465440/recursive-json-view-of-an-entity-with-one-to-many-relationship-in-rest-controll
+//    agar tidak keluar rekursif, ketika item panggil category, category panggil item, dst
+//    @JsonIgnoreProperties
+//    https://www.concretepage.com/jackson-api/jackson-jsonignore-jsonignoreproperties-and-jsonignoretype
+//    @JsonProperty("categoryItems")
+//    https://softwareengineering.stackexchange.com/questions/300115/best-way-to-deal-with-hibernate-1-many-relationship-over-rest-json-service
+//    @JsonIgnoreProperties(value = "category", allowSetters = true)
+
+Item.java
+https://www.codejava.net/frameworks/hibernate/hibernate-enum-type-mapping-example
+https://www.quora.com/What-is-Transient-in-Hibernate-What-is-use-of-this
+https://grokonez.com/json/resolve-json-infinite-recursion-problems-working-jackson
+
+MyUser.java
+//    https://stackoverflow.com/questions/11718459/onetomany-mappedby-maps-to
+//    https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+//    https://stackoverflow.com/questions/30548391/org-springframework-security-core-userdetails-user-cannot-be-cast-to-myuserdetai/30642269
+
+repository
+ItemSerialRepository.java -> mapping jika terdapat aggregasi
+//    https://stackoverflow.com/questions/36328063/how-to-return-a-custom-object-from-a-spring-data-jpa-group-by-query
+//    https://stackoverflow.com/questions/49682068/return-custom-object-using-custom-query-with-spring-data-jpa?rq=1
+
+
+MyUserRepository.java
+//    https://stackoverflow.com/questions/14446048/hibernate-table-not-mapped-error
+
+Role.java
+//    https://www.baeldung.com/hibernate-one-to-many
+
+reponse
+ResponseError.java
+//https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
+
+service
+MyUserDetailsService.java
+//    http://www.doubleh.ie/index.php/2016/09/09/how-to-save-db-user-entity-in-spring-security-authentication-object/
+
+serviceimpl
+AdminServiceImpl.java
+//    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/        
+//        http://aralmighty.com/uploading-files-spring-boot
+https://www.youtube.com/watch?v=Hef5pJkNCvA
+
+CategoryServiceImpl.java
+//https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
+// https://stackoverflow.com/questions/49316751/spring-data-jpa-findone-change-to-optional-how-to-use-this

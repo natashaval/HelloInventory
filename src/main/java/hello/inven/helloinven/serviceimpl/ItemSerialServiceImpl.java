@@ -26,10 +26,7 @@ public class ItemSerialServiceImpl implements ItemSerialService {
     ItemRepository itemRepository;
 
     @Override
-//    @Transactional
     public List<ItemSerialOnly> getItemSerialByItemId(Long itemId){
-//        List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemId(itemId);
-//        return new ResponseAjax("Done", itemSerials);
         List<ItemSerialOnly> serialOnly = itemSerialRepository.findItemSerialsOnlyByItemId(itemId);
         return serialOnly;
     }
@@ -42,9 +39,7 @@ public class ItemSerialServiceImpl implements ItemSerialService {
 
         List<ItemSerial> itemSerialList = new ArrayList<>();
         for (Long itemSerial : itemSerialValues ){
-//            System.out.println(itemSerial);
             if (itemSerial == null || itemSerial.toString().isEmpty()) {
-//                System.out.println("iniKosong: " + itemSerial);
                 continue;
             };
             ItemSerial itemSerialExists = itemSerialRepository.findById(itemSerial).orElse(null);
@@ -58,11 +53,8 @@ public class ItemSerialServiceImpl implements ItemSerialService {
             itemSerialList.add(newItemSerial);
 
         }
-//        System.out.println(itemSerialList);
         itemSerialRepository.saveAll(itemSerialList);
         return itemSerialList;
-
-//        return new ResponseAjax("Done", "Item Serials has been saved!");
     }
 
     @Override
@@ -71,12 +63,9 @@ public class ItemSerialServiceImpl implements ItemSerialService {
         if (itemSerial != null){
             itemSerialRepository.deleteById(serialId);
             return itemSerial;
-//            return new ResponseAjax("Deleted", "Item Serial has been deleted!");
         }
         else {
-//            return new ResponseAjax("Failed", "Item Serial is failed to be deleted!");
             throw new NotFoundException("Item Serial not found and failed to be deleted!");
         }
-
     }
 }

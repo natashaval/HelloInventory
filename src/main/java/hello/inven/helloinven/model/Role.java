@@ -22,9 +22,7 @@ public class Role {
     @Column(name = "role")
     private String role;
 
-//    https://www.baeldung.com/hibernate-one-to-many
     @OneToMany(mappedBy = "role")
-//    @JsonIgnoreProperties(value = "role", allowSetters = true)
     @JsonIgnore
     private Set<MyUser> users;
 
