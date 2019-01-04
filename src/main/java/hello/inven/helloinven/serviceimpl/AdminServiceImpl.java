@@ -88,7 +88,7 @@ public class AdminServiceImpl implements AdminService {
     public MyUser deleteEmployee(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
         if (myUser != null) {
-            if (!myUser.getPhoto().isEmpty()){
+            if (myUser.getPhoto()!=null){
                 String photoDirectory = System.getProperty("user.dir") + "/uploads/employee/";
                 try {
                     File file = new File(photoDirectory + myUser.getPhoto());

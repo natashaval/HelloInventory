@@ -37,10 +37,15 @@ public class AdminController {
 
     // Show list of all employee
     @GetMapping(value = "/admin/employeelist")
-    public String employeeList(Model model) {
-        List<MyUser> employees = adminService.findAll();
-        model.addAttribute("employees", employees);
+    public String employeeList() {
         return "admin/employeelist";
+    }
+
+    @GetMapping(value = "/admin/employee")
+    @ResponseBody
+    public ResponseAjax employeeJSON(){
+        List<MyUser> employees = adminService.findAll();
+        return new ResponseAjax("Success", employees);
     }
 
     // redirect to register employee form with role as option list

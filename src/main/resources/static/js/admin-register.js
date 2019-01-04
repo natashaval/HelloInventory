@@ -64,50 +64,11 @@ function seedManagerData(){
         // console.log(data.data);
         $.each(data.data, function (key, val){
             var managerObj = {};
-            // console.log("Key: " + key + "Val: " + val.name);
             managerObj["name"] = val.name;
             managerObj["id"] = val.id;
             managerList.push(managerObj);
         });
-
         console.log("Manager List: ");
         console.log(managerList);
     });
-
-
 }
-
-/*
-function ajaxPhoto() {
-	var form = $('#registerEmployeeForm')[0];
-	var data = new FormData(form);
-
-	data.append("CustomField", "This is some extra data, testing");
-
-    $('#registerSubmit').prop("disabled", true);
-
-    $.ajax({
-        type: "POST",
-        enctype: 'multipart/form-data',
-        url: "/admin/register",
-        data: data,
-
-        // prevent jQuery from automatically transforming the data into query string
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 60000,
-        success: function (data) {
-            $("#result").text(data);
-            console.log("SUCCESS: ", data);
-            $('#registerSubmit').prop("disabled", false);
-        },
-
-        error: function (e) {
-            $("#result").text(e.responseText);
-            console.log("ERROR: ", e);
-            $('#registerSubmit').prop("disabled", false);
-        }
-    })
-}
-*/

@@ -82,7 +82,7 @@ public class ItemServiceImpl implements ItemService {
                 try {
                     File file = new File(photoDirectory + item.getImagePath());
 
-                    if (file.delete() && file.isFile()) {
+                    if (file.delete()) {
                         System.out.println(file.getName() + "is deleted");
                     } else {
                         System.out.println("Delete file error");

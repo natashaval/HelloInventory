@@ -67,7 +67,6 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         errorJSON = jQuery.parseJSON(jqXHR.responseText);
-                        alert(errorJSON.message);
                         toastr.error(errorJSON.message, "Error", {
                             closeButton: true,
                             progressBar: true

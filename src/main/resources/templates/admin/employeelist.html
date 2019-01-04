@@ -5,13 +5,14 @@
 <head>
     <title>Employee List</title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/plugin/DataTables/dataTables.min.css}" />
 </head>
 <body>
 <div layout:fragment="content">
     <a href="/admin/register" class="btn btn-primary">Register Employee</a>
 
-    <table border="2">
-        <thead>
+    <table class="table table-hover" id="employee-table">
+        <thead class="thead-light">
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
@@ -20,80 +21,114 @@
             <th>Username</th>
             <th>Actions</th>
         </thead>
-        <tbody>
-            <tr th:each="emp: ${employees}">
-                <td th:text="${emp.id}" />
-                <td th:text="${emp.name}" />
-                <td th:text="${emp.email}" />
-                <td th:text="${emp.role.role}" />
-                <td th:text="${emp.managerId}" />
-                <td th:text="${emp.username}" />
-                <td>
-                    <a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}"><i class='far fa-list-alt'></i> Details</a>
-                    <button class="btn btn-danger employee-delete" th:attr="data-employee-id=${emp.id}"><i class='fas fa-trash-alt'></i> Delete</button>
-                </td>
-            </tr>
-        </tbody>
+        <!--<tbody>-->
+            <!--<tr th:each="emp: ${employees}">-->
+                <!--<td th:text="${emp.id}" />-->
+                <!--<td th:text="${emp.name}" />-->
+                <!--<td th:text="${emp.email}" />-->
+                <!--<td th:text="${emp.role.role}" />-->
+                <!--<td th:text="${emp.managerId}" />-->
+                <!--<td th:text="${emp.username}" />-->
+                <!--<td>-->
+                    <!--<a class="btn btn-warning" th:href="@{/admin/employee/{id}(id=${emp.id})}"><i class='far fa-list-alt'></i> Details</a>-->
+                    <!--<button class="btn btn-danger employee-delete" th:attr="data-employee-id=${emp.id}"><i class='fas fa-trash-alt'></i> Delete</button>-->
+                <!--</td>-->
+            <!--</tr>-->
+        <!--</tbody>-->
     </table>
 
+    <script type="text/javascript" th:src="@{/plugin/DataTables/dataTables.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript">
-        $('.employee-delete').click(function(e) {
-            e.preventDefault();
+        var empTable;
+        $(document).ready(function(){
+            empTable = $('#employee-table').DataTable({
+               ajax: "/admin/employee",
+               columns: [
+                   {"data": "id"},
+                   {"data": "name"},
+                   {"data": "email",
+                       render: function(data, type, row){
+                           return data.length > 10 ? data.substr(0, 20) + '...' : data;
+                       }
+                   },
+                   {"data": "role.role"},
+                   {"data": "managerId"},
+                   {"data": "username"},
+                   {
+                       "data": "id",
+                       "orderable": false,
+                       render: function (data, type, row) {
+                           return "<a class='btn btn-warning' href='/admin/employee/" + data + "'>Details</a> " +
+                               "<button type='button' class='btn btn-danger employee-delete'><i class='fas fa-trash-alt'></i> Delete</span></button> ";
+                       }
+                   }
+               ]
 
-            var employeeId = $(this).attr('data-employee-id');
+            });
+            empButton();
+        });
 
-            bootbox.dialog({
-                message: "Are you sure you want to Delete? ",
-                title: "<i class='fas fa-trash-alt'></i> Delete",
-                buttons: {
-                    success: {
-                        label: "Cancel",
-                        className: "btn-secondary",
-                        callback: function(){
-                            $('.bootbox').modal('hide');
-                        }
-                    },
-                    danger: {
-                        label: "Delete",
-                        className: "btn-danger",
-                        callback: function () {
-                            console.log("delete has been clicked" + employeeId);
+        function empButton() {
+            $('#employee-table tbody').on('click', '.employee-delete', function (e) {
+                itemRow = empTable.row($(this).parents('tr')).data();
+                console.log(itemRow);
 
-                            $.ajax({
-                                type: "DELETE",
-                                url: "/admin/employee/" + employeeId + "/delete",
-                                contentType: 'application/json; charset=utf-8',
-                                success: function(data){
-                                    window.location.reload();
-                                    if (data.status == "Deleted"){
-                                        toastr.warning(data.data, data.status, {
+                employeeId = itemRow.id;
+
+
+                bootbox.dialog({
+                    message: "Are you sure you want to Delete? ",
+                    title: "<i class='fas fa-trash-alt'></i> Delete",
+                    buttons: {
+                        success: {
+                            label: "Cancel",
+                            className: "btn-secondary",
+                            callback: function () {
+                                $('.bootbox').modal('hide');
+                            }
+                        },
+                        danger: {
+                            label: "Delete",
+                            className: "btn-danger",
+                            callback: function () {
+
+                                $.ajax({
+                                    type: "DELETE",
+                                    url: "/admin/employee/" + employeeId + "/delete",
+                                    contentType: 'application/json; charset=utf-8',
+                                    success: function (data) {
+                                        $('#employee-table').DataTable().ajax.reload();
+                                        if (data.status == "Deleted") {
+                                            toastr.warning(data.data, data.status, {
+                                                closeButton: true,
+                                                progressBar: true
+                                            });
+                                        }
+                                        else if (data.status == "Error") {
+                                            toastr.error(data.data, data.status, {
+                                                closeButton: true,
+                                                progressBar: true
+                                            });
+                                        }
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown){
+                                        errorJSON = jQuery.parseJSON(jqXHR.responseText);
+                                        toastr.error(errorJSON.message, "Error", {
                                             closeButton: true,
                                             progressBar: true
                                         });
                                     }
-                                    else if (data.status == "Error"){
-                                        toastr.error(data.data, data.status, {
-                                            closeButton: true,
-                                            progressBar: true
-                                        });
-                                    }
-                                },
-                                error: function(e){
-                                    bootbox.alert('Error in Delete!');
-                                    toastr.error(e, "Error", {
-                                        closeButton: true,
-                                        progressBar: true
-                                    });
-                                }
-                            });
+                                });
 
+                            }
                         }
                     }
-                }
+                });
+
             });
-        });
+        }
     </script>
 </div>
 </body>
