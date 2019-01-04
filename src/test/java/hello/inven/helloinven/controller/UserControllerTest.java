@@ -1,6 +1,5 @@
-package hello.inven.helloinven.ControllerTest;
+package hello.inven.helloinven.controller;
 
-import hello.inven.helloinven.controller.UserController;
 import hello.inven.helloinven.exceptionhandler.CustomRestExceptionHandler;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)

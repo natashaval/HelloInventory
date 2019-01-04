@@ -1,6 +1,5 @@
-package hello.inven.helloinven.ServiceTest;
+package hello.inven.helloinven.serviceimpl;
 
-import hello.inven.helloinven.dto.ItemSerialOnly;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.model.Item;
@@ -8,9 +7,7 @@ import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.repository.ItemRepository;
 import hello.inven.helloinven.repository.ItemSerialRepository;
-import hello.inven.helloinven.service.ItemSerialService;
-import hello.inven.helloinven.serviceimpl.ItemSerialServiceImpl;
-import org.junit.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemSerialServiceTest {

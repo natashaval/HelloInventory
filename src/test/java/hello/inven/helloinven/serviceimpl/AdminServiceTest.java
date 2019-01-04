@@ -1,25 +1,20 @@
-package hello.inven.helloinven.ServiceTest;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.MyUserRepository;
-import hello.inven.helloinven.service.AdminService;
-import hello.inven.helloinven.serviceimpl.AdminServiceImpl;
-import org.junit.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.util.*;
 
-import static org.mockito.Mockito.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminServiceTest {

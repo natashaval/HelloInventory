@@ -1,12 +1,10 @@
-package hello.inven.helloinven.ServiceTest;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.model.Item;
 import hello.inven.helloinven.repository.ItemRepository;
 import hello.inven.helloinven.service.ItemService;
-import hello.inven.helloinven.serviceimpl.ItemServiceImpl;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

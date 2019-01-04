@@ -1,21 +1,24 @@
-package hello.inven.helloinven.ServiceTest;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.Category;
 import hello.inven.helloinven.repository.CategoryRepository;
 import hello.inven.helloinven.service.CategoryService;
-import hello.inven.helloinven.serviceimpl.CategoryServiceImpl;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CategoryServiceTest {

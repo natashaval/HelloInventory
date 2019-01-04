@@ -1,9 +1,8 @@
-package hello.inven.helloinven.ServiceTest;
+package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.model.Role;
 import hello.inven.helloinven.repository.RoleRepository;
 import hello.inven.helloinven.service.RoleService;
-import hello.inven.helloinven.serviceimpl.RoleServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleServiceTest {
