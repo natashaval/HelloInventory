@@ -118,3 +118,29 @@ https://www.youtube.com/watch?v=Hef5pJkNCvA
 CategoryServiceImpl.java
 //https://javabeginnerstutorial.com/spring-boot/making-spring-boot-thymeleaf-crud-application/
 // https://stackoverflow.com/questions/49316751/spring-data-jpa-findone-change-to-optional-how-to-use-this
+
+
+JQUERY
+// https://grokonez.com/java-integration/integrate-jquery-ajax-post-get-spring-boot-web-service
+// https://medium.com/@gustavo.ponce.ch/spring-boot-jquery-datatables-a2e816e2b5e9
+// https://stackoverflow.com/questions/29754902/close-bootstrap-modal-after-submit/33647143
+// https://stackoverflow.com/questions/30162655/spring-mvc-ajax-file-upload-leading-to-415-unsupported-media-type
+// https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
+// https://api.jquery.com/jquery.getjson/
+
+// https://www.sanwebe.com/snippet/add-and-remove-fields-dynamic-and-simple-with-jquery
+// https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/
+// https://www.sanwebe.com/2013/03/addremove-input-fields-dynamically-with-jquery
+
+// https://stackoverflow.com/questions/26555928/ajax-send-value-of-dynamically-created-input-boxes
+// https://www.w3schools.com/jquery/jquery_slide.asp
+
+// https://stackoverflow.com/questions/31327933/how-add-more-then-one-button-in-each-row-in-jquery-datatables-and-how-to-apply-e
+// https://stackoverflow.com/questions/733314/jquery-loop-over-json-result-from-ajax-success
+
+<!--https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/-->
+        <!--https://spring.io/guides/gs/handling-form-submission/-->
+<!--https://spring.io/guides/gs/validating-form-input/-->
+<!--https://o7planning.org/en/11659/thymeleaf-form-select-option-example-->
+<!--http://zetcode.com/springboot/uploadfile/-->
+

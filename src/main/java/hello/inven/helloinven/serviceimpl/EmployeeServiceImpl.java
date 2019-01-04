@@ -133,7 +133,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
         if (transaction == null) throw new NotFoundException("Action Transaction not found!");
 
-        if (transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval.toString()) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingInventory.toString()) || transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval.toString()) ) {
+        if (transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingInventory) || transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval) ) {
             transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
             List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
             for (ActionItem item : actionItemList) {

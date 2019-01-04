@@ -1,3 +1,4 @@
+# Role
 INSERT INTO role VALUES (0,'ADMIN');
 INSERT INTO role VALUES (1,'MANAGER');
 INSERT INTO role VALUES (2,'EMPLOYEE');
@@ -38,13 +39,36 @@ VALUES (1009, '1978-04-08', 'aufderhar.justen@borer.com', 'Justen', '$2a$10$yXGC
 INSERT INTO USER(emp_id, emp_birthday, emp_email,  emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
 VALUES (1010, '1986-02-05', 'trussel@bernhard.com', 'Trussel', '$2a$10$Z2pH/5o5LA72OSCbwxCUMehA6uACE.z1QS3Z3NTYY.6qQiLeMNamG', '+1329972782864', 'https://lorempixel.com/640/480/?83303', 'trussel86', 3);
 
+#Default
+INSERT INTO USER(emp_id, emp_birthday, emp_email,  emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
+VALUES (1111, '1111-01-01', 'admin@helloinven.com', 'Admin', '$2a$10$NTzFENtc5jPsIrNzrfQ.DOG.YprkWRuMoWD/LqDYRVAvzh/p.HaEq', '111111111', 'Name-tag-admin-1000.png', 'admin', 0);
+
+INSERT INTO USER(emp_id, emp_birthday, emp_email,  emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
+VALUES (2222, '2222-02-02', 'manager@helloinven.com', 'Manager', '$2a$10$Kk0QEMJ5JzMc9f4VZzAQs.wSC2CVeAxcNYgsEX6AckbS.dbse9HcK', '222222222', '0812-manager.jpg', 'manager', 1);
+
+INSERT INTO USER(emp_id, emp_birthday, emp_email,  emp_name, PASSWORD, emp_manager_id, emp_phone, emp_photo, username, role_id)
+VALUES (3333, '3333-03-03', 'emp@helloinven.com', 'Employee', '$2a$10$v27p9JiLSTlnCnx4tyRtMe8Nrrb6ipsI1lQ5akPYFdAdWrYEPZAIm', 2222, '333333333', 'home-masthead-1.jpg', 'emp', 2);
+
+INSERT INTO USER(emp_id, emp_birthday, emp_email,  emp_name, PASSWORD, emp_phone, emp_photo, username, role_id)
+VALUES (4444, '4444-04-04', 'clerk@helloinven.com', 'Clerk', '$2a$10$d7urmcjgZBmQCekZvvMx7.NTA4S34.vjbSTjLp1JWDT6Oj2ncj5R6', '444444444', 'Clerk_image.jpg', 'clerk', 3);
 # Password di BCrypt dahulu `helloinven2`
 # Password = emp_name huruf kecilsemua
 
+# Category
+INSERT INTO CATEGORY(created_at, updated_at, category_name, category_description)
+VALUES ('2018-12-18 22:29:36', '2018-12-18 22:29:36', 'Furniture', 'furniture inside rooms');
 
+INSERT INTO CATEGORY(created_at, updated_at, category_name, category_description)
+VALUES ('2018-12-18 22:29:36', '2018-12-18 22:29:36', 'Board', 'board used in rooms');
 
-SELECT emp_name, username, role.role FROM USER JOIN role ON user.`role_id` = role.role_id
-WHERE PASSWORD = SHA1('awie');
+# Item
+INSERT INTO ITEM(item_id, created_at, updated_at, depth, height, image_path, item_type, NAME, price, quantity, weight, width, category_id)
+VALUES (60214159, '2018-12-27 11:55:08', '2018-12-27 11:55:08', 65, 73, 'malm-desk-white__0416654_pe573954_s4.jpg', 1, 'Malm Desk', 95, 3, 50, 140, 1)
 
-SELECT username, PASSWORD,  FROM USER WHERE username='axellittel84'
-SELECT u.username, r.role FROM USER u JOIN role r ON u.role_id = r.role_id WHERE u.username='axellittel84'
+INSERT INTO ITEM(item_id, created_at, updated_at, depth, height, image_path, item_type, NAME, price, quantity, weight, width, category_id)
+VALUES (80213074, '2018-12-28 11:55:08', '2018-12-28 11:55:08', 50, 75, 'micke-desk-white__0123483_pe279640_s4', 1, 'Micke Desk', 60, 3, 50, 105, 1)
+
+INSERT INTO ITEM(item_id, created_at, updated_at, depth, height, image_path, item_type, NAME, price, quantity, weight, width, category_id)
+VALUES (50380347, '2019-01-02 15:26:20', '2019-01-02 15:26:20', 0, 3, 'målarna-blackboard-planner__0534210_pe649049_s4.jpg', 1, 'MÅLARNA  Blackboard planner', 30, 1, 3.34, 61, 2)
+
+# Item Serial

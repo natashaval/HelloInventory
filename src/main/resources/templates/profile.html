@@ -7,28 +7,40 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    Id: <span th:text="${user.id}"></span><br />
-    Name: <span th:text="${user.name}"></span><br />
-    Email: <span th:text="${user.email}"></span><br />
-    Birthday: <span th:text="${user.birthday}"></span><br />
-    Role: <span th:text="${user.role.role}"></span><br />
-    ManagerId: <span th:if="${user.role.role == 'EMPLOYEE'}" th:text="${user.managerId}"></span><br />
-    Username: <span th:text="${user.username}"></span><br />
+    <h3>User Profile</h3>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Id: </label>
+                <div class="col-sm-8"><input type="number" readonly class="form-control" name="id" th:placeholder="${user.id}"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Name: </label>
+                <div class="col-sm-8"><input type="text" readonly class="form-control" name="name" th:placeholder="${user.name}"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Email:</label>
+                <div class="col-sm-8"><input type="text" readonly class="form-control" name="category" th:placeholder="${user.email}"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Birthday:</label>
+                <div class="col-sm-8"><input type="text" readonly class="form-control" name="category" th:placeholder="${user.birthday}"></div>
+            </div>
 
-    <!--https://github.com/thymeleaf/thymeleaf/issues/89-->
-    <!--TIDAK JALAN-->
-    <!--Image: <img th:src="@{/img/employee/{id}.jpg(id=${user.id})}" alt="profile picture"/>-->
-    <!--ImageFolder: <img th:src="@{src/main/uploads/employee/{photo}(photo=${user.photo})}" alt="picture relative path"/>-->
-    <!--ImageURL: <img th:src="${user.photo}" alt="user profile picture" />-->
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Role: </label>
+                <div class="col-sm-3"><input type="number" readonly class="form-control" name="quantity" th:placeholder="${user.role.role}"></div>
 
-    <!--JALAN-->
-    <!--ImageTrue: <img th:src="@{/uploads/employee/{photo}(photo=${user.photo})}" alt="profile picture"/>-->
-    <!--ImageHandler: <img th:src="@{'/uploads/employee/' + ${user.photo}}" alt="profile picture"/>-->
-    Profile Picture: <img th:attr="src=@{|/uploads/employee/${user.photo}|}, title=${user.photo}, alt=${user.photo}" th:width="400" th:height="400" />
+                <label class="col-sm-2 col-form-label" th:if="${user.role.role == 'EMPLOYEE'}" >Manager Id: </label>
+                <div class="col-sm-3"><input type="number" readonly class="form-control" name="price" step="0.01" th:if="${user.role.role == 'EMPLOYEE'}" th:placeholder="${user.managerId}"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <img th:if="${user.photo != null}" th:attr="src=@{|/uploads/employee/${user.photo}|}, title=${user.photo}, alt=${user.photo}"  class="img-thumbnail img-responsive"/>
+            <small th:if="${user.photo == null}">Image Not Available</small>
 
-    <!--https://stackoverflow.com/questions/40025807/using-variable-inside-src-image-with-thymleaf-template-->
-    <!--Image: <img src="@{'/img/employee/' + ${user.id} + '.png'}" />-->
-
+        </div>
+    </div>
 </div>
 </body>
 </html>

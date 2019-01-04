@@ -77,12 +77,12 @@ public class ItemServiceImpl implements ItemService {
     public Item deleteItem(Long id){
         Item item = itemRepository.findById(id).orElse(null);
         if (item != null) {
-            if (!item.getImagePath().isEmpty()){
+            if (item.getImagePath() != null){
                 String photoDirectory = System.getProperty("user.dir") + "/uploads/item/";
                 try {
                     File file = new File(photoDirectory + item.getImagePath());
 
-                    if (file.delete()) {
+                    if (file.delete() && file.isFile()) {
                         System.out.println(file.getName() + "is deleted");
                     } else {
                         System.out.println("Delete file error");

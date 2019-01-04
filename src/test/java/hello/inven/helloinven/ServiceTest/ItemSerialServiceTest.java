@@ -33,7 +33,7 @@ public class ItemSerialServiceTest {
     ItemRepository itemRepositoryMock;
 
     @InjectMocks
-    ItemSerialService itemSerialServiceMock = new ItemSerialServiceImpl();
+    ItemSerialServiceImpl itemSerialServiceMock;
 
     private static final Long ITEM_ID = 1L;
     private static final String ITEM_NAME = "Item Test";
@@ -84,7 +84,7 @@ public class ItemSerialServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void deleteItemSerial_NotFound(){
-        when(itemSerialRepositoryMock.findById(1L)).thenReturn(itemSerialOpt);
+//        when(itemSerialRepositoryMock.findById(1L)).thenReturn(itemSerialOpt);
         ItemSerial itemSerialDelete = itemSerialServiceMock.deleteItemSerial(2L);
     }
 
