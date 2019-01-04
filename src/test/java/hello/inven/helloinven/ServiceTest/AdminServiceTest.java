@@ -27,7 +27,7 @@ public class AdminServiceTest {
     MyUserRepository myUserRepositoryMock;
 
     @InjectMocks
-    AdminService adminServiceMock = new AdminServiceImpl();
+    AdminServiceImpl adminServiceMock;
 
     private static final Long USER_ID = 1L;
     private static final String USER_PHOTO = "";

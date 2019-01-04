@@ -2,6 +2,7 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable // so this class can be embedded in other entities, to hold composite entity identifier
+@NoArgsConstructor
 public class ActionItemId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     private Item item;
@@ -31,6 +33,11 @@ public class ActionItemId implements Serializable {
     }
 
     public void setActionTransaction(ActionTransaction actionTransaction) {
+        this.actionTransaction = actionTransaction;
+    }
+
+    public ActionItemId(Item item, ActionTransaction actionTransaction) {
+        this.item = item;
         this.actionTransaction = actionTransaction;
     }
 

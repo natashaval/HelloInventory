@@ -127,7 +127,7 @@ public class CategoryServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void deleteCategory_NotFound(){
-        when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
+//        when(categoryRepositoryMock.findById(CATEGORY_ID)).thenReturn(categoryOpt);
         Category categoryAfter = categoryServiceMock.deleteCategory(2);
     }
 

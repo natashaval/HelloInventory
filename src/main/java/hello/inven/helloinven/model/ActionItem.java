@@ -2,13 +2,16 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Getter @Setter
+@NoArgsConstructor
 
 @Entity
 @Table(name = "action_item") // ActionTransaction many-to-many Item
@@ -62,4 +65,12 @@ public class ActionItem { // Result of Many to Many Table
         getActionItemId().setActionTransaction(actionTransaction);
     }
 
+    public ActionItem(ActionItemId actionItemId, ItemStatus itemStatus, Long receivedBy, Date receivedTime, Date receiveEmpTime, Long itemSerialId) {
+        this.actionItemId = actionItemId;
+        this.itemStatus = itemStatus;
+        this.receivedBy = receivedBy;
+        this.receivedTime = receivedTime;
+        this.receiveEmpTime = receiveEmpTime;
+        this.itemSerialId = itemSerialId;
+    }
 }
