@@ -10,7 +10,6 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h3>Clerk Approve Item Request by Employee</h3>
-    <!--<div id="approval-result"></div>-->
     <table id="item-request-table" class="table table-hover">
         <thead>
             <th>Action Id</th>
@@ -62,7 +61,6 @@
         function buttonReceive(){
             $('#item-request-table tbody').on('click', '.item-request-employee', function (e) {
                 receiveRow = receiveTable.row($(this).parents('tr')).data();
-                // console.log(receiveRow.actionTransaction.requestedBy);
                 employee = receiveRow.actionTransaction.requestedBy;
 
                 var employeeMessage = "<form>";
@@ -173,7 +171,6 @@
                         }
                     },
                     error: function(e){
-                        e.statusMessage();
                         toastr.error(e, "Error", {
                             closeButton: true,
                             progressBar: true

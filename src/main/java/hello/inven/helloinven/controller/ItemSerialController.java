@@ -1,5 +1,7 @@
 package hello.inven.helloinven.controller;
 
+import hello.inven.helloinven.dto.ItemSerialOnly;
+import hello.inven.helloinven.model.ItemSerial;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.service.ItemSerialService;
@@ -20,12 +22,8 @@ public class ItemSerialController {
 
     @GetMapping(value = "/clerk/item/{id}/serialJSON")
     public @ResponseBody ResponseAjax getItemSerial(@PathVariable Long id){
-        return itemSerialService.getItemSerialByItemId(id);
-    }
-
-    @GetMapping(value = "/clerk/item/{id}/serial/enabled")
-    public @ResponseBody ResponseAjax changeToItemSerial(@PathVariable Long id){
-        return itemSerialService.changeToItemSerial(id);
+        List<ItemSerialOnly> serialOnly = itemSerialService.getItemSerialByItemId(id);
+        return new ResponseAjax("Done", serialOnly);
     }
 
     @GetMapping(value = "/clerk/item/{id}/serial")
@@ -35,24 +33,20 @@ public class ItemSerialController {
     }
 
     @PostMapping(value = "/clerk/item/{id}/serial")
-    public @ResponseBody ResponseAjax serialAddPost(@PathVariable Long id, @RequestParam(value = "serials[]") List<Long> itemSerialValues){
+    @ResponseBody
+    public ResponseAjax serialAddPost(@PathVariable Long id, @RequestParam(value = "serials[]") List<Long> itemSerialValues){
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser clerk = myUserDetails.getUser();
-
-        System.out.println("Item Id: " + id);
-        for (Long itemSerial: itemSerialValues) {
-            System.out.println(itemSerial);
-        }
-
-        return itemSerialService.createItemSerial(clerk, id, itemSerialValues);
-//        return null;
+        itemSerialService.createItemSerial(clerk, id, itemSerialValues);
+        return new ResponseAjax("Done", "Item Serials has been saved!");
 
     }
 
     @DeleteMapping(value = "/clerk/item/serial/{serialId}")
     @ResponseBody
     public ResponseAjax serialDelete(@PathVariable Long serialId){
-        return itemSerialService.deleteItemSerial(serialId);
+        itemSerialService.deleteItemSerial(serialId);
+        return new ResponseAjax("Deleted", "Item Serial has been deleted!");
     }
 
 

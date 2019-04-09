@@ -8,7 +8,6 @@ import java.util.Collection;
 
 public class MyUserDetails extends User {
 
-//    http://www.doubleh.ie/index.php/2016/09/09/how-to-save-db-user-entity-in-spring-security-authentication-object/
     private final MyUser user;
 
     public MyUserDetails(MyUser user, Collection<? extends GrantedAuthority> authorities){

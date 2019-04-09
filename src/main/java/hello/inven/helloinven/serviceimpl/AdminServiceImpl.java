@@ -1,5 +1,6 @@
 package hello.inven.helloinven.serviceimpl;
 
+import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.MyUser;
 import hello.inven.helloinven.response.ResponseAjax;
 import hello.inven.helloinven.repository.MyUserRepository;
@@ -40,11 +41,9 @@ public class AdminServiceImpl implements AdminService {
         return myUserRepository.findByUsername(username);
     }
 
-//    https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/
     @Override
     public MyUser save(MyUser user, MultipartFile file) throws IOException {
         MyUser newUser = new MyUser();
-        System.out.print("Bikin NEW User");
         newUser.setId(user.getId());
         newUser.setName(user.getName());
         newUser.setEmail(user.getEmail());
@@ -54,26 +53,12 @@ public class AdminServiceImpl implements AdminService {
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getManagerId() != null) newUser.setManagerId(user.getManagerId());
 
-        /*
-        Integer roleID = user.getRole().getRoleId();
-        Role userRole = roleRepository.findById(roleID).get();
-//        System.out.print("roleID: " + roleID + "ROLE: " + userRole);
-        System.out.print("ROLE: " + userRole);
-        newUser.setRole(userRole);
-        */
         newUser.setRole(user.getRole());
 
-        //        http://aralmighty.com/uploading-files-spring-boot
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             InputStream is = file.getInputStream();
-//            String uploadDirectory = Paths.get(fileName).toAbsolutePath().normalize().toString(); // akan mengeluarkan absolute path dari helloinven
-//            String uploadDirectory = "src/main/uploads/employee/";
-//            String uploadDirectory = "src/main/resources/static/img/employee/";
-
-//            https://www.youtube.com/watch?v=Hef5pJkNCvA
             String uploadDirectory = System.getProperty("user.dir") + "/uploads/employee/";
-//            String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/uploads/employee/";
 
             try {
                 Files.copy(is, Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
@@ -82,10 +67,6 @@ public class AdminServiceImpl implements AdminService {
                 e.printStackTrace();
             }
             newUser.setPhoto(fileName);
-            System.out.println("namafileName: " + uploadDirectory + fileName);
-            System.out.println("\ngetNamaFile " + file.getName() + ";apaFile " + file.getContentType());
-            System.out.println("\ngetFileAbsolutePath: " + Paths.get(fileName).toAbsolutePath().normalize());
-            System.out.println("\nFileSUDAHDITAMBAH: " + Paths.get(uploadDirectory + fileName).toAbsolutePath().normalize());
         }
         return myUserRepository.save(newUser);
 
@@ -99,14 +80,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MyUser findByEmployeeId(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
-        return myUser;
+        if (myUser != null) return myUser;
+        else throw new NotFoundException("Employee Not Found!");
     }
 
     @Override
-    public ResponseAjax deleteEmployee(Long employeeId){
+    public MyUser deleteEmployee(Long employeeId){
         MyUser myUser = myUserRepository.findById(employeeId).orElse(null);
         if (myUser != null) {
-            if (!myUser.getPhoto().isEmpty()){
+            if (myUser.getPhoto()!=null){
                 String photoDirectory = System.getProperty("user.dir") + "/uploads/employee/";
                 try {
                     File file = new File(photoDirectory + myUser.getPhoto());
@@ -122,10 +104,10 @@ public class AdminServiceImpl implements AdminService {
             }
 
             myUserRepository.deleteById(employeeId);
-            return new ResponseAjax("Deleted", "Employee has been deleted!");
+            return myUser;
         }
         else
-            return new ResponseAjax("Error", "Error in deleting employee!");
+        throw new NotFoundException("Employee not found and failed in delete employee!");
     }
 
 }

@@ -15,5 +15,5 @@ public interface AdminService {
     MyUser findByEmployeeId(Long employeeId);
     MyUser save(MyUser user, MultipartFile file) throws IOException;
 
-    ResponseAjax deleteEmployee(Long employeeId);
+    MyUser deleteEmployee(Long employeeId);
 }

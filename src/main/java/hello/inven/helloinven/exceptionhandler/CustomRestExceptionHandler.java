@@ -5,7 +5,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-//https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
+
 @ControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -51,18 +50,19 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 responseError, new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-//    @ExceptionHandler({Exception.class})
-//    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request){
-//        ResponseError responseError = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occured!");
-//        return new ResponseEntity<Object>(responseError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-
     /* ============ EXCEPTION HANDLER FOR SERVICE HELLOINVEN ==========*/
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request){
-        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(true));
+        ResponseError responseError = new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(responseError, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest request){
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), request.getDescription(false));
+        return new ResponseEntity<>(responseError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
 
 
 

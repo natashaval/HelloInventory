@@ -20,7 +20,6 @@ public abstract class AuditModel implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
 //    @Temporal is a JPA annotation which can be used to store only TIME (java.sql.Time), DATE(java.sql.Date) or TIMESTAMP (java.sql.Timestamp) in the database table. Generally when we declare a Date field in the class and try to store it. It will store the timestamp in the database.
 //    @Temporal is a JPA annotation that converts back and forth between timestamp and java.util.Date. It also converts time-stamp into time
-//    https://stackoverflow.com/questions/25333711/what-is-the-use-of-the-temporal-annotation-in-hibernate
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     private Date createdAt;

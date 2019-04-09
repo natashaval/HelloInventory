@@ -1,6 +1,7 @@
 package hello.inven.helloinven.serviceimpl;
 
 import hello.inven.helloinven.dto.ItemSerialCount;
+import hello.inven.helloinven.exceptionhandler.BadRequestException;
 import hello.inven.helloinven.exceptionhandler.NotFoundException;
 import hello.inven.helloinven.model.*;
 import hello.inven.helloinven.repository.ActionItemRepository;
@@ -35,7 +36,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Item> getAllItemAssets(){
         List<Item> itemList = itemRepository.findItemByItemType(Item.ItemType.ASSET);
-//        List<Item> itemList = itemRepository.findItemIdAndNameByItemType(Item.ItemType.ASSET);
         // Jika menggunakan Query sendiri akan menghasilkan array, bukan Object
         return itemList;
     }
@@ -43,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     @Override
-    public ResponseAjax requestItemAssets(MyUser requester, List<Long> requestValues, String comment, Boolean requestType){
+    public List<ActionItem> requestItemAssets(MyUser requester, List<Long> requestValues, String comment, Boolean requestType){
         // ------ Simpan transaksi
         ActionTransaction transaction = new ActionTransaction();
         Date currenttime = new Date();
@@ -62,8 +62,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         transaction.setActionRemarks(comment);
         transaction = transactionRepository.saveAndFlush(transaction);
 
-        System.out.println("\nget transaction ID: " + transaction.getActionId());
-
         // ------ Masukkan barang transaksi
         if (requestType == true) {
             List<ActionItem> actionItemList = new ArrayList<>();
@@ -80,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 }
             }
             actionItemRepository.saveAll(actionItemList);
-            return new ResponseAjax("Done", "Items have been requested!");
+            return  actionItemList;
         }
 
         else if (requestType == false){
@@ -98,54 +96,54 @@ public class EmployeeServiceImpl implements EmployeeService {
                 }
             }
             actionItemRepository.saveAll(actionItemList);
-            return new ResponseAjax("Done", "Items are asked to be returned!");
+            return actionItemList;
         }
 
-        return new ResponseAjax("Wrong", "Something wrong happened!");
+        throw new BadRequestException("Request / Return Error happened!");
     }
 
     @Override
-    public ResponseAjax countMyItem(MyUser myUser){
+    public List<ItemSerialCount> countMyItem(MyUser myUser){
         List<ItemSerialCount> myItemCount = itemSerialRepository.findAndCountItemSerialByEmpId(myUser.getId());
-        if (myItemCount == null) return new ResponseAjax("None", "No item found!");
-        return new ResponseAjax("Count Done", myItemCount);
+        return myItemCount;
     }
 
     @Override
-    public ResponseAjax findMyItemSerials(Long itemId, MyUser myUser){
+    public List<ItemSerial> findMyItemSerials(Long itemId, MyUser myUser){
         List<ItemSerial> itemSerials = itemSerialRepository.findItemSerialsByItemIdAndMyUser(itemId, myUser);
-        if (itemSerials.isEmpty()) return new ResponseAjax("Not Found", "item serial not found!");
-        return new ResponseAjax("Found", itemSerials);
+        return itemSerials;
+
     }
 
     /* =========== Employee > Request Status ==========*/
     @Override
-    public ResponseAjax getActionTransactions(MyUser myUser){
+    public List<ActionTransaction> getActionTransactions(MyUser myUser){
         List<ActionTransaction> transactionList = transactionRepository.findActionTransactionsByRequestedBy(myUser);
-        if (transactionList.isEmpty()) return new ResponseAjax("Not Found", "transaction list not found!");
-        return new ResponseAjax("Found", transactionList);
+        return transactionList;
     }
 
     @Override
-    public ResponseAjax getActionItemStatus(Long actionId, MyUser myUser){
+    public List<ActionItem> getActionItemStatus(Long actionId, MyUser myUser){
         List<ActionItem> itemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
-        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "Item status not found!");
-        return new ResponseAjax("Found", itemList);
+        return itemList;
     }
 
     @Override
-    public ResponseAjax cancelRequest(Long actionId, MyUser myUser){
+    public ActionTransaction cancelRequest(Long actionId, MyUser myUser){
         ActionTransaction transaction = transactionRepository.findById(actionId).orElse(null);
-        if (transaction == null) return new ResponseAjax("Not Found", "Action Transaction not found!");
+        if (transaction == null) throw new NotFoundException("Action Transaction not found!");
 
-        transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
-         List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
-        for (ActionItem item: actionItemList) {
-            item.setItemStatus(ActionItem.ItemStatus.Cancelled);
-            actionItemRepository.save(item);
+        if (transaction.getActionType().equals(ActionTransaction.ActionType.PendingApproval) || transaction.getActionType().equals(ActionTransaction.ActionType.PendingInventory) || transaction.getActionType().equals(ActionTransaction.ActionType.ReturnApproval) ) {
+            transaction.setActionType(ActionTransaction.ActionType.CancelRequest);
+            List<ActionItem> actionItemList = actionItemRepository.findActionItemsByActionItemIdActionTransactionActionIdAndActionItemIdActionTransactionRequestedBy(actionId, myUser);
+            for (ActionItem item : actionItemList) {
+                item.setItemStatus(ActionItem.ItemStatus.Cancelled);
+                actionItemRepository.save(item);
+            }
+            transactionRepository.save(transaction);
+            return transaction;
         }
-        transactionRepository.save(transaction);
-        return new ResponseAjax("Cancelled", "Request has been cancelled!");
+        else throw new BadRequestException("Request are not allowed to be cancelled!");
     }
 
     @Override
@@ -195,20 +193,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /* ============ EMPLOYEE RECEIVE ITEM ============*/
     @Override
-    public ResponseAjax getItemAssetsSent(MyUser myUser){
+    public List<ActionItem> getItemAssetsSent(MyUser myUser){
         List<ActionItem> itemList = actionItemRepository.findActionItemsByItemStatusAndActionItemIdActionTransactionRequestedBy(ActionItem.ItemStatus.Sent, myUser);
-        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "No Item Available!");
-        return new ResponseAjax("Found", itemList);
+        return itemList;
     }
 
     @Override
-    public ResponseAjax receiveItem(Long actionTransactionId, Long itemId){
+    public ActionItem receiveItem(Long actionTransactionId, Long itemId){
         ActionItem actionItem = actionItemRepository.findActionItemByItemStatusAndActionItemIdActionTransactionActionIdAndActionItemIdItemId(ActionItem.ItemStatus.Sent, actionTransactionId, itemId);
         actionItem.setItemStatus(ActionItem.ItemStatus.Received);
         Date currentTime = new Date();
         actionItem.setReceiveEmpTime(currentTime);
         actionItemRepository.save(actionItem);
-        return new ResponseAjax("Success", "Item has been received! Check 'My Item'");
+        return actionItem;
     }
 
     /* ============ Employee > Return Item =========== */

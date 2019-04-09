@@ -10,15 +10,14 @@ import java.util.List;
 
 @Repository("userRepository")
 public interface MyUserRepository extends JpaRepository<MyUser, Long> {
-    List<MyUser> findUserByName(String name);
     MyUser findByUsername(String username);
 
     List<MyUser> findAll();
 
-//    https://stackoverflow.com/questions/14446048/hibernate-table-not-mapped-error
     @Query("SELECT u FROM MyUser AS u JOIN u.role AS r WHERE r.id = :roleId ")
     List<MyUser> findByRole(@Param("roleId") Integer roleId);
 
+    // digunakan oleh clerk untuk assign inventory to worker
     @Query("SELECT u FROM MyUser AS u JOIN u.role AS r WHERE r.id = 1 OR r.id = 2")
     List<MyUser> findManagerAndEmployee();
 }

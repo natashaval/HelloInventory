@@ -1,11 +1,14 @@
 package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "item_serial")
@@ -22,7 +25,7 @@ public class ItemSerial {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "emp_id")
     @JsonIgnoreProperties(value = {"userItemSerials", "actionTransactions"})
-    private MyUser myUser;
+    private MyUser myUser; // user yang akan mendapat barang jika sudah di assign, jika belum default sama dengan clerkId
 
     @Column(name = "clerk_id")
     private Long clerkId; // clerk yang bertugas menghandle barang tersebut

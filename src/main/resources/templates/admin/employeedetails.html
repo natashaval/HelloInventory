@@ -17,7 +17,6 @@
     <span th:if="${employee.role.role == 'EMPLOYEE'}" th:text=" 'ManagerId: ' + ${employee.managerId}"></span> <br />
     Username: <span th:text="${employee.username}"></span> <br />
 
-    <!--ImageHandler: <img th:src="@{'/uploads/employee/' + ${employee.photo}}" alt="profile picture"/>-->
     Profile Picture: <img th:attr="src=@{|/uploads/employee/${employee.photo}|}, title=${employee.photo}, alt=${employee.photo}" th:width="400" th:height="400" />
 </div>
 

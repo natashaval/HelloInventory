@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
-//https://www.javainuse.com/spring/boot_form_authentication_handler
-//https://www.devglan.com/spring-security/spring-boot-security-redirect-after-login
-//https://www.baeldung.com/spring_redirect_after_login
 @Component
 public class CustomAuthenticationHandler implements AuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -29,7 +26,6 @@ public class CustomAuthenticationHandler implements AuthenticationSuccessHandler
         boolean hasClerkRole = false;
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        System.out.println("auth --: " + authorities);
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().contains("EMPLOYEE")) {
                 hasUserRole = true;

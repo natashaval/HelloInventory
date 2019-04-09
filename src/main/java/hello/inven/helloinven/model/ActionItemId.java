@@ -2,6 +2,7 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,18 +11,13 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
-//https://www.codejava.net/frameworks/hibernate/hibernate-many-to-many-association-with-extra-columns-in-join-table-example
-
-@Embeddable
+@Embeddable // so this class can be embedded in other entities, to hold composite entity identifier
+@NoArgsConstructor
 public class ActionItemId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties(value = {"category", "actionItemList"})
-//    @JsonIgnore
     private Item item;
 
     @ManyToOne
-//    @JsonIgnoreProperties(value = "actionItemList")
-//    @JsonIgnore
     private ActionTransaction actionTransaction;
 
     public Item getItem() {
@@ -37,6 +33,11 @@ public class ActionItemId implements Serializable {
     }
 
     public void setActionTransaction(ActionTransaction actionTransaction) {
+        this.actionTransaction = actionTransaction;
+    }
+
+    public ActionItemId(Item item, ActionTransaction actionTransaction) {
+        this.item = item;
         this.actionTransaction = actionTransaction;
     }
 
