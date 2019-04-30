@@ -2,16 +2,12 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Getter @Setter
-@NoArgsConstructor
+@Data
 
 @Entity
 @Table(name = "action_item") // ActionTransaction many-to-many Item
@@ -24,7 +20,7 @@ import java.util.Date;
 public class ActionItem { // Result of Many to Many Table
     @EmbeddedId // embedding composite-id as primary key
     @JsonIgnore
-    private ActionItemId actionItemId = new ActionItemId();
+    private ActionItemId actionItemId;
 
     public enum ItemStatus {
         Pending, // Still in waiting list after request item
@@ -51,18 +47,18 @@ public class ActionItem { // Result of Many to Many Table
 
     @Transient
     public Item getItem(){
-        return getActionItemId().getItem();
+        return actionItemId.getItem();
     }
 
     public void setItem(Item item){
-        getActionItemId().setItem(item);
+        actionItemId.setItem(item);
     }
 
     @Transient
-    public ActionTransaction getActionTransaction() {return getActionItemId().getActionTransaction();}
+    public ActionTransaction getActionTransaction() {return actionItemId.getActionTransaction();}
 
     public void setActionTransaction(ActionTransaction actionTransaction) {
-        getActionItemId().setActionTransaction(actionTransaction);
+        actionItemId.setActionTransaction(actionTransaction);
     }
 
     public ActionItem(ActionItemId actionItemId, ItemStatus itemStatus, Long receivedBy, Date receivedTime, Date receiveEmpTime, Long itemSerialId) {
@@ -71,6 +67,57 @@ public class ActionItem { // Result of Many to Many Table
         this.receivedBy = receivedBy;
         this.receivedTime = receivedTime;
         this.receiveEmpTime = receiveEmpTime;
+        this.itemSerialId = itemSerialId;
+    }
+
+    public ActionItem() {
+    }
+
+    public ActionItemId getActionItemId() {
+        return actionItemId;
+    }
+
+    public void setActionItemId(ActionItemId actionItemId) {
+        this.actionItemId = actionItemId;
+    }
+
+    public ItemStatus getItemStatus() {
+        return itemStatus;
+    }
+
+    public void setItemStatus(ItemStatus itemStatus) {
+        this.itemStatus = itemStatus;
+    }
+
+    public Long getReceivedBy() {
+        return receivedBy;
+    }
+
+    public void setReceivedBy(Long receivedBy) {
+        this.receivedBy = receivedBy;
+    }
+
+    public Date getReceivedTime() {
+        return receivedTime;
+    }
+
+    public void setReceivedTime(Date receivedTime) {
+        this.receivedTime = receivedTime;
+    }
+
+    public Date getReceiveEmpTime() {
+        return receiveEmpTime;
+    }
+
+    public void setReceiveEmpTime(Date receiveEmpTime) {
+        this.receiveEmpTime = receiveEmpTime;
+    }
+
+    public Long getItemSerialId() {
+        return itemSerialId;
+    }
+
+    public void setItemSerialId(Long itemSerialId) {
         this.itemSerialId = itemSerialId;
     }
 }

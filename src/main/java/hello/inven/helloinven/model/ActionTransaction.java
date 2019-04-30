@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 
 @Entity
 @Table(name = "action_transaction")
@@ -72,6 +70,73 @@ public class ActionTransaction {
         this.approvedBy = approvedBy;
         this.approvedTime = approvedTime;
         this.actionRemarks = actionRemarks;
+        this.actionItemList = actionItemList;
+    }
+
+    public ActionTransaction() {
+    }
+
+    public Long getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(Long actionId) {
+        this.actionId = actionId;
+    }
+
+    public ActionType getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(ActionType actionType) {
+        this.actionType = actionType;
+    }
+
+    public MyUser getRequestedBy() {
+        return requestedBy;
+    }
+
+    public void setRequestedBy(MyUser requestedBy) {
+        this.requestedBy = requestedBy;
+    }
+
+    public Date getRequestTime() {
+        return requestTime;
+    }
+
+    public void setRequestTime(Date requestTime) {
+        this.requestTime = requestTime;
+    }
+
+    public Long getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(Long approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getActionRemarks() {
+        return actionRemarks;
+    }
+
+    public void setActionRemarks(String actionRemarks) {
+        this.actionRemarks = actionRemarks;
+    }
+
+    public List<ActionItem> getActionItemList() {
+        return actionItemList;
+    }
+
+    public void setActionItemList(List<ActionItem> actionItemList) {
         this.actionItemList = actionItemList;
     }
 }

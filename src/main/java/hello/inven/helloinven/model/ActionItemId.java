@@ -2,6 +2,7 @@ package hello.inven.helloinven.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable // so this class can be embedded in other entities, to hold composite entity identifier
-@NoArgsConstructor
+@Data
+
 public class ActionItemId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     private Item item;

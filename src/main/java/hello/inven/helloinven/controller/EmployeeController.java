@@ -63,7 +63,7 @@ public class EmployeeController {
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
         List<ItemSerial> itemSerials = employeeService.findMyItemSerials(id, employee);
-        if (itemSerials.isEmpty()) return new ResponseAjax("Not Found", "item serial not found!");
+        if (itemSerials.isEmpty()) return new ResponseAjax("Not Found", itemSerials);
         return new ResponseAjax("Found", itemSerials);
     }
 
@@ -77,7 +77,7 @@ public class EmployeeController {
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
         List<ActionTransaction> transactionList = employeeService.getActionTransactions(employee);
-        if (transactionList.isEmpty()) return new ResponseAjax("Not Found", "Transaction list not found!");
+        if (transactionList.isEmpty()) return new ResponseAjax("Not Found", transactionList);
         return new ResponseAjax("Found", transactionList);
     }
 
@@ -87,7 +87,7 @@ public class EmployeeController {
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
         List<ActionItem> itemList = employeeService.getActionItemStatus(id, employee);
-        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "Item status not found!");
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", itemList);
         return new ResponseAjax("Found", itemList);
     }
 
@@ -120,7 +120,7 @@ public class EmployeeController {
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MyUser employee = myUserDetails.getUser();
         List<ActionItem> itemList = employeeService.getItemAssetsSent(employee);
-        if (itemList.isEmpty()) return new ResponseAjax("Not Found", "No Item Available!");
+        if (itemList.isEmpty()) return new ResponseAjax("Not Found", itemList);
         return new ResponseAjax("Found", itemList);
     }
 
